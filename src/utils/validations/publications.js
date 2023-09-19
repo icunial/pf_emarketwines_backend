@@ -12,7 +12,16 @@ const validatePrice = (price) => {
   return false;
 };
 
+// Validate amount
+const validateAmount = (amount) => {
+  if (amount === 0 || amount < 0) return "Amount must higher than 0";
+  if (!amount) return "Amount parameter is missing";
+  if (typeof amount !== "number") return "Amount must be a number";
+  return false;
+};
+
 module.exports = {
   validateTitle,
   validatePrice,
+  validateAmount,
 };
