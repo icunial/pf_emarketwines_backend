@@ -18,6 +18,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// Error catching endware
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  const message = err.message || err;
+  res.status(status).json({
+    statusCode: status,
+    msg: message,
+  });
+});
+
 // Initialized Express Server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
