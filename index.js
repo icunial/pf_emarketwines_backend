@@ -3,6 +3,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const db = require("./src/db");
 
+const router = require("./src/routes/index");
+
 // Body-Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -18,6 +20,9 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
+
+// Router middleware
+app.use("/", router);
 
 // Error catching endware
 app.use((err, req, res, next) => {
