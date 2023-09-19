@@ -5,6 +5,14 @@ const validateTitle = (title) => {
   return false;
 };
 
+// Validates price
+const validatePrice = (price) => {
+  if (!price) return "Price parameter is missing";
+  if (typeof price !== "number") return "Price must be a number";
+  return false;
+};
+
 module.exports = {
   validateTitle,
+  validatePrice,
 };
