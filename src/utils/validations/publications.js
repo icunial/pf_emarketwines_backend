@@ -20,8 +20,16 @@ const validateAmount = (amount) => {
   return false;
 };
 
+// Validate description
+const validateDescription = (description) => {
+  if (!description) return "Description parameter is missing";
+  if (typeof description !== "string") return "Description must be a string";
+  return false;
+};
+
 module.exports = {
   validateTitle,
   validatePrice,
   validateAmount,
+  validateDescription,
 };
