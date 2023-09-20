@@ -8,11 +8,29 @@ const validations = require("../utils/validations/publications");
 const {
   getPublications,
   getPublicationById,
+  getPublicationsWithWord,
 } = require("../controllers/publications");
 
 // Get all publications
 router.get("/", async (req, res, next) => {
+  const { word } = req.query;
+
   try {
+    if (word) {
+      const publicationsWithWord = await getPublicationsWithWord(word);
+
+      if (!publicationsWithWord.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Publications with word: ${word} not found!`,
+        });
+      }
+
+      return res.status(200).json({
+        statusCode: 200,
+        data: publicationsWithWord,
+      });
+    }
     const publications = await getPublications();
 
     if (!publications.length) {
