@@ -1,5 +1,7 @@
 const Publication = require("../models/Publication");
 
+const { Op } = require("sequelize");
+
 // Get all publications
 const getPublications = async () => {
   const results = [];
@@ -55,7 +57,50 @@ const getPublicationById = async (id) => {
   }
 };
 
+// Get publications by Word
+const getPublicationsWithWord = async (word) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      where: {
+        isBanned: false,
+        [Op.or]: [
+          {
+            title: {
+              [Op.iLike]: `%${word}%`,
+            },
+          },
+          {
+            description: {
+              [Op.iLike]: `%${word}%`,
+            },
+          },
+        ],
+      },
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get publications containing a word!");
+  }
+};
+
 module.exports = {
   getPublications,
   getPublicationById,
+  getPublicationsWithWord,
 };
