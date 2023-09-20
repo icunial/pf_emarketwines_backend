@@ -12,6 +12,7 @@ const {
   orderPublicationsMorePrice,
   orderPublicationsLessPrice,
   orderPublicationsByNameAtoZ,
+  orderPublicationsByNameZtoA,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -99,6 +100,8 @@ router.get("/order/:opt", async (req, res, next) => {
       results = await orderPublicationsLessPrice();
     } else if (opt === "az") {
       results = await orderPublicationsByNameAtoZ();
+    } else if (opt === "za") {
+      results = await orderPublicationsByNameZtoA();
     } else {
       return res.status(400).json({
         statusCode: 400,
