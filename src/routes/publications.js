@@ -5,7 +5,10 @@ const Publication = require("../models/Publication");
 
 const validations = require("../utils/validations/publications");
 
-const { getPublications } = require("../controllers/publications");
+const {
+  getPublications,
+  getPublicationById,
+} = require("../controllers/publications");
 
 // Get all publications
 router.get("/", async (req, res, next) => {
@@ -22,6 +25,40 @@ router.get("/", async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       data: publications,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get publication by ID
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  // Regular expression to check if string is a valid UUID
+  const regexExp =
+    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+
+  if (!regexExp.test(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const publication = await getPublicationById(id);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: publication,
     });
   } catch (error) {
     return next(error);
