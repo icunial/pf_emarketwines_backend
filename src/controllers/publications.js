@@ -99,8 +99,42 @@ const getPublicationsWithWord = async (word) => {
   }
 };
 
+// Get publications ordered from highest price to lowest
+const orderPublicationsMorePrice = async () => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      where: {
+        isBanned: false,
+      },
+      order: [["price", "DESC"]],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error(
+      "Error trying to order publications from highest price to lowest"
+    );
+  }
+};
+
 module.exports = {
   getPublications,
   getPublicationById,
   getPublicationsWithWord,
+  orderPublicationsMorePrice,
 };
