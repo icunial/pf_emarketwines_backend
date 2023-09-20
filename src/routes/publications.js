@@ -5,6 +5,29 @@ const Publication = require("../models/Publication");
 
 const validations = require("../utils/validations/publications");
 
+const { getPublications } = require("../controllers/publications");
+
+// Get all publications
+router.get("/", async (req, res, next) => {
+  try {
+    const publications = await getPublications();
+
+    if (!publications.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No publications saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: publications,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Create new publication
 router.post("/", async (req, res, next) => {
   const { title, price, amount, image, description } = req.body;
