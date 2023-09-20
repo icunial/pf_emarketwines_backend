@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const Publication = require("../models/Publication");
+
 const validations = require("../utils/validations/publications");
 
 // Create new publication
@@ -34,6 +36,23 @@ router.post("/", async (req, res, next) => {
       statusCode: 400,
       msg: validations.validateDescription(description),
     });
+  }
+
+  try {
+    const publicationCreated = await Publication.create({
+      title,
+      price,
+      amount,
+      image: image ? image : null,
+      description,
+    });
+
+    res.status(201).json({
+      statusCode: 201,
+      data: publicationCreated,
+    });
+  } catch (error) {
+    return next("Error trying to create a new publication!");
   }
 });
 
