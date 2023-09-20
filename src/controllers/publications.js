@@ -192,9 +192,38 @@ const orderPublicationsByNameAtoZ = async () => {
 
     return results;
   } catch (error) {
-    throw new Error(
-      "Error trying to order publications from highest price to lowest"
-    );
+    throw new Error("Error trying to order publications by name from A to Z");
+  }
+};
+
+// Get publications ordered by name from Z to A
+const orderPublicationsByNameZtoA = async () => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      where: {
+        isBanned: false,
+      },
+      order: [["title", "DESC"]],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to order publications by name from Z to A");
   }
 };
 
@@ -205,4 +234,5 @@ module.exports = {
   orderPublicationsMorePrice,
   orderPublicationsLessPrice,
   orderPublicationsByNameAtoZ,
+  orderPublicationsByNameZtoA,
 };
