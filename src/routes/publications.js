@@ -9,6 +9,7 @@ const {
   getPublications,
   getPublicationById,
   getPublicationsWithWord,
+  orderPublicationsMorePrice,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -77,6 +78,38 @@ router.get("/:id", async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       data: publication,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Order features routes
+router.get("/order/:opt", async (req, res, next) => {
+  const { opt } = req.params;
+
+  let results = [];
+
+  try {
+    if (opt === "more") {
+      results = await orderPublicationsMorePrice();
+    } else {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `Filter not available!`,
+      });
+    }
+
+    if (!results.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No publications saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: results,
     });
   } catch (error) {
     return next(error);
