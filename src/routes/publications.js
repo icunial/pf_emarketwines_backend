@@ -10,6 +10,7 @@ const {
   getPublicationById,
   getPublicationsWithWord,
   orderPublicationsMorePrice,
+  orderPublicationsLessPrice,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -93,6 +94,8 @@ router.get("/order/:opt", async (req, res, next) => {
   try {
     if (opt === "more") {
       results = await orderPublicationsMorePrice();
+    } else if (opt === "less") {
+      results = await orderPublicationsLessPrice();
     } else {
       return res.status(400).json({
         statusCode: 400,
