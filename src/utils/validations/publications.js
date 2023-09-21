@@ -27,9 +27,18 @@ const validateDescription = (description) => {
   return false;
 };
 
+// Validate banned
+const validateBanned = (banned) => {
+  if (!banned) return "Banned query is missing";
+  if (banned !== "true" && banned !== "false")
+    return "Banned must be a true or false";
+  return false;
+};
+
 module.exports = {
   validateTitle,
   validatePrice,
   validateAmount,
   validateDescription,
+  validateBanned,
 };
