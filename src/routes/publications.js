@@ -13,6 +13,7 @@ const {
   orderPublicationsLessPrice,
   orderPublicationsByNameAtoZ,
   orderPublicationsByNameZtoA,
+  updateIsBannedPublication,
 } = require("../controllers/publications");
 
 // Regular expression to check if string is a valid UUID
@@ -177,12 +178,8 @@ router.post("/", async (req, res, next) => {
 });
 
 // Ban or not publications
-router.put("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const { banned } = req.query;
-
-  console.log(id);
-  console.log(banned);
+router.put("/:id/:banned", async (req, res, next) => {
+  const { id, banned } = req.params;
 
   if (validations.validateBanned(banned)) {
     return res.status(400).json({
@@ -196,6 +193,24 @@ router.put("/:id", async (req, res, next) => {
       statusCode: 404,
       msg: `ID invalid format!`,
     });
+  }
+
+  try {
+    const updatedPublication = await updateIsBannedPublication(id, banned);
+
+    if (!updatedPublication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: updatedPublication,
+    });
+  } catch (error) {
+    return next(error);
   }
 });
 
