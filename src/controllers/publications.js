@@ -47,6 +47,7 @@ const getPublicationById = async (id) => {
         amount: dbResult.amount,
         image: dbResult.image,
         description: dbResult.description,
+        isBanned: dbResult.isBanned,
       });
     }
 
@@ -227,6 +228,34 @@ const orderPublicationsByNameZtoA = async () => {
   }
 };
 
+// Ban or not publication
+const updateIsBannedPublication = async (id, banned) => {
+  try {
+    const publicationFound = await getPublicationById(id);
+
+    if (!publicationFound.length) {
+      return [];
+    }
+
+    const updatedPublication = await Publication.update(
+      { isBanned: banned },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedPublication[0] === 1) {
+      const publicationFound = await getPublicationById(id);
+
+      return publicationFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to update the publication!");
+  }
+};
+
 module.exports = {
   getPublications,
   getPublicationById,
@@ -235,4 +264,5 @@ module.exports = {
   orderPublicationsLessPrice,
   orderPublicationsByNameAtoZ,
   orderPublicationsByNameZtoA,
+  updateIsBannedPublication,
 };
