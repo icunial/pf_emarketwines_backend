@@ -62,7 +62,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
 
-  if (!regexExp.test(id)) {
+  if (validations.validateId(id) === false) {
     return res.status(400).json({
       statusCode: 404,
       msg: `ID invalid format!`,
@@ -188,7 +188,7 @@ router.put("/:id/:banned", async (req, res, next) => {
     });
   }
 
-  if (!regexExp.test(id)) {
+  if (validations.validateId(id) === false) {
     return res.status(400).json({
       statusCode: 404,
       msg: `ID invalid format!`,
