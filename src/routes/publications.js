@@ -15,6 +15,10 @@ const {
   orderPublicationsByNameZtoA,
 } = require("../controllers/publications");
 
+// Regular expression to check if string is a valid UUID
+const regexExp =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+
 // Get all publications
 router.get("/", async (req, res, next) => {
   const { word } = req.query;
@@ -56,10 +60,6 @@ router.get("/", async (req, res, next) => {
 // Get publication by ID
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
-
-  // Regular expression to check if string is a valid UUID
-  const regexExp =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
 
   if (!regexExp.test(id)) {
     return res.status(400).json({
@@ -173,6 +173,29 @@ router.post("/", async (req, res, next) => {
     });
   } catch (error) {
     return next("Error trying to create a new publication!");
+  }
+});
+
+// Ban or not publications
+router.put("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { banned } = req.query;
+
+  console.log(id);
+  console.log(banned);
+
+  if (validations.validateBanned(banned)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateBanned(banned),
+    });
+  }
+
+  if (!regexExp.test(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
   }
 });
 
