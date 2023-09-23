@@ -5,14 +5,22 @@ const validateName = (name) => {
   return false;
 };
 
-// Validate type
+// Validates type
 const validateType = (type) => {
   if (!type) return "Type parameter is missing";
   if (typeof type !== "string") return "Type must be a string";
   return false;
 };
 
+// Validates varietal
+const validateVarietal = (varietal) => {
+  if (!varietal) return "Varietal parameter is missing";
+  if (typeof varietal !== "string") return "Varietal must be a string";
+  return false;
+};
+
 module.exports = {
   validateName,
   validateType,
+  validateVarietal,
 };
