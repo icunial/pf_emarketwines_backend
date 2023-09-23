@@ -214,4 +214,17 @@ router.put("/:id/:banned", async (req, res, next) => {
   }
 });
 
+// Update publication amount
+router.put("/amount/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { amount } = req.query;
+
+  if (!validations.validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+});
+
 module.exports = router;
