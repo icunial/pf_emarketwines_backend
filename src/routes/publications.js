@@ -177,6 +177,40 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// Update publication amount
+router.put("/amount/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { amount } = req.query;
+
+  if (!validations.validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  if (!amount) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `Amount parameter is missing`,
+    });
+  }
+
+  if (!parseInt(amount) && amount !== "0") {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `Amount must be a number`,
+    });
+  }
+
+  if (parseInt(amount) < 0) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `Amount must be 0 or higher`,
+    });
+  }
+});
+
 // Ban or not publications
 router.put("/:id/:banned", async (req, res, next) => {
   const { id, banned } = req.params;
@@ -211,19 +245,6 @@ router.put("/:id/:banned", async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
-  }
-});
-
-// Update publication amount
-router.put("/amount/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const { amount } = req.query;
-
-  if (!validations.validateId(id)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: `ID invalid format!`,
-    });
   }
 });
 
