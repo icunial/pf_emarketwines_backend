@@ -14,6 +14,7 @@ const {
   orderPublicationsByNameAtoZ,
   orderPublicationsByNameZtoA,
   updateIsBannedPublication,
+  updateAmountPublication,
 } = require("../controllers/publications");
 
 // Regular expression to check if string is a valid UUID
@@ -208,6 +209,24 @@ router.put("/amount/:id", async (req, res, next) => {
       statusCode: 400,
       msg: `Amount must be 0 or higher`,
     });
+  }
+
+  try {
+    const updatedPublication = await updateAmountPublication(id, amount);
+
+    if (!updatedPublication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: updatedPublication,
+    });
+  } catch (error) {
+    return next(error);
   }
 });
 
