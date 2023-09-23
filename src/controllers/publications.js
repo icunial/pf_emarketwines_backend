@@ -265,14 +265,27 @@ const updateAmountPublication = async (id, amount) => {
       return [];
     }
 
-    const updatedPublication = await Publication.update(
-      { amount },
-      {
-        where: {
-          id,
-        },
-      }
-    );
+    let updatedPublication;
+
+    if (amount === "0") {
+      updatedPublication = await Publication.update(
+        { amount, isBanned: true },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else {
+      updatedPublication = await Publication.update(
+        { amount, isBanned: false },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
 
     if (updatedPublication[0] === 1) {
       const publicationFound = await getPublicationById(id);
