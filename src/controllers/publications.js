@@ -256,6 +256,34 @@ const updateIsBannedPublication = async (id, banned) => {
   }
 };
 
+// Update amount publication
+const updateAmountPublication = async (id, amount) => {
+  try {
+    const publicationFound = await getPublicationById(id);
+
+    if (!publicationFound.length) {
+      return [];
+    }
+
+    const updatedPublication = await Publication.update(
+      { amount },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedPublication[0] === 1) {
+      const publicationFound = await getPublicationById(id);
+
+      return publicationFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to update the publication!");
+  }
+};
+
 module.exports = {
   getPublications,
   getPublicationById,
@@ -265,4 +293,5 @@ module.exports = {
   orderPublicationsByNameAtoZ,
   orderPublicationsByNameZtoA,
   updateIsBannedPublication,
+  updateAmountPublication,
 };
