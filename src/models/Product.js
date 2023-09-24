@@ -10,10 +10,8 @@ const Product = db.define("product", {
     allowNull: false,
   },
   type: {
-    type: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   varietal: {
     type: DataTypes.STRING,
