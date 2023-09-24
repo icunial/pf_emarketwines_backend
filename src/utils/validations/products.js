@@ -26,9 +26,17 @@ const validateOrigin = (origin) => {
   return false;
 };
 
+// Validates cellar
+const validateCellar = (cellar) => {
+  if (!cellar) return "Cellar parameter is missing";
+  if (typeof cellar !== "string") return "Cellar must be a string";
+  return false;
+};
+
 module.exports = {
   validateName,
   validateType,
   validateVarietal,
   validateOrigin,
+  validateCellar,
 };
