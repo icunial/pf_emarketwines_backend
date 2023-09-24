@@ -4,6 +4,7 @@ const router = express.Router();
 const Publication = require("../models/Publication");
 
 const validations = require("../utils/validations/publications");
+const { validateId } = require("../utils/validations/index");
 
 const {
   getPublications,
@@ -16,10 +17,6 @@ const {
   updateIsBannedPublication,
   updateAmountPublication,
 } = require("../controllers/publications");
-
-// Regular expression to check if string is a valid UUID
-const regexExp =
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
 
 // Get all publications
 router.get("/", async (req, res, next) => {
@@ -63,7 +60,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
 
-  if (validations.validateId(id) === false) {
+  if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 404,
       msg: `ID invalid format!`,
@@ -183,7 +180,7 @@ router.put("/amount/:id", async (req, res, next) => {
   const { id } = req.params;
   const { amount } = req.query;
 
-  if (!validations.validateId(id)) {
+  if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 400,
       msg: `ID invalid format!`,
@@ -241,7 +238,7 @@ router.put("/:id/:banned", async (req, res, next) => {
     });
   }
 
-  if (validations.validateId(id) === false) {
+  if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 404,
       msg: `ID invalid format!`,
