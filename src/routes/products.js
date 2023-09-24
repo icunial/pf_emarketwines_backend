@@ -6,7 +6,7 @@ const Product = require("../models/Product");
 const validations = require("../utils/validations/products");
 const { validateId } = require("../utils/validations/index");
 
-const { getProducts } = require("../controllers/products");
+const { getProducts, getProductbyId } = require("../controllers/products");
 
 // Get all products
 router.get("/", async (req, res, next) => {
@@ -38,6 +38,24 @@ router.get("/:id", async (req, res, next) => {
       statusCode: 404,
       msg: `ID invalid format!`,
     });
+  }
+
+  try {
+    const product = await getProductbyId(id);
+
+    if (!product.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Product with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: product,
+    });
+  } catch (error) {
+    return next(error);
   }
 });
 
