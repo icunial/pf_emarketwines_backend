@@ -27,6 +27,32 @@ const getProducts = async () => {
   }
 };
 
+// Get product by its ID
+const getProductbyId = async (id) => {
+  const result = [];
+
+  try {
+    const dbResult = await Product.findByPk(id);
+
+    if (dbResult) {
+      result.push({
+        id: dbResult.id,
+        name: dbResult.name,
+        type: dbResult.type,
+        varietal: dbResult.varietal,
+        origin: dbResult.origin,
+        cellar: dbResult.cellar,
+        image: dbResult.image,
+      });
+    }
+
+    return result;
+  } catch (error) {
+    throw new Error("Error trying to get a product by its ID");
+  }
+};
+
 module.exports = {
   getProducts,
+  getProductbyId,
 };
