@@ -19,8 +19,16 @@ const validateVarietal = (varietal) => {
   return false;
 };
 
+// Validates origin
+const validateOrigin = (origin) => {
+  if (!origin) return "Origin parameter is missing";
+  if (typeof origin !== "string") return "Origin must be a string";
+  return false;
+};
+
 module.exports = {
   validateName,
   validateType,
   validateVarietal,
+  validateOrigin,
 };
