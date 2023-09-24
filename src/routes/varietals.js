@@ -62,7 +62,7 @@ router.post("/", async (req, res, next) => {
     if (varietalExist) {
       return res.status(400).json({
         statusCode: 400,
-        msg: `Varietal ${varietal} exists. Try with another one!`,
+        msg: `Varietal ${name} exists. Try with another one!`,
       });
     }
 
