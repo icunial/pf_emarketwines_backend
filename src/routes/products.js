@@ -5,6 +5,29 @@ const Product = require("../models/Product");
 
 const validations = require("../utils/validations/products");
 
+const { getProducts } = require("../controllers/products");
+
+// Get all products
+router.get("/", async (req, res, next) => {
+  try {
+    const products = await getProducts();
+
+    if (!products.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No products saved in DB`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: products,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Create New Product
 router.post("/", async (req, res, next) => {
   const { name, type, varietal, origin, cellar, image } = req.body;
