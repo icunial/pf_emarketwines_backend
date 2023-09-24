@@ -44,6 +44,63 @@ const getVarietalById = async (id) => {
   }
 };
 
+// Update varietal
+const updateVarietal = async (id, name, description) => {
+  try {
+    const varietalFound = await getVarietalById(id);
+
+    if (!varietalFound.length) {
+      return [];
+    }
+
+    let updatedVarietal;
+
+    if (name && description) {
+      updatedVarietal = await Varietal.update(
+        {
+          name,
+          description,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else if (name) {
+      updatedVarietal = await Varietal.update(
+        {
+          name,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else if (description) {
+      updatedVarietal = await Varietal.update(
+        {
+          description,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
+
+    if (updateVarietal[0] === 1) {
+      const varietalFound = await getVarietalById(id);
+
+      return varietalFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to update the varietal!");
+  }
+};
+
 module.exports = {
   getVarietals,
   getVarietalById,
