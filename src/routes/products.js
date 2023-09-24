@@ -4,6 +4,7 @@ const router = express.Router();
 const Product = require("../models/Product");
 
 const validations = require("../utils/validations/products");
+const { validateId } = require("../utils/validations/index");
 
 const { getProducts } = require("../controllers/products");
 
@@ -25,6 +26,18 @@ router.get("/", async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+});
+
+// Get product by ID
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
   }
 });
 
