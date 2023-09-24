@@ -44,6 +44,24 @@ router.post("/", async (req, res, next) => {
       msg: validations.validateCellar(cellar),
     });
   }
+
+  try {
+    const productCreated = await Product.create({
+      name,
+      type,
+      varietal,
+      origin,
+      cellar,
+      image: image ? image : null,
+    });
+
+    res.status(201).json({
+      statusCode: 201,
+      data: productCreated,
+    });
+  } catch (error) {
+    return next("Error trying to create a new product");
+  }
 });
 
 module.exports = router;
