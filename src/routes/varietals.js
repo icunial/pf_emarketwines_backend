@@ -24,6 +24,33 @@ router.post("/", async (req, res, next) => {
       msg: validations.validateDescription(description),
     });
   }
+
+  try {
+    const varietalExist = await Varietal.findOne({
+      where: {
+        name,
+      },
+    });
+
+    if (varietalExist) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `Varietal ${varietal} exists. Try with another one!`,
+      });
+    }
+
+    const varietalCreated = await Varietal.create({
+      name,
+      description,
+    });
+
+    res.status(201).json({
+      statusCode: 201,
+      data: varietalCreated,
+    });
+  } catch (error) {
+    return next("Error trying to create a new varietal");
+  }
 });
 
 module.exports = router;
