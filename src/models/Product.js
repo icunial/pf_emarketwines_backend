@@ -9,6 +9,11 @@ const Product = db.define("product", {
     primaryKey: true,
     allowNull: false,
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   type: {
     type: DataTypes.STRING,
     allowNull: false,
