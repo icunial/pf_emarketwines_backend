@@ -6,3 +6,7 @@ const regexExp =
 const validateId = (id) => {
   return regexExp.test(id);
 };
+
+module.exports = {
+  validateId,
+};
