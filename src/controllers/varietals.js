@@ -104,4 +104,5 @@ const updateVarietal = async (id, name, description) => {
 module.exports = {
   getVarietals,
   getVarietalById,
+  updateVarietal,
 };
