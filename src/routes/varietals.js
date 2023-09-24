@@ -6,6 +6,33 @@ const Varietal = require("../models/Varietal");
 const validations = require("../utils/validations/varietals");
 const { validateId } = require("../utils/validations/index");
 
+const {
+  getVarietals,
+  getVarietalById,
+  updateVarietal,
+} = require("../controllers/varietals");
+
+// Get all varietals
+router.get("/", async (req, res, next) => {
+  try {
+    const varietals = await getVarietals();
+
+    if (!varietals.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No varietals saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: varietals,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Create New Varietal
 router.post("/", async (req, res, next) => {
   const { name, description } = req.body;
