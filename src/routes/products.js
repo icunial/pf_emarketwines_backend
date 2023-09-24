@@ -69,6 +69,19 @@ router.post("/", async (req, res, next) => {
   }
 
   try {
+    const productExist = await Product.findOne({
+      where: {
+        name,
+      },
+    });
+
+    if (productExist) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `Name ${name} exists. Try with another one!`,
+      });
+    }
+
     const productCreated = await Product.create({
       name,
       type,
