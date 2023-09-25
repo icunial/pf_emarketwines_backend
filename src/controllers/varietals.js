@@ -91,7 +91,7 @@ const updateVarietal = async (id, name, description) => {
       );
     }
 
-    if (updateVarietal[0] === 1) {
+    if (updatedVarietal[0] === 1) {
       const varietalFound = await getVarietalById(id);
 
       return varietalFound;
