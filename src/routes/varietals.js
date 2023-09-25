@@ -110,4 +110,42 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// Update Varietal
+router.put("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { name, description } = req.body;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  if (!name && !description) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `Name and description are both empty!`,
+    });
+  }
+
+  try {
+    const updatedVarietal = await updateVarietal(id, name, description);
+
+    if (!updatedVarietal.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Varietal with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: updatedVarietal,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
