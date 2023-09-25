@@ -5,6 +5,18 @@ const db = require("./src/db");
 
 const router = require("./src/routes/index");
 
+// Database Models
+const Publication = require("./src/models/Publication");
+const Product = require("./src/models/Product");
+const Varietal = require("./src/models/Varietal");
+
+// Models Relationships
+Product.hasMany(Publication);
+Publication.belongsTo(Product);
+
+Varietal.hasMany(Product);
+Product.belongsTo(Varietal);
+
 // Body-Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,7 +47,7 @@ app.use((err, req, res, next) => {
 });
 
 // Initialized Express Server
-db.sync({}).then(() => {
+db.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
   });
