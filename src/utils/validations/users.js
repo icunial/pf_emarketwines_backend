@@ -19,8 +19,16 @@ const validateEmail = (email) => {
   return false;
 };
 
+// Validates region
+const validateRegion = (region) => {
+  if (!region) return "Region parameter is missing";
+  if (typeof region !== "string") return "Region must be a string";
+  return false;
+};
+
 module.exports = {
   validateUsername,
   validatePassword,
   validateEmail,
+  validateRegion,
 };
