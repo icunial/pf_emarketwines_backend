@@ -12,7 +12,15 @@ const validatePassword = (password) => {
   return false;
 };
 
+// Validates email
+const validateEmail = (email) => {
+  if (!email) return "Email parameter is missing";
+  if (typeof email !== "string") return "Email must be a string";
+  return false;
+};
+
 module.exports = {
   validateUsername,
   validatePassword,
+  validateEmail,
 };
