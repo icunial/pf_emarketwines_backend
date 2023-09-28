@@ -27,7 +27,7 @@ const User = db.define("user", {
   },
   region: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   phone: {
     type: DataTypes.STRING,
