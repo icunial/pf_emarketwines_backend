@@ -28,7 +28,6 @@ const validateRegion = (region) => {
 
 // Validates phone
 const validatePhone = (phone) => {
-  if (!phone) return "Phone parameter is missing";
   if (typeof phone !== "string") return "Phone must be a string";
   return false;
 };
