@@ -5,7 +5,6 @@ const User = db.define("user", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
-    allowNull: true,
     primaryKey: true,
   },
   username: {

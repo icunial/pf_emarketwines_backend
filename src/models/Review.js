@@ -3,7 +3,7 @@ const db = require("../db");
 
 const Review = db.define("review", {
   id: {
-    id: DataTypes.UUID,
+    type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
