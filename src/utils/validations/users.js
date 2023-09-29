@@ -10,7 +10,10 @@ const validatePassword = (password) => {
   if (!password) return "Password parameter is missing";
   if (typeof password !== "string") return "Password must be a string";
   if (password.length < 8) return "Password must be at least 8 character long";
-
+  if (!hasCapitalLetter(password))
+    return "Password must have one capital letter";
+  if (!hasNumber(password)) return "Password must have one number";
+  if (!hasSymbol(password)) return "Password must have one symbol";
   return false;
 };
 
@@ -34,7 +37,43 @@ const validatePhone = (phone) => {
   return false;
 };
 
-const minChars = [
+const hasCapitalLetter = (password) => {
+  const passwordToArray = Array.from(password);
+
+  for (c of passwordToArray) {
+    if (capitalLetters.includes(c)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const hasNumber = (password) => {
+  const passwordToArray = Array.from(password);
+
+  for (c of passwordToArray) {
+    if (nums.includes(c)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const hasSymbol = (password) => {
+  const passwordToArray = Array.from(password);
+
+  for (c of passwordToArray) {
+    if (symbols.includes(c)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const smallLetters = [
   "a",
   "b",
   "c",
@@ -63,7 +102,7 @@ const minChars = [
   "z",
 ];
 
-const mayChars = [
+const capitalLetters = [
   "A",
   "B",
   "C",
