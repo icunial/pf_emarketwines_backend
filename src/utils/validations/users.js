@@ -9,6 +9,8 @@ const validateUsername = (username) => {
 const validatePassword = (password) => {
   if (!password) return "Password parameter is missing";
   if (typeof password !== "string") return "Password must be a string";
+  if (password.length < 8) return "Password must be at least 8 character long";
+
   return false;
 };
 
@@ -31,6 +33,92 @@ const validatePhone = (phone) => {
   if (typeof phone !== "string") return "Phone must be a string";
   return false;
 };
+
+const minChars = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
+
+const mayChars = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+
+const nums = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+
+const symbols = [
+  "!",
+  "@",
+  "#",
+  "$",
+  "%",
+  "^",
+  "&",
+  "*",
+  "(",
+  ")",
+  "-",
+  "_",
+  "<",
+  ">",
+  ".",
+  ",",
+  "?",
+  "/",
+  "\\",
+  "|",
+  "=",
+  "+",
+  "-",
+];
 
 module.exports = {
   validateUsername,
