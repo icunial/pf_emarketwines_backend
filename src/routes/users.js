@@ -7,7 +7,7 @@ const validations = require("../utils/validations/users");
 
 // Create new user
 router.post("/register", async (req, res, next) => {
-  const { password, email } = req.body;
+  const { password, email, username, region, phone } = req.body;
 
   // Validations
   if (validations.validatePassword(password)) {
@@ -21,6 +21,13 @@ router.post("/register", async (req, res, next) => {
     return res.status(400).json({
       statusCode: 400,
       msg: validations.validateEmail(email),
+    });
+  }
+
+  if (validations.validateUsername(username)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateUsername(username),
     });
   }
 });
