@@ -37,6 +37,13 @@ router.post("/register", async (req, res, next) => {
       msg: validations.validateRegion(region),
     });
   }
+
+  if (validations.validatePhone(phone)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validatePhone(phone),
+    });
+  }
 });
 
 module.exports = router;
