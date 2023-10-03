@@ -30,6 +30,13 @@ router.post("/register", async (req, res, next) => {
       msg: validations.validateUsername(username),
     });
   }
+
+  if (validations.validateRegion(region)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateRegion(region),
+    });
+  }
 });
 
 module.exports = router;
