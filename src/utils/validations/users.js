@@ -22,7 +22,8 @@ const validateEmail = (email) => {
   if (!email) return "Email parameter is missing";
   if (typeof email !== "string") return "Email must be a string";
   if (email.split("@").length !== 2) return "Email format is not valid!";
-
+  if (email.split("@")[1].split(".").length < 2)
+    return "Email format is not valid!";
   return false;
 };
 
