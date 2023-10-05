@@ -17,10 +17,10 @@ router.post("/register", async (req, res, next) => {
     });
   }
 
-  if (validations.validateEmail(validations.validateEmail(email))) {
+  if (validations.validateEmail(email.toLowerCase())) {
     return res.status(400).json({
       statusCode: 400,
-      msg: validations.validateEmail(email),
+      msg: validations.validateEmail(email.toLowerCase()),
     });
   }
 
