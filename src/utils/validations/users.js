@@ -24,6 +24,11 @@ const validateEmail = (email) => {
   if (email.split("@").length !== 2) return "Email format is not valid!";
   if (email.split("@")[1].split(".").length < 2)
     return "Email format is not valid!";
+
+  for (s of email.split("@")[1].split(".")) {
+    if (hasSymbol(s)) return "Email format not valid";
+  }
+
   return false;
 };
 
