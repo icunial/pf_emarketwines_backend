@@ -17,6 +17,28 @@ const validatePassword = (password) => {
   return false;
 };
 
+// Validates password confirmation
+const validatePasswordConfirmation = (password, password2) => {
+  if (!password2) return "Password Confirmation parameter is missing";
+  if (typeof password2 !== "string")
+    return "Password Confirmation must be a string";
+  if (password2.length < 8)
+    return "Password Confirmation must be at least 8 character long";
+  if (!hasCapitalLetter(password2))
+    return "Password Confirmation must have one capital letter";
+  if (!hasNumber(password2))
+    return "Password Confirmation must have one number";
+  if (!hasSymbol(password2))
+    return "Password Confirmation must have one symbol";
+  if (password !== password2) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `Password and Password Confirmation not match!`,
+    });
+  }
+  return false;
+};
+
 // Validates email
 const validateEmail = (email) => {
   if (!email) return "Email parameter is missing";
@@ -171,6 +193,7 @@ const symbols = [
 module.exports = {
   validateUsername,
   validatePassword,
+  validatePasswordConfirmation,
   validateEmail,
   validateRegion,
   validatePhone,
