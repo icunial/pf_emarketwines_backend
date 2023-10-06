@@ -3,11 +3,13 @@ const router = express.Router();
 
 const User = require("../models/User");
 
+const bcrypt = require("bcryptjs");
+
 const validations = require("../utils/validations/users");
 
 // Create new user
 router.post("/register", async (req, res, next) => {
-  const { password, email, username, region, phone } = req.body;
+  const { password, password2, email, username, region, phone } = req.body;
 
   // Validations
   if (validations.validatePassword(password)) {
@@ -45,6 +47,13 @@ router.post("/register", async (req, res, next) => {
     });
   }
 
+  if (validations.validatePasswordConfirmation(password, password2)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validatePasswordConfirmation(password, password2),
+    });
+  }
+
   try {
     const emailExist = await User.findOne({
       where: {
@@ -71,6 +80,32 @@ router.post("/register", async (req, res, next) => {
         msg: `Username ${username} exists! Try with another one!`,
       });
     }
+
+    // Hash Password
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
+        if (err) {
+          return next("Error trying to register a new user");
+        }
+        try {
+          const userCreated = await User.create({
+            email,
+            username,
+            password: hash,
+            region,
+            phone,
+          });
+          if (userCreated) {
+            return res.status(201).json({
+              statusCode: 201,
+              data: userCreated,
+            });
+          }
+        } catch (error) {
+          return next("Error trying to register a new user");
+        }
+      });
+    });
   } catch (error) {
     return next("Error trying to register a new user");
   }
