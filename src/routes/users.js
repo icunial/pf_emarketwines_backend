@@ -40,7 +40,7 @@ router.post("/register", async (req, res, next) => {
     });
   }
 
-  if (validations.validatePhone(phone)) {
+  if (phone && validations.validatePhone(phone)) {
     return res.status(400).json({
       statusCode: 400,
       msg: validations.validatePhone(phone),
@@ -89,9 +89,9 @@ router.post("/register", async (req, res, next) => {
         }
         try {
           const userCreated = await User.create({
-            email,
             username,
             password: hash,
+            email,
             region,
             phone,
           });
@@ -107,6 +107,7 @@ router.post("/register", async (req, res, next) => {
       });
     });
   } catch (error) {
+    console.log(error.message);
     return next("Error trying to register a new user");
   }
 });
