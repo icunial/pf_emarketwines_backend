@@ -30,12 +30,9 @@ const validatePasswordConfirmation = (password, password2) => {
     return "Password Confirmation must have one number";
   if (!hasSymbol(password2))
     return "Password Confirmation must have one symbol";
-  if (password !== password2) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: `Password and Password Confirmation not match!`,
-    });
-  }
+  if (password !== password2)
+    return "Password and Password Confirmation not match";
+
   return false;
 };
 
@@ -65,6 +62,9 @@ const validateRegion = (region) => {
 // Validates phone
 const validatePhone = (phone) => {
   if (typeof phone !== "string") return "Phone must be a string";
+  if (hasSymbol(phone) || hasCapitalLetter(phone) || hasSmallLetter(phone))
+    return "Phone must contain only numbers";
+
   return false;
 };
 
@@ -73,6 +73,18 @@ const hasCapitalLetter = (password) => {
 
   for (c of passwordToArray) {
     if (capitalLetters.includes(c)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const hasSmallLetter = (password) => {
+  const passwordToArray = Array.from(password);
+
+  for (c of passwordToArray) {
+    if (smallLetters.includes(c)) {
       return true;
     }
   }
