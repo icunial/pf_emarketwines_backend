@@ -7,6 +7,14 @@ const bcrypt = require("bcryptjs");
 
 const validations = require("../utils/validations/users");
 
+// Get all users
+router.get("/", async (req, res, next) => {
+  try {
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Create new user
 router.post("/register", async (req, res, next) => {
   const { password, password2, email, username, region, phone } = req.body;
