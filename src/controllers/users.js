@@ -31,6 +31,36 @@ const getUsers = async () => {
   }
 };
 
+// Get User by its ID
+const getUserById = async (id) => {
+  const result = [];
+
+  try {
+    const dbResult = await User.findByPk(id);
+
+    if (dbResult) {
+      result.push({
+        id: dbResult.id,
+        username: dbResult.username,
+        email: dbResult.email,
+        image: dbResult.image,
+        region: dbResult.region,
+        phone: dbResult.phone,
+        buyLevel: dbResult.buyLevel,
+        balance: dbResult.balance,
+        isSommelier: dbResult.isSommelier,
+        isBanned: dbResult.isBanned,
+        isVerified: dbResult.isVerified,
+      });
+    }
+
+    return result;
+  } catch (error) {
+    throw new Error("Error trying to get a user by its ID");
+  }
+};
+
 module.exports = {
   getUsers,
+  getUserById,
 };
