@@ -7,7 +7,9 @@ const bcrypt = require("bcryptjs");
 
 const validations = require("../utils/validations/users");
 
-const { getUsers } = require("../controllers/users");
+const { getUsers, getUserById } = require("../controllers/users");
+
+const { validateId } = require("../utils/validations/index");
 
 // Get all users
 router.get("/", async (req, res, next) => {
@@ -27,6 +29,18 @@ router.get("/", async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+});
+
+// Get user by ID
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID ${id} - Invalid format!`,
+    });
   }
 });
 
