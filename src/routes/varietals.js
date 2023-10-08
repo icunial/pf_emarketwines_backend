@@ -39,7 +39,7 @@ router.get("/:id", async (req, res, next) => {
 
   if (!validateId(id)) {
     return res.status(400).json({
-      statusCode: 404,
+      statusCode: 400,
       msg: `ID invalid format!`,
     });
   }
