@@ -7,9 +7,24 @@ const bcrypt = require("bcryptjs");
 
 const validations = require("../utils/validations/users");
 
+const { getUsers } = require("../controllers/users");
+
 // Get all users
 router.get("/", async (req, res, next) => {
   try {
+    const users = await getUsers();
+
+    if (!users.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No users saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: users,
+    });
   } catch (error) {
     return next(error);
   }
