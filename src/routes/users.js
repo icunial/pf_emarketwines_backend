@@ -42,6 +42,24 @@ router.get("/:id", async (req, res, next) => {
       msg: `ID ${id} - Invalid format!`,
     });
   }
+
+  try {
+    const user = await getUserById(id);
+
+    if (!user.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `User with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: user,
+    });
+  } catch (error) {
+    return next(error);
+  }
 });
 
 // Create new user
