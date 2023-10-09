@@ -36,7 +36,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
 
-  if (!validateId) {
+  if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 400,
       msg: `ID ${id} - Invalid format!`,
