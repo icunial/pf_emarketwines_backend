@@ -60,7 +60,21 @@ const getUserById = async (id) => {
   }
 };
 
+// Ban or not user
+const updateIsBannedUser = async (id, banned) => {
+  try {
+    const userFound = await getUserById(id);
+
+    if (!userFound.length) {
+      return [];
+    }
+  } catch (error) {
+    throw new Error("Error trying to update the user!");
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
+  updateIsBannedUser,
 };
