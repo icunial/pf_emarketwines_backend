@@ -7,7 +7,11 @@ const bcrypt = require("bcryptjs");
 
 const validations = require("../utils/validations/users");
 
-const { getUsers, getUserById } = require("../controllers/users");
+const {
+  getUsers,
+  getUserById,
+  updateIsBannedUser,
+} = require("../controllers/users");
 
 const { validateId } = require("../utils/validations/index");
 
@@ -183,6 +187,24 @@ router.put("/:id/:banned", async (req, res, next) => {
       statusCode: 400,
       msg: `ID invalid format!`,
     });
+  }
+
+  try {
+    const updatedUser = await updateIsBannedUser(id, banned);
+
+    if (!updatedUser.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `User with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: updatedUser,
+    });
+  } catch (error) {
+    return next(error);
   }
 });
 
