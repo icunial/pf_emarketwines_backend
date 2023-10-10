@@ -68,6 +68,23 @@ const updateIsBannedUser = async (id, banned) => {
     if (!userFound.length) {
       return [];
     }
+
+    const updatedUser = await User.update(
+      {
+        isBanned: banned,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedUser[0] === 1) {
+      const userFound = await getUserById(id);
+
+      return userFound;
+    }
   } catch (error) {
     throw new Error("Error trying to update the user!");
   }
