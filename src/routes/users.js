@@ -177,6 +177,13 @@ router.put("/:id/:banned", async (req, res, next) => {
       msg: validations.validateBanned(banned),
     });
   }
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
 });
 
 module.exports = router;
