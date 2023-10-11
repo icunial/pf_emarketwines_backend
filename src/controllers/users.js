@@ -150,10 +150,41 @@ const updateIsAdminUser = async (id, admin) => {
   }
 };
 
+// Verifies user account or not
+const updateIsVerifiedUser = async (id, verified) => {
+  try {
+    const userFound = await getUserById(id);
+
+    if (!userFound.length) {
+      return [];
+    }
+
+    const updatedUser = await User.update(
+      {
+        isVerified: verified,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedUser[0] === 1) {
+      const userFound = await getUserById(id);
+
+      return userFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to update the user!");
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   updateIsBannedUser,
   updateIsSommelierUser,
   updateIsAdminUser,
+  updateIsVerifiedUser,
 };
