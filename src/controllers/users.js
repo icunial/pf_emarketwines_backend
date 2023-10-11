@@ -120,9 +120,40 @@ const updateIsSommelierUser = async (id, sommelier) => {
   }
 };
 
+// Makes user admin or not
+const updateIsAdminUser = async (id, admin) => {
+  try {
+    const userFound = await getUserById(id);
+
+    if (!userFound.length) {
+      return [];
+    }
+
+    const updatedUser = await User.update(
+      {
+        isAdmin: admin,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedUser[0] === 1) {
+      const userFound = await getUserById(id);
+
+      return userFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to update the user!");
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   updateIsBannedUser,
   updateIsSommelierUser,
+  updateIsAdminUser,
 };
