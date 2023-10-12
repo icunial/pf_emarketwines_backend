@@ -218,8 +218,15 @@ const validateSommelier = (sommelier) => {
 
 // Validate admin
 const validateAdmin = (admin) => {
-  if (banned !== "true" && banned !== "false")
+  if (admin !== "true" && banned !== "false")
     return "Admin query value must be a true or false";
+  return false;
+};
+
+// Validate verified
+const validateVerified = (verified) => {
+  if (verified !== "true" && banned !== "false")
+    return "Verified query value must be a true or false";
   return false;
 };
 
@@ -233,4 +240,5 @@ module.exports = {
   validateBanned,
   validateSommelier,
   validateAdmin,
+  validateVerified,
 };
