@@ -29,7 +29,7 @@ const validateDescription = (description) => {
 
 // Validate banned
 const validateBanned = (banned) => {
-  if (!banned) return "Banned query is missing";
+  if (!banned) return "Banned parameter is missing";
   if (banned !== "true" && banned !== "false")
     return "Banned must be a true or false";
   return false;
