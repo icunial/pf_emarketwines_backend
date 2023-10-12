@@ -61,7 +61,7 @@ const getUserById = async (id) => {
 };
 
 // Ban or not user
-const updateIsBannedUser = async (id, banned) => {
+const updateIsBanned = async (id, banned) => {
   try {
     const userFound = await getUserById(id);
 
@@ -91,7 +91,7 @@ const updateIsBannedUser = async (id, banned) => {
 };
 
 // Makes user sommelier or not
-const updateIsSommelierUser = async (id, sommelier) => {
+const updateIsSommelier = async (id, sommelier) => {
   try {
     const userFound = await getUserById(id);
 
@@ -121,7 +121,7 @@ const updateIsSommelierUser = async (id, sommelier) => {
 };
 
 // Makes user admin or not
-const updateIsAdminUser = async (id, admin) => {
+const updateIsAdmin = async (id, admin) => {
   try {
     const userFound = await getUserById(id);
 
@@ -151,7 +151,7 @@ const updateIsAdminUser = async (id, admin) => {
 };
 
 // Verifies user account or not
-const updateIsVerifiedUser = async (id, verified) => {
+const updateIsVerified = async (id, verified) => {
   try {
     const userFound = await getUserById(id);
 
@@ -183,8 +183,8 @@ const updateIsVerifiedUser = async (id, verified) => {
 module.exports = {
   getUsers,
   getUserById,
-  updateIsBannedUser,
-  updateIsSommelierUser,
-  updateIsAdminUser,
-  updateIsVerifiedUser,
+  updateIsBanned,
+  updateIsSommelier,
+  updateIsAdmin,
+  updateIsVerified,
 };
