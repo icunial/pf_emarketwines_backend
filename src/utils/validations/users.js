@@ -210,6 +210,14 @@ const validateBanned = (banned) => {
   return false;
 };
 
+// Validate sommelier
+const validateSommelier = (sommelier) => {
+  if (!sommelier) return "Sommelier query is missing";
+  if (sommelier !== "true" && banned !== "false")
+    return "Sommelier must be a true or false";
+  return false;
+};
+
 module.exports = {
   validateUsername,
   validatePassword,
@@ -218,4 +226,5 @@ module.exports = {
   validateRegion,
   validatePhone,
   validateBanned,
+  validateSommelier,
 };
