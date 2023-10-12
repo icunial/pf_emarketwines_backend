@@ -204,17 +204,22 @@ const symbols = [
 
 // Validate banned
 const validateBanned = (banned) => {
-  if (!banned) return "Banned query is missing";
   if (banned !== "true" && banned !== "false")
-    return "Banned must be a true or false";
+    return "Banned query vaue be a true or false";
   return false;
 };
 
 // Validate sommelier
 const validateSommelier = (sommelier) => {
-  if (!sommelier) return "Sommelier query is missing";
   if (sommelier !== "true" && banned !== "false")
-    return "Sommelier must be a true or false";
+    return "Sommelier query value must be a true or false";
+  return false;
+};
+
+// Validate admin
+const validateAdmin = (admin) => {
+  if (banned !== "true" && banned !== "false")
+    return "Admin query value must be a true or false";
   return false;
 };
 
@@ -227,4 +232,5 @@ module.exports = {
   validatePhone,
   validateBanned,
   validateSommelier,
+  validateAdmin,
 };
