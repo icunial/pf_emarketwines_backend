@@ -206,6 +206,15 @@ router.put("/:id", async (req, res, next) => {
     }
   }
 
+  if (verified) {
+    if (validations.validateVerified(verified)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: validations.validateVerified(verified),
+      });
+    }
+  }
+
   if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 400,
