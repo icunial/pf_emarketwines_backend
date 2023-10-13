@@ -10,7 +10,10 @@ const validations = require("../utils/validations/users");
 const {
   getUsers,
   getUserById,
-  updateIsBannedUser,
+  updateIsBanned,
+  updateIsAdmin,
+  updateIsSommelier,
+  updateIsVerified,
 } = require("../controllers/users");
 
 const { validateId } = require("../utils/validations/index");
@@ -172,14 +175,17 @@ router.post("/register", async (req, res, next) => {
 });
 
 // Ban or not users
-router.put("/:id/:banned", async (req, res, next) => {
-  const { id, banned } = req.params;
+router.put("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { banned, sommelier, admin, verified } = req.query;
 
-  if (validations.validateBanned(banned)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: validations.validateBanned(banned),
-    });
+  if (banned) {
+    if (validations.validateBanned(banned)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: validations.validateBanned(banned),
+      });
+    }
   }
 
   if (!validateId(id)) {
