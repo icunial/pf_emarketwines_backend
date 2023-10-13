@@ -179,50 +179,52 @@ router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const { banned, sommelier, admin, verified } = req.query;
 
-  if (banned) {
-    if (validations.validateBanned(banned)) {
-      return res.status(400).json({
-        statusCode: 400,
-        msg: validations.validateBanned(banned),
-      });
-    }
-  } else if (sommelier) {
-    if (validations.validateSommelier(sommelier)) {
-      return res.status(400).json({
-        statusCode: 400,
-        msg: validations.validateSommelier(sommelier),
-      });
-    }
-  } else if (admin) {
-    if (validations.validateAdmin(admin)) {
-      return res.status(400).json({
-        statusCode: 400,
-        msg: validations.validateAdmin(admin),
-      });
-    }
-  } else if (verified) {
-    if (validations.validateVerified(verified)) {
-      return res.status(400).json({
-        statusCode: 400,
-        msg: validations.validateVerified(verified),
-      });
-    }
-  } else {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: `Query parameter is missing!`,
-    });
-  }
-
-  if (!validateId(id)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: `ID invalid format!`,
-    });
-  }
+  let updatedUser;
 
   try {
-    const updatedUser = await updateIsBannedUser(id, banned);
+    if (banned) {
+      if (validations.validateBanned(banned)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: validations.validateBanned(banned),
+        });
+      }
+
+      updatedUser = await updateIsBanned(id, banned);
+    } else if (sommelier) {
+      if (validations.validateSommelier(sommelier)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: validations.validateSommelier(sommelier),
+        });
+      }
+    } else if (admin) {
+      if (validations.validateAdmin(admin)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: validations.validateAdmin(admin),
+        });
+      }
+    } else if (verified) {
+      if (validations.validateVerified(verified)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: validations.validateVerified(verified),
+        });
+      }
+    } else {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `Query parameter is missing!`,
+      });
+    }
+
+    if (!validateId(id)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `ID invalid format!`,
+      });
+    }
 
     if (!updatedUser.length) {
       return res.status(404).json({
