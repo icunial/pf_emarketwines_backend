@@ -206,6 +206,7 @@ router.put("/:id", async (req, res, next) => {
           msg: validations.validateAdmin(admin),
         });
       }
+      updatedUser = await updateIsAdmin(id, admin);
     } else if (verified) {
       if (validations.validateVerified(verified)) {
         return res.status(400).json({
