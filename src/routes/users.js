@@ -186,33 +186,32 @@ router.put("/:id", async (req, res, next) => {
         msg: validations.validateBanned(banned),
       });
     }
-  }
-
-  if (sommelier) {
+  } else if (sommelier) {
     if (validations.validateSommelier(sommelier)) {
       return res.status(400).json({
         statusCode: 400,
         msg: validations.validateSommelier(sommelier),
       });
     }
-  }
-
-  if (admin) {
+  } else if (admin) {
     if (validations.validateAdmin(admin)) {
       return res.status(400).json({
         statusCode: 400,
         msg: validations.validateAdmin(admin),
       });
     }
-  }
-
-  if (verified) {
+  } else if (verified) {
     if (validations.validateVerified(verified)) {
       return res.status(400).json({
         statusCode: 400,
         msg: validations.validateVerified(verified),
       });
     }
+  } else {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `Query parameter is missing!`,
+    });
   }
 
   if (!validateId(id)) {
