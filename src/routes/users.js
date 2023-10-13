@@ -188,6 +188,15 @@ router.put("/:id", async (req, res, next) => {
     }
   }
 
+  if (sommelier) {
+    if (validations.validateSommelier(sommelier)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: validations.validateSommelier(sommelier),
+      });
+    }
+  }
+
   if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 400,
