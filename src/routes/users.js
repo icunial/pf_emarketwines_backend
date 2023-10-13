@@ -214,6 +214,7 @@ router.put("/:id", async (req, res, next) => {
           msg: validations.validateVerified(verified),
         });
       }
+      updatedUser = await updateIsVerified(id, verified);
     } else {
       return res.status(400).json({
         statusCode: 400,
