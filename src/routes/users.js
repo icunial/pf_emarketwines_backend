@@ -198,6 +198,7 @@ router.put("/:id", async (req, res, next) => {
           msg: validations.validateSommelier(sommelier),
         });
       }
+      updatedUser = await updateIsSommelier(id, sommelier);
     } else if (admin) {
       if (validations.validateAdmin(admin)) {
         return res.status(400).json({
