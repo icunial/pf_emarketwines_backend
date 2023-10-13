@@ -197,6 +197,15 @@ router.put("/:id", async (req, res, next) => {
     }
   }
 
+  if (admin) {
+    if (validations.validateAdmin(admin)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: validations.validateAdmin(admin),
+      });
+    }
+  }
+
   if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 400,
