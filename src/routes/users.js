@@ -269,6 +269,27 @@ router.put("/forgot", async (req, res, next) => {
         msg: `Email ${email} not found!`,
       });
     }
+
+    const newPassword = uuidv4();
+
+    const userUpdated = await User.update(
+      {
+        password: await bcrypt.hash(newPassword, 10),
+      },
+      {
+        where: {
+          email,
+        },
+      }
+    );
+
+    if (userUpdated) {
+      return res.status(200).json({
+        statusCode: 200,
+        msg: `New Password was sent to your email address!`,
+        data: userUpdated,
+      });
+    }
   } catch (error) {
     return next("Error trying to reset password");
   }
