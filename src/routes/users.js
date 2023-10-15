@@ -249,6 +249,13 @@ router.put("/:id", async (req, res, next) => {
 router.put("/forgot", async (req, res, next) => {
   const { email } = req.body;
 
+  if (validations.validateEmail(email)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateEmail(email),
+    });
+  }
+
   try {
   } catch (error) {
     return next("Error trying to reset password");
