@@ -174,7 +174,7 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-// Ban or not users
+// Update user
 router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const { banned, sommelier, admin, verified } = req.query;
@@ -242,6 +242,16 @@ router.put("/:id", async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+});
+
+// Reset password
+router.put("/forgot", async (req, res, next) => {
+  const { email } = req.body;
+
+  try {
+  } catch (error) {
+    return next("Error trying to reset password");
   }
 });
 
