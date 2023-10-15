@@ -257,6 +257,18 @@ router.put("/forgot", async (req, res, next) => {
   }
 
   try {
+    const emailExist = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!emailExist) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Email ${email} not found!`,
+      });
+    }
   } catch (error) {
     return next("Error trying to reset password");
   }
