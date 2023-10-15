@@ -247,12 +247,19 @@ router.put("/:id", async (req, res, next) => {
 
 // Reset password
 router.put("/forgot", async (req, res, next) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
 
   if (validations.validateEmail(email)) {
     return res.status(400).json({
       statusCode: 400,
       msg: validations.validateEmail(email),
+    });
+  }
+
+  if (validations.validatePassword(password)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validatePassword(password),
     });
   }
 
@@ -269,6 +276,8 @@ router.put("/forgot", async (req, res, next) => {
         msg: `Email ${email} not found!`,
       });
     }
+
+    // Check if password match with the one saved in the database
 
     const newPassword = uuidv4();
 
