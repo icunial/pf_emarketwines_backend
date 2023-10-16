@@ -277,7 +277,18 @@ router.put("/forgot", async (req, res, next) => {
       });
     }
 
-    // Check if password match with the one saved in the database
+    bcrypt.compare(password, emailExist.password, (err, isMatch) => {
+      if (err) {
+        return next("Error trying to reset password");
+      }
+
+      if (!isMatch) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: `Passwords not match!`,
+        });
+      }
+    });
 
     const newPassword = uuidv4();
 
