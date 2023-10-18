@@ -99,4 +99,16 @@ describe("POST /register route", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email parameter is missing");
   });
+  it("it should return a 400 status code -> email must be a string", async () => {
+    const user = {
+      email: 1234,
+      password: "Password14!",
+      username: "User 1",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    console.log(response);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email must be a string");
+  });
 });
