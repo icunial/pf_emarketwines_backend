@@ -377,4 +377,10 @@ describe("GET /:id route -> get user by id", () => {
       "User with ID: eaac964e-05e1-4951-9894-4b630f75f586 not found!"
     );
   });
+  it("it should return 200 status code -> user found", async () => {
+    const response = await request(app).get(`/users/${user1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].id).toBe(user1_id);
+  });
 });
