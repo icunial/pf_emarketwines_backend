@@ -333,3 +333,20 @@ describe("POST /register route -> parameters validations", () => {
     );
   });
 });
+
+describe("POST /register route -> create new user", () => {
+  it("it should return a 201 status code -> create new user successfully", async () => {
+    const user = {
+      email: "user1@email.com",
+      username: "User One",
+      password: "Password14!",
+      region: "Region One",
+      phone: "12345678",
+      password2: "Password14!",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(201);
+    expect(response.body.data.email).toBe("user1@email.com");
+  });
+});
