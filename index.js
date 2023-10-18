@@ -47,10 +47,14 @@ app.use((err, req, res, next) => {
 });
 
 // Initialized Express Server
-db.sync({ force: true }).then(() => {
+/* db.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
   });
+}); */
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`);
 });
 
 module.exports = app;
