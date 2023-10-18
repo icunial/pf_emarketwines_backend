@@ -368,4 +368,13 @@ describe("GET /:id route -> get user by id", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID 1 - Invalid format!");
   });
+  it("it should return 404 status code -> user not found", async () => {
+    const response = await request(app).get(
+      "/users/eaac964e-05e1-4951-9894-4b630f75f586"
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "User with ID: eaac964e-05e1-4951-9894-4b630f75f586 not found!"
+    );
+  });
 });
