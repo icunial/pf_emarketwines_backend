@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs");
 
 const validations = require("../utils/validations/users");
 
+const passport = require("passport");
+
 const {
   getUsers,
   getUserById,
@@ -171,6 +173,16 @@ router.post("/register", async (req, res, next) => {
   } catch (error) {
     console.log(error.message);
     return next("Error trying to register a new user");
+  }
+});
+
+// Login Process
+router.post("/login", async (req, res, next) => {
+  if (req.user) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `A user is already logged in`,
+    });
   }
 });
 
