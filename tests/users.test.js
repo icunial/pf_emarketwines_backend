@@ -95,7 +95,6 @@ describe("POST /register route", () => {
     };
 
     const response = await request(app).post("/users/register").send(user);
-    console.log(response);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email parameter is missing");
   });
@@ -107,8 +106,18 @@ describe("POST /register route", () => {
     };
 
     const response = await request(app).post("/users/register").send(user);
-    console.log(response);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email must be a string");
+  });
+  it("it should return a 400 status code -> email does not have a @", async () => {
+    const user = {
+      email: "user1email.com",
+      password: "Password14!",
+      username: "User 1",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email format is not valid!");
   });
 });
