@@ -431,4 +431,13 @@ describe("PUT /:id route -> update user", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Banned query value must be true or false");
   });
+  it("it should return a 400 status code -> sommelier query value must be true or false", async () => {
+    const response = await request(app).put(
+      `/users/${user1_id}?sommelier=hola`
+    );
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Sommelier query value must be true or false"
+    );
+  });
 });
