@@ -440,4 +440,9 @@ describe("PUT /:id route -> update user", () => {
       "Sommelier query value must be true or false"
     );
   });
+  it("it should return a 400 status code -> admin query value must be true or false", async () => {
+    const response = await request(app).put(`/users/${user1_id}?admin=hola`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Admin query value must be true or false");
+  });
 });
