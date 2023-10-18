@@ -185,4 +185,16 @@ describe("POST /register route", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Region parameter is missing");
   });
+  it("it should return a 400 status code -> region must be a string", async () => {
+    const user = {
+      email: "user1@email.com",
+      username: "User One",
+      password: "Password14!",
+      region: 1234,
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Region must be a string");
+  });
 });
