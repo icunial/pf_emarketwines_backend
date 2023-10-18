@@ -300,4 +300,20 @@ describe("POST /register route", () => {
       "Password Confirmation must have one number"
     );
   });
+  it("it should return a 400 status code -> password confirmation must have one symbol", async () => {
+    const user = {
+      email: "user1@email.com",
+      username: "User One",
+      password: "Password14!",
+      region: "Region One",
+      phone: "12345678",
+      password2: "Password14",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Password Confirmation must have one symbol"
+    );
+  });
 });
