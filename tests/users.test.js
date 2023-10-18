@@ -452,4 +452,9 @@ describe("PUT /:id route -> update user", () => {
       "Verified query value must be true or false"
     );
   });
+  it("it should return a 400 status code -> id invalid format", async () => {
+    const response = await request(app).put(`/users/1?verified=true`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
