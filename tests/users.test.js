@@ -77,4 +77,15 @@ describe("POST /register route", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Password must have one number");
   });
+  it("it should return a 400 status code -> password must have one symbol", async () => {
+    const user = {
+      password: "Password14",
+      email: "user1@email.com",
+      username: "User 1",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password must have one symbol");
+  });
 });
