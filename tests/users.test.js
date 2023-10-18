@@ -350,3 +350,11 @@ describe("POST /register route -> create new user", () => {
     expect(response.body.data.email).toBe("user1@email.com");
   });
 });
+
+describe("GET / route -> get all users from database", () => {
+  it("it should return 200 status code", async () => {
+    const response = await request(app).get("/users");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+  });
+});
