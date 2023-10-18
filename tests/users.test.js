@@ -445,4 +445,11 @@ describe("PUT /:id route -> update user", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Admin query value must be true or false");
   });
+  it("it should return a 400 status code -> verified query value must be true or false", async () => {
+    const response = await request(app).put(`/users/${user1_id}?verified=hola`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Verified query value must be true or false"
+    );
+  });
 });
