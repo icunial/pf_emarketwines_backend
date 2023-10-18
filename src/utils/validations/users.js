@@ -205,7 +205,7 @@ const symbols = [
 // Validate banned
 const validateBanned = (banned) => {
   if (banned !== "true" && banned !== "false")
-    return "Banned query vaue be a true or false";
+    return "Banned query value must be a true or false";
   return false;
 };
 
