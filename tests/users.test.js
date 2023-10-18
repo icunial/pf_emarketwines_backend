@@ -536,4 +536,63 @@ describe("POST /login route -> login process", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Password must have one symbol");
   });
+  it("it should return a 400 status code -> email parameter is missing", async () => {
+    const user = {
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email parameter is missing");
+  });
+  it("it should return a 400 status code -> email must be a string", async () => {
+    const user = {
+      email: 1234,
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email must be a string");
+  });
+  it("it should return a 400 status code -> email does not have a @", async () => {
+    const user = {
+      email: "user1email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email format is not valid!");
+  });
+  it("it should return a 400 status code -> email format is not valid", async () => {
+    const user = {
+      email: "user1@emailcom",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email format is not valid!");
+  });
+  it("it should return a 400 status code -> email second part has a symbol", async () => {
+    const user = {
+      email: "user1@email.#com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email format not valid");
+  });
+  it("it should return a 400 status code -> email second part has a number", async () => {
+    const user = {
+      email: "user1@email.1com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email format not valid");
+  });
 });
