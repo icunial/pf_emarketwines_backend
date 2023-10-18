@@ -246,7 +246,7 @@ router.post("/login", async (req, res, next) => {
     if (error) return next(error);
     if (!user) {
       return res.status(404).json({
-        statusCode: 404,
+        statusCode: info.statusCode,
         msg: info.msg,
       });
     }
