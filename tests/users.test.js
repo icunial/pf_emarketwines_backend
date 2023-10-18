@@ -595,4 +595,14 @@ describe("POST /login route -> login process", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email format not valid");
   });
+  it("it should return a 404 status code -> email not found", async () => {
+    const user = {
+      email: "user2@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Email address not found!");
+  });
 });
