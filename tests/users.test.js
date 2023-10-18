@@ -20,7 +20,7 @@ describe("Users table is Empty", () => {
   });
 });
 
-describe("POST /register route", () => {
+describe("POST /register route -> parameters validations", () => {
   it("it should return a 400 status code -> password parameter is missing", async () => {
     const user = {
       email: "user1@email.com",
