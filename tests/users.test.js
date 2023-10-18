@@ -473,3 +473,67 @@ describe("PUT /:id route -> update user", () => {
     expect(response.body.data[0].isVerified).toBe(true);
   });
 });
+
+describe("POST /login route -> login process", () => {
+  it("it should return a 400 status code -> password parameter is missing", async () => {
+    const user = {
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password parameter is missing");
+  });
+  it("it should return a 400 status code -> password must be a string", async () => {
+    const user = {
+      password: 123,
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password must be a string");
+  });
+  it("it should return a 400 status code -> password must be at least 8 characters long", async () => {
+    const user = {
+      password: "1234",
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Password must be at least 8 character long"
+    );
+  });
+  it("it should return a 400 status code -> password must have one capital letter", async () => {
+    const user = {
+      password: "password",
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password must have one capital letter");
+  });
+  it("it should return a 400 status code -> password must have one number", async () => {
+    const user = {
+      password: "Password",
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password must have one number");
+  });
+  it("it should return a 400 status code -> password must have one symbol", async () => {
+    const user = {
+      password: "Password14",
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password must have one symbol");
+  });
+});
