@@ -245,6 +245,12 @@ router.post("/login", async (req, res, next) => {
   passport.authenticate("local", (error, user, info) => {
     if (error) return next(error);
     if (!user) {
+      if (info.statusCode === 400) {
+        return res.status(400).json({
+          statusCode: info.statusCode,
+          msg: info.msg,
+        });
+      }
       return res.status(404).json({
         statusCode: info.statusCode,
         msg: info.msg,
