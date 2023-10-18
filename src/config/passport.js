@@ -27,7 +27,7 @@ module.exports = (passport) => {
               }
             });
           } else {
-            return done(null, false, { msg: `Incorrect mail!` });
+            return done(null, false, { msg: `Incorrect email address!` });
           }
         } catch (error) {
           return done(error, null);
