@@ -384,3 +384,22 @@ describe("GET /:id route -> get user by id", () => {
     expect(response.body.data[0].id).toBe(user1_id);
   });
 });
+
+describe("POST /register route -> check if email and username exist", () => {
+  it("it should return a 400 status code -> email exists", async () => {
+    const user = {
+      email: "user1@email.com",
+      username: "User Two",
+      password: "Password14!",
+      region: "Region Two",
+      phone: "12345678",
+      password2: "Password14!",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Email user1@email.com exists! Try with another one!"
+    );
+  });
+});
