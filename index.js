@@ -34,7 +34,7 @@ app.use(
 );
 
 // Passport Config
-require("./config/passport")(passport);
+require("./src/config/passport")(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -64,14 +64,14 @@ app.use((err, req, res, next) => {
 });
 
 // Initialized Express Server
-/* db.sync({ force: true }).then(() => {
+db.sync({}).then(() => {
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
   });
-}); */
-
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
 });
+
+/* app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`);
+}); */
 
 module.exports = app;
