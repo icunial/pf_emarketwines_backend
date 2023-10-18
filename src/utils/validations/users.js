@@ -211,21 +211,21 @@ const validateBanned = (banned) => {
 
 // Validate sommelier
 const validateSommelier = (sommelier) => {
-  if (sommelier !== "true" && banned !== "false")
+  if (sommelier !== "true" && sommelier !== "false")
     return "Sommelier query value must be true or false";
   return false;
 };
 
 // Validate admin
 const validateAdmin = (admin) => {
-  if (admin !== "true" && banned !== "false")
+  if (admin !== "true" && admin !== "false")
     return "Admin query value must be true or false";
   return false;
 };
 
 // Validate verified
 const validateVerified = (verified) => {
-  if (verified !== "true" && banned !== "false")
+  if (verified !== "true" && verified !== "false")
     return "Verified query value must be true or false";
   return false;
 };
