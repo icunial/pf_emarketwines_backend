@@ -265,6 +265,13 @@ router.put("/:id", async (req, res, next) => {
   let updatedUser;
 
   try {
+    if (!validateId(id)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `ID invalid format!`,
+      });
+    }
+
     if (banned) {
       if (validations.validateBanned(banned)) {
         return res.status(400).json({
@@ -302,13 +309,6 @@ router.put("/:id", async (req, res, next) => {
       return res.status(400).json({
         statusCode: 400,
         msg: `Query parameter is missing!`,
-      });
-    }
-
-    if (!validateId(id)) {
-      return res.status(400).json({
-        statusCode: 400,
-        msg: `ID invalid format!`,
       });
     }
 
