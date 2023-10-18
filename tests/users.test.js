@@ -19,3 +19,16 @@ describe("Users table is Empty", () => {
     expect(response.body.msg).toBe("No users saved in DB!");
   });
 });
+
+describe("POST /register route", () => {
+  it("it should return a 400 status code -> password parameter is missing", async () => {
+    const user = {
+      email: "user1@email.com",
+      username: "User 1",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password parameter is missing");
+  });
+});
