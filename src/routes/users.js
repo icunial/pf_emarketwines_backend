@@ -41,6 +41,47 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// Logout Process
+router.get("/logout", (req, res, next) => {
+  if (!req.user) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `No user logged in`,
+    });
+  }
+  req.logout((err) => {
+    if (err) return next(err);
+    res.status(200).send(false);
+  });
+});
+
+// Get Logged in user
+router.get("/user", (req, res) => {
+  if (req.user) {
+    return res.status(200).json({
+      statusCode: 200,
+      data: {
+        id: req.user.id,
+        username: req.user.username,
+        email: req.user.email,
+        image: req.user.image,
+        region: req.user.region,
+        phone: req.user.phone,
+        buyLevel: req.user.buyLevel,
+        balance: req.user.balance,
+        isSommelier: req.user.isSommelier,
+        isBanned: req.user.isBanned,
+        isVerified: req.user.isVerified,
+      },
+    });
+  } else {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `No user logged in`,
+    });
+  }
+});
+
 // Get user by ID
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -214,20 +255,6 @@ router.post("/login", async (req, res, next) => {
       return res.status(200).send(true);
     });
   })(req, res, next);
-});
-
-// Logout Process
-router.get("/logout", (req, res, next) => {
-  if (!req.user) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: `No user logged in`,
-    });
-  }
-  req.logout((err) => {
-    if (err) return next(err);
-    res.status(200).send(false);
-  });
 });
 
 // Update user
