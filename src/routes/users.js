@@ -200,6 +200,20 @@ router.post("/login", async (req, res, next) => {
       msg: validations.validatePassword(password),
     });
   }
+
+  passport.authenticate("local", (error, user, info) => {
+    if (error) return next(error);
+    if (!user) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: info.msg,
+      });
+    }
+    req.logIn(user, (error) => {
+      if (error) return next(error);
+      return res.status(200).send(true);
+    });
+  })(req, res, next);
 });
 
 // Update user
