@@ -142,4 +142,15 @@ describe("POST /register route", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email format not valid");
   });
+  it("it should return a 400 status code -> email second part has a number", async () => {
+    const user = {
+      email: "user1@email.1com",
+      password: "Password14!",
+      username: "User 1",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email format not valid");
+  });
 });
