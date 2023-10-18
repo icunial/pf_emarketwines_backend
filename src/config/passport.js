@@ -23,11 +23,17 @@ module.exports = (passport) => {
               if (isMatch) {
                 return done(null, userFound);
               } else {
-                return done(null, false, { msg: `Incorrect password!` });
+                return done(null, false, {
+                  statusCode: 400,
+                  msg: `Incorrect password!`,
+                });
               }
             });
           } else {
-            return done(null, false, { msg: `Incorrect email address!` });
+            return done(null, false, {
+              statusCode: 404,
+              msg: `Email address not found!`,
+            });
           }
         } catch (error) {
           return done(error, null);
