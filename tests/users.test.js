@@ -466,4 +466,10 @@ describe("PUT /:id route -> update user", () => {
       "User with ID: d3461839-61a4-4288-bb3b-0f9f8c84c37d not found!"
     );
   });
+  it("it should return a 200 status code -> user updated", async () => {
+    const response = await request(app).put(`/users/${user1_id}?verified=true`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].isVerified).toBe(true);
+  });
 });
