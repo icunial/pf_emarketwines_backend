@@ -402,4 +402,20 @@ describe("POST /register route -> check if email and username exist", () => {
       "Email user1@email.com exists! Try with another one!"
     );
   });
+  it("it should return a 400 status code -> username exists", async () => {
+    const user = {
+      email: "user2@email.com",
+      username: "User One",
+      password: "Password14!",
+      region: "Region Two",
+      phone: "12345678",
+      password2: "Password14!",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Username User One exists! Try with another one!"
+    );
+  });
 });
