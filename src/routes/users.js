@@ -216,6 +216,20 @@ router.post("/login", async (req, res, next) => {
   })(req, res, next);
 });
 
+// Logout Process
+router.get("/logout", (req, res, next) => {
+  if (!req.user) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `No user logged in`,
+    });
+  }
+  req.logout((err) => {
+    if (err) return next(err);
+    res.status(200).send(false);
+  });
+});
+
 // Update user
 router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
