@@ -184,6 +184,15 @@ router.post("/login", async (req, res, next) => {
       msg: `A user is already logged in`,
     });
   }
+
+  const { email, password } = req.body;
+
+  if (validations.validateEmail(email)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateEmail(email),
+    });
+  }
 });
 
 // Update user
