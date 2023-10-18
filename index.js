@@ -5,6 +5,9 @@ const db = require("./src/db");
 
 const router = require("./src/routes/index");
 
+const session = require("express-session");
+const passport = require("passport");
+
 // Database Models
 const Publication = require("./src/models/Publication");
 const Product = require("./src/models/Product");
@@ -20,6 +23,20 @@ Product.belongsTo(Varietal);
 // Body-Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Express Session Middleware
+app.use(
+  session({
+    secret: `${process.env.SESSION_SECRET}`,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Passport Config
+require("./config/passport")(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Res Headers
 app.use((req, res, next) => {
