@@ -223,4 +223,19 @@ describe("POST /register route", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Phone must contain only numbers");
   });
+  it("it should return a 400 status code -> password confirmation parameter is missing", async () => {
+    const user = {
+      email: "user1@email.com",
+      username: "User One",
+      password: "Password14!",
+      region: "Region One",
+      phone: "12345678",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Password Confirmation parameter is missing"
+    );
+  });
 });
