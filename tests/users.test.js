@@ -605,4 +605,14 @@ describe("POST /login route -> login process", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Email address not found!");
   });
+  it("it should return a 400 status code -> incorrect password", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14@",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Incorrect password!");
+  });
 });
