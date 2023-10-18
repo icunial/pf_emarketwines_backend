@@ -193,6 +193,13 @@ router.post("/login", async (req, res, next) => {
       msg: validations.validateEmail(email),
     });
   }
+
+  if (validations.validatePassword(password)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validatePassword(password),
+    });
+  }
 });
 
 // Update user
