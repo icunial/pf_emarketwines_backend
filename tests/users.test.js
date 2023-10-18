@@ -419,3 +419,11 @@ describe("POST /register route -> check if email and username exist", () => {
     );
   });
 });
+
+describe("PUT /:id route -> update user", () => {
+  it("it should return a 400 status code -> query parameter is missing", async () => {
+    const response = await request(app).put(`/users/${user1_id}`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Query parameter is missing!");
+  });
+});
