@@ -334,6 +334,8 @@ describe("POST /register route -> parameters validations", () => {
   });
 });
 
+let user1_id;
+
 describe("POST /register route -> create new user", () => {
   it("it should return a 201 status code -> create new user successfully", async () => {
     const user = {
@@ -346,6 +348,7 @@ describe("POST /register route -> create new user", () => {
     };
 
     const response = await request(app).post("/users/register").send(user);
+    user1_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.email).toBe("user1@email.com");
   });
@@ -356,5 +359,13 @@ describe("GET / route -> get all users from database", () => {
     const response = await request(app).get("/users");
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
+  });
+});
+
+describe("GET /:id route -> get user by id", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).get("/users/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID 1 - Invalid format!");
   });
 });
