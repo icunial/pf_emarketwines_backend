@@ -129,6 +129,24 @@ router.put("/:id", async (req, res, next) => {
     });
   }
 
+  if (name) {
+    if (typeof name !== "string") {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `Name must be a string`,
+      });
+    }
+  }
+
+  if (description) {
+    if (typeof description !== "string") {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `Description must be a string`,
+      });
+    }
+  }
+
   try {
     const updatedVarietal = await updateVarietal(id, name, description);
 
@@ -145,6 +163,17 @@ router.put("/:id", async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+});
+
+// Delete Varietal
+router.delete("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
   }
 });
 
