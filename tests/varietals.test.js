@@ -136,4 +136,10 @@ describe("GET /varietals/:id route -> get varietal by id", () => {
       `Varietal with ID: 2c79ae06-c7d1-40f9-a647-2b7f9508b5ab not found!`
     );
   });
+  it("it should return 200 status code -> varietal found", async () => {
+    const response = await request(app).get(`/varietals/${varietal1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].name).toBe("Varietal 1");
+  });
 });
