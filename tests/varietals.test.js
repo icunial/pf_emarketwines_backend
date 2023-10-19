@@ -178,4 +178,18 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name and description are both empty!");
   });
+  it("it should return 404 status code -> varietal not found", async () => {
+    const varietal = {
+      name: "New Name",
+      description: "New Description",
+    };
+
+    const response = await request(app)
+      .put(`/varietals/2c79ae06-c7d1-40f9-a647-2b7f9508b5ab`)
+      .send(varietal);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Varietal with ID: 2c79ae06-c7d1-40f9-a647-2b7f9508b5ab not found!"
+    );
+  });
 });
