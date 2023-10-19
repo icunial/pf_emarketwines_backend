@@ -96,6 +96,8 @@ describe("POST /varietals route -> Create new varietal validations", () => {
   });
 });
 
+let varietal1_id;
+
 describe("POST /varietals route -> Create new varietal success", () => {
   it("it should return 201 status code -> new varietal created", async () => {
     const varietal = {
@@ -103,8 +105,18 @@ describe("POST /varietals route -> Create new varietal success", () => {
       description: "Description Varietal 1",
     };
     const response = await request(app).post("/varietals").send(varietal);
+    varietal1_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Varietal 1");
     expect(response.body.data.description).toBe("Description Varietal 1");
+  });
+});
+
+describe("GET /varietals route -> get all varietals", () => {
+  it("it should return 200 status code -> get all varietals", async () => {
+    const response = await request(app).get("/varietals");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].id).toBe(varietal1_id);
   });
 });
