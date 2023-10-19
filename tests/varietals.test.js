@@ -95,3 +95,16 @@ describe("POST /varietals route -> Create new varietal validations", () => {
     expect(response.body.msg).toBe("Description must be a string");
   });
 });
+
+describe("POST /varietals route -> Create new varietal success", () => {
+  it("it should return 201 status code -> new varietal created", async () => {
+    const varietal = {
+      name: "Varietal 1",
+      description: "Description Varietal 1",
+    };
+    const response = await request(app).post("/varietals").send(varietal);
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Varietal 1");
+    expect(response.body.data.description).toBe("Description Varietal 1");
+  });
+});
