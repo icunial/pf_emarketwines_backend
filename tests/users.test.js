@@ -641,4 +641,11 @@ describe("POST /login route -> login process", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("A user is already logged in");
   });
+  it("it should return a 200 status code -> get logged in user", async () => {
+    const response = await request(app)
+      .get("/users/user")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.email).toBe("user1@email.com");
+  });
 });
