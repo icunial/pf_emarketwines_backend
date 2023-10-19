@@ -54,3 +54,15 @@ describe("GET /varietals route -> no varietals saved in DB", () => {
     expect(response.body.msg).toBe("No varietals saved in DB!");
   });
 });
+
+describe("POST /varietals route -> Create new varietal validations", () => {
+  it("it should return 400 status code -> name parameter is missing", async () => {
+    const varietal = {
+      description: "Description Varietal 1",
+    };
+
+    const response = await request(app).post("/varietals").send(varietal);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Name parameter is missing");
+  });
+});
