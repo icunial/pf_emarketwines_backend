@@ -30,3 +30,19 @@ describe("POST /register route -> create new user", () => {
     expect(response.body.data.email).toBe("user1@email.com");
   });
 });
+
+let cookie;
+
+describe("POST /login route -> login process", () => {
+  it("it should return a 200 status code -> user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+});
