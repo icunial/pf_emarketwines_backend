@@ -217,4 +217,18 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
     expect(response.body.data[0].name).toBe("New Name Varietal 1");
     expect(response.body.data[0].description).toBe("New Description");
   });
+  it("it should return 200 status code -> varietal updated only description", async () => {
+    const varietal = {
+      description: "New Description Varietal 1",
+    };
+
+    const response = await request(app)
+      .put(`/varietals/${varietal1_id}`)
+      .send(varietal);
+    expect(response.status).toBe(200);
+    expect(response.body.data[0].name).toBe("New Name Varietal 1");
+    expect(response.body.data[0].description).toBe(
+      "New Description Varietal 1"
+    );
+  });
 });
