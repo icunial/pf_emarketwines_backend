@@ -143,3 +143,17 @@ describe("GET /varietals/:id route -> get varietal by id", () => {
     expect(response.body.data[0].name).toBe("Varietal 1");
   });
 });
+
+describe("POST /varietals route -> varietal already exists", () => {
+  it("it should return 400 status code -> varietal exists", async () => {
+    const varietal = {
+      name: "Varietal 1",
+      description: "Description Varietal 2",
+    };
+    const response = await request(app).post("/varietals").send(varietal);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Varietal Varietal 1 exists. Try with another one!"
+    );
+  });
+});
