@@ -13,7 +13,7 @@ afterAll((done) => {
 
 let user1_id;
 
-describe("POST /register route -> create new user", () => {
+describe("POST /users/register route -> create new user", () => {
   it("it should return a 201 status code -> create new user successfully", async () => {
     const user = {
       email: "user1@email.com",
@@ -33,7 +33,7 @@ describe("POST /register route -> create new user", () => {
 
 let cookie;
 
-describe("POST /login route -> login process", () => {
+describe("POST /users/login route -> login process", () => {
   it("it should return a 200 status code -> user logged in", async () => {
     const user = {
       email: "user1@email.com",
@@ -44,5 +44,13 @@ describe("POST /login route -> login process", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
+  });
+});
+
+describe("GET /varietals route -> no varietals saved in DB", () => {
+  it("it should return 404 status code -> no varietals saved in DB", async () => {
+    const response = await request(app).get("/varietals");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No varietals saved in DB!");
   });
 });
