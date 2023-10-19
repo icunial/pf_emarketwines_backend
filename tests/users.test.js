@@ -474,6 +474,8 @@ describe("PUT /:id route -> update user", () => {
   });
 });
 
+let cookie;
+
 describe("POST /login route -> login process", () => {
   it("it should return a 400 status code -> password parameter is missing", async () => {
     const user = {
@@ -624,5 +626,19 @@ describe("POST /login route -> login process", () => {
     const response = await request(app).post("/users/login").send(user);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return a 400 status code -> a user is already logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app)
+      .post("/users/login")
+      .send(user)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("A user is already logged in");
   });
 });
