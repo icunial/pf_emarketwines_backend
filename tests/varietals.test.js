@@ -204,6 +204,18 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name must be a string");
   });
+  it("it should return 400 status code -> description must be a string", async () => {
+    const varietal = {
+      name: "New Name",
+      description: true,
+    };
+
+    const response = await request(app)
+      .put(`/varietals/${varietal1_id}`)
+      .send(varietal);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Description must be a string");
+  });
   it("it should return 200 status code -> varietal updated", async () => {
     const varietal = {
       name: "New Name",
