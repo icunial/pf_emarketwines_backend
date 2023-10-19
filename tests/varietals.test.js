@@ -157,3 +157,16 @@ describe("POST /varietals route -> varietal already exists", () => {
     );
   });
 });
+
+describe("PUT /varietals/:id route -> updated varietal", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const varietal = {
+      name: "New Name",
+      description: "New Description",
+    };
+
+    const response = await request(app).put("/varietals/1").send(varietal);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+});
