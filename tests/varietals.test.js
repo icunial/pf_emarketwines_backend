@@ -192,4 +192,17 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
       "Varietal with ID: 2c79ae06-c7d1-40f9-a647-2b7f9508b5ab not found!"
     );
   });
+  it("it should return 200 status code -> varietal updated", async () => {
+    const varietal = {
+      name: "New Name",
+      description: "New Description",
+    };
+
+    const response = await request(app)
+      .put(`/varietals/${varietal1_id}`)
+      .send(varietal);
+    expect(response.status).toBe(200);
+    expect(response.body.data[0].name).toBe("New Name");
+    expect(response.body.data[0].description).toBe("New Description");
+  });
 });
