@@ -169,4 +169,13 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 400 status code -> name and description are empty", async () => {
+    const varietal = {};
+
+    const response = await request(app)
+      .put(`/varietals/${varietal1_id}`)
+      .send(varietal);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Name and description are both empty!");
+  });
 });
