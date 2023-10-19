@@ -648,4 +648,11 @@ describe("POST /login route -> login process", () => {
     expect(response.status).toBe(200);
     expect(response.body.data.email).toBe("user1@email.com");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
