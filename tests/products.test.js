@@ -152,4 +152,16 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Cellar must be a string");
   });
+  it("it should return 404 status code -> varietal not found", async () => {
+    const product = {
+      name: "Product 1",
+      type: "Type 1",
+      varietal: "Varietal 2",
+      origin: "Origin 1",
+      cellar: "Cellar",
+    };
+    const response = await request(app).post("/products").send(product);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(`Varietal ${product.varietal} not found!`);
+  });
 });
