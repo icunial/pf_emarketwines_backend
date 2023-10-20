@@ -263,4 +263,13 @@ describe("DELETE /varietals/:id route -> delete varital", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> varietal not found", async () => {
+    const response = await request(app).delete(
+      "/varietals/2c79ae06-c7d1-40f9-a647-2b7f9508b5ab"
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      `Varietal with ID: 2c79ae06-c7d1-40f9-a647-2b7f9508b5ab not found!`
+    );
+  });
 });
