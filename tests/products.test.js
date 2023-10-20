@@ -106,4 +106,15 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Varietal must be a string");
   });
+  it("it should return 400 status code -> origin parameter is missing", async () => {
+    const product = {
+      name: "Product 1",
+      type: "Type 1",
+      varietal: "Varietal 1",
+      cellar: "Cellar 1",
+    };
+    const response = await request(app).post("/products").send(product);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Origin parameter is missing");
+  });
 });
