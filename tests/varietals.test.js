@@ -256,3 +256,11 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
     );
   });
 });
+
+describe("DELETE /varietals/:id route -> delete varital", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).delete("/varietals/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+});
