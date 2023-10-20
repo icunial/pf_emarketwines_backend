@@ -10,6 +10,7 @@ const {
   getVarietals,
   getVarietalById,
   updateVarietal,
+  deleteVarietal,
 } = require("../controllers/varietals");
 
 // Get all varietals
@@ -174,6 +175,24 @@ router.delete("/:id", async (req, res, next) => {
       statusCode: 404,
       msg: `ID invalid format!`,
     });
+  }
+
+  try {
+    const deletedVarietal = await deleteVarietal(id);
+
+    if (!deletedVarietal.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Varietal with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: deletedVarietal,
+    });
+  } catch (error) {
+    return next(error);
   }
 });
 
