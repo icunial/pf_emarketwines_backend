@@ -101,8 +101,30 @@ const updateVarietal = async (id, name, description) => {
   }
 };
 
+const deleteVarietal = async (id) => {
+  try {
+    const varietalFound = await getVarietalById(id);
+
+    if (!varietalFound.length) {
+      return [];
+    }
+
+    const deletedVarietal = await Varietal.destroy({
+      where: {
+        id,
+      },
+    });
+    if (deletedVarietal === 1) {
+      return varietalFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to delete a varietal");
+  }
+};
+
 module.exports = {
   getVarietals,
   getVarietalById,
   updateVarietal,
+  deleteVarietal,
 };
