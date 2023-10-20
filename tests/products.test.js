@@ -27,3 +27,11 @@ describe("POST /varietals route -> Create new varietal success", () => {
     expect(response.body.data.description).toBe("Description Varietal 1");
   });
 });
+
+describe("GET /products route -> no products saved in DB", () => {
+  it("it should return 404 status code -> no products saved in DB", async () => {
+    const response = await request(app).get("/products");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No products saved in DB");
+  });
+});
