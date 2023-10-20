@@ -165,3 +165,21 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.body.msg).toBe(`Varietal ${product.varietal} not found!`);
   });
 });
+
+let product1_id;
+
+describe("POST /products route -> create new product success", () => {
+  it("it should return 201 status code -> new product created", async () => {
+    const product = {
+      name: "Product 1",
+      type: "Type 1",
+      varietal: "Varietal 1",
+      origin: "Origin 1",
+      cellar: "Cellar",
+    };
+    const response = await request(app).post("/products").send(product);
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Product 1");
+    product1_id = response.body.data.id;
+  });
+});
