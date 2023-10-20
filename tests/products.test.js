@@ -129,7 +129,7 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Origin must be a string");
   });
-  it("it should return 400 status code -> cellar paramater is missing", async () => {
+  it("it should return 400 status code -> cellar parameter is missing", async () => {
     const product = {
       name: "Product 1",
       type: "Type 1",
@@ -139,5 +139,17 @@ describe("POST /products route -> create new product validations", () => {
     const response = await request(app).post("/products").send(product);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Cellar parameter is missing");
+  });
+  it("it should return 400 status code -> cellar must be a string", async () => {
+    const product = {
+      name: "Product 1",
+      type: "Type 1",
+      varietal: "Varietal 1",
+      origin: "Origin 1",
+      cellar: 1234,
+    };
+    const response = await request(app).post("/products").send(product);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Cellar must be a string");
   });
 });
