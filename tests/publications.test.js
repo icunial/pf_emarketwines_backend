@@ -78,4 +78,15 @@ describe("POST /publications route -> create new publication validations", () =>
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Title must be a string");
   });
+  it("it should return 400 status code -> price parameter is missing", async () => {
+    const publication = {
+      title: "Publication 1",
+      amount: 100,
+      description: "Description Publication 1",
+    };
+
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Price parameter is missing");
+  });
 });
