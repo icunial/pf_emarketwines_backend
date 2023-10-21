@@ -210,3 +210,11 @@ describe("GET /products route -> get all products", () => {
     expect(response.body.data[0].varietal).toBe("Varietal 1");
   });
 });
+
+describe("GET /products/:id route -> get product by id", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).get("/products/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+});
