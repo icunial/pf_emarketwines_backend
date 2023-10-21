@@ -172,3 +172,19 @@ describe("POST /publications route -> create new publication validations", () =>
     expect(response.body.msg).toBe("Description must be a string");
   });
 });
+
+describe("POST /publicaations route -> product validations", () => {
+  it("it should return 404 status code -> product not found", async () => {
+    const publication = {
+      title: "Publication 1",
+      price: 100,
+      amount: 100,
+      description: "Description Publication 1",
+      product: "Product 2",
+    };
+
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Product Product 2 not found!");
+  });
+});
