@@ -45,3 +45,11 @@ describe("POST /products route -> create new product success", () => {
     product1_id = response.body.data.id;
   });
 });
+
+describe("GET /publications route -> no publications saved in DB", () => {
+  it("it should return 404 status code -> no publications saved in DB", async () => {
+    const response = await request(app).get("/publications");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No publications saved in DB!");
+  });
+});
