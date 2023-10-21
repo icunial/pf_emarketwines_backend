@@ -1,4 +1,6 @@
 const Publication = require("../models/Publication");
+const Product = require("../models/Product");
+const Varietal = require("../models/Varietal.js");
 
 const { Op } = require("sequelize");
 
@@ -8,6 +10,12 @@ const getPublications = async () => {
 
   try {
     const dbResults = await Publication.findAll({
+      include: {
+        model: Product,
+        include: {
+          model: Varietal,
+        },
+      },
       where: {
         isBanned: false,
       },
@@ -22,6 +30,8 @@ const getPublications = async () => {
           amount: r.amount,
           image: r.image,
           description: r.description,
+          product: r.product.name,
+          varietal: r.product.varietal.name,
         });
       });
     }
@@ -37,7 +47,14 @@ const getPublicationById = async (id) => {
   const result = [];
 
   try {
-    const dbResult = await Publication.findByPk(id);
+    const dbResult = await Publication.findByPk(id, {
+      include: {
+        model: Product,
+        include: {
+          model: Varietal,
+        },
+      },
+    });
 
     if (dbResult) {
       result.push({
@@ -48,6 +65,11 @@ const getPublicationById = async (id) => {
         image: dbResult.image,
         description: dbResult.description,
         isBanned: dbResult.isBanned,
+        product: dbResult.product.name,
+        type: dbResult.product.type,
+        origin: dbResult.product.origin,
+        cellar: dbResult.product.cellar,
+        varietal: dbResult.product.varietal.name,
       });
     }
 
