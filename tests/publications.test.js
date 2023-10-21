@@ -53,3 +53,17 @@ describe("GET /publications route -> no publications saved in DB", () => {
     expect(response.body.msg).toBe("No publications saved in DB!");
   });
 });
+
+describe("POST /publications route -> create new publication validations", () => {
+  it("it should return 400 status code -> title parameter is missing", async () => {
+    const publication = {
+      price: 100,
+      amount: 100,
+      description: "Description Publication 1",
+    };
+
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Title parameter is missing");
+  });
+});
