@@ -7,6 +7,7 @@ const validateTitle = (title) => {
 
 // Validates price
 const validatePrice = (price) => {
+  if (price === 0 || price < 0) return "Price must be higher than 0";
   if (!price) return "Price parameter is missing";
   if (typeof price !== "number") return "Price must be a number";
   return false;
@@ -14,7 +15,7 @@ const validatePrice = (price) => {
 
 // Validate amount
 const validateAmount = (amount) => {
-  if (amount === 0 || amount < 0) return "Amount must higher than 0";
+  if (amount === 0 || amount < 0) return "Amount must be higher than 0";
   if (!amount) return "Amount parameter is missing";
   if (typeof amount !== "number") return "Amount must be a number";
   return false;
