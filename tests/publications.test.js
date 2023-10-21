@@ -188,3 +188,22 @@ describe("POST /publicaations route -> product validations", () => {
     expect(response.body.msg).toBe("Product Product 2 not found!");
   });
 });
+
+let publication1_id;
+
+describe("POST /publications route -> create new publication success", () => {
+  it("it should return 201 status code -> new publication success", async () => {
+    const publication = {
+      title: "Publication 1",
+      price: 100,
+      amount: 100,
+      description: "Description Publication 1",
+      product: "Product 1",
+    };
+
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(201);
+    expect(response.body.data.title).toBe("Publication 1");
+    publication1_id = response.body.data.id;
+  });
+});
