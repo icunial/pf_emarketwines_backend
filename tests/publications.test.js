@@ -218,3 +218,11 @@ describe("GET /publications route -> get all publications", () => {
     expect(response.body.data[0].varietal).toBe("Varietal 1");
   });
 });
+
+describe("GET /publications/:id route -> get publication by id", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).get("/publications/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+});
