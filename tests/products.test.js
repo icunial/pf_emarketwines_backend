@@ -200,3 +200,13 @@ describe("POST /products route -> product name exists validation", () => {
     );
   });
 });
+
+describe("GET /products route -> get all products", () => {
+  it("it should return 200 status code -> get all products", async () => {
+    const response = await request(app).get("/products");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].name).toBe("Product 1");
+    expect(response.body.data[0].varietal).toBe("Varietal 1");
+  });
+});
