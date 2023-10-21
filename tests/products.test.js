@@ -217,4 +217,13 @@ describe("GET /products/:id route -> get product by id", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> product not found", async () => {
+    const response = await request(app).get(
+      "/products/442d8a54-04f1-4d66-b1f6-6e0455bcf3e9"
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      `Product with ID: 442d8a54-04f1-4d66-b1f6-6e0455bcf3e9 not found!`
+    );
+  });
 });
