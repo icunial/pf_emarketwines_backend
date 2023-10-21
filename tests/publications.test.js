@@ -148,4 +148,15 @@ describe("POST /publications route -> create new publication validations", () =>
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Amount must be higher than 0");
   });
+  it("it should return 400 status code -> description parameter is missing", async () => {
+    const publication = {
+      title: "Publication 1",
+      price: 100,
+      amount: 100,
+    };
+
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Description parameter is missing");
+  });
 });
