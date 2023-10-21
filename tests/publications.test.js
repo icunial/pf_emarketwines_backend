@@ -207,3 +207,14 @@ describe("POST /publications route -> create new publication success", () => {
     publication1_id = response.body.data.id;
   });
 });
+
+describe("GET /publications route -> get all publications", () => {
+  it("it should return 200 status code -> get all publications", async () => {
+    const response = await request(app).get("/publications");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].title).toBe("Publication 1");
+    expect(response.body.data[0].product).toBe("Product 1");
+    expect(response.body.data[0].varietal).toBe("Varietal 1");
+  });
+});
