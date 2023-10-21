@@ -183,3 +183,20 @@ describe("POST /products route -> create new product success", () => {
     product1_id = response.body.data.id;
   });
 });
+
+describe("POST /products route -> product name exists validation", () => {
+  it("it should return 400 status code -> product name exists", async () => {
+    const product = {
+      name: "Product 1",
+      type: "Type 1",
+      varietal: "Varietal 1",
+      origin: "Origin 1",
+      cellar: "Cellar",
+    };
+    const response = await request(app).post("/products").send(product);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      `Name ${product.name} exists. Try with another one!`
+    );
+  });
+});
