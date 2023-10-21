@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Product = require("../models/Product");
+const Varietal = require("../models/Varietal");
 
 const validations = require("../utils/validations/products");
 const { validateId } = require("../utils/validations/index");
@@ -35,7 +36,7 @@ router.get("/:id", async (req, res, next) => {
 
   if (!validateId(id)) {
     return res.status(400).json({
-      statusCode: 404,
+      statusCode: 400,
       msg: `ID invalid format!`,
     });
   }
@@ -100,6 +101,19 @@ router.post("/", async (req, res, next) => {
   }
 
   try {
+    const varietalExist = await Varietal.findOne({
+      where: {
+        name: varietal,
+      },
+    });
+
+    if (!varietalExist) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Varietal ${varietal} not found!`,
+      });
+    }
+
     const productExist = await Product.findOne({
       where: {
         name,
@@ -116,7 +130,7 @@ router.post("/", async (req, res, next) => {
     const productCreated = await Product.create({
       name,
       type,
-      varietal,
+      varietalId: varietalExist.dataValues.id,
       origin,
       cellar,
       image: image ? image : null,
