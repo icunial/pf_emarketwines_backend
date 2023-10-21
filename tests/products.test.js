@@ -227,7 +227,6 @@ describe("GET /products/:id route -> get product by id", () => {
     );
   });
   it("it should return 200 status code -> get product by id", async () => {
-    console.log(product1_id);
     const response = await request(app).get(`/products/${product1_id}`);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
