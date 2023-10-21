@@ -226,4 +226,13 @@ describe("GET /products/:id route -> get product by id", () => {
       `Product with ID: 442d8a54-04f1-4d66-b1f6-6e0455bcf3e9 not found!`
     );
   });
+  it("it should return 200 status code -> get product by id", async () => {
+    console.log(product1_id);
+    const response = await request(app).get(`/products/${product1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].name).toBe("Product 1");
+    expect(response.body.data[0].id).toBe(product1_id);
+    expect(response.body.data[0].varietal).toBe("Varietal 1");
+  });
 });
