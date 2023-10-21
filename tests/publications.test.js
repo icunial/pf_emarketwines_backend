@@ -234,4 +234,13 @@ describe("GET /publications/:id route -> get publication by id", () => {
       "Publication with ID: 6b1c719b-741d-4661-8b23-79dc191d3165 not found!"
     );
   });
+  it("it should return 200 status code -> get publication by id", async () => {
+    const response = await request(app).get(`/publications/${publication1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].title).toBe("Publication 1");
+    expect(response.body.data[0].product).toBe("Product 1");
+    expect(response.body.data[0].varietal).toBe("Varietal 1");
+    expect(response.body.data[0].id).toBe(publication1_id);
+  });
 });
