@@ -225,4 +225,13 @@ describe("GET /publications/:id route -> get publication by id", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> publication not found", async () => {
+    const response = await request(app).get(
+      "/publications/6b1c719b-741d-4661-8b23-79dc191d3165"
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 6b1c719b-741d-4661-8b23-79dc191d3165 not found!"
+    );
+  });
 });
