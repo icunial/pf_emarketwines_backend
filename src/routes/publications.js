@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Publication = require("../models/Publication");
+const Product = require("../models/Product");
 
 const validations = require("../utils/validations/publications");
 const { validateId } = require("../utils/validations/index");
@@ -126,7 +127,7 @@ router.get("/order/:opt", async (req, res, next) => {
 
 // Create new publication
 router.post("/", async (req, res, next) => {
-  const { title, price, amount, image, description } = req.body;
+  const { title, price, amount, image, description, product } = req.body;
 
   // Validations
   if (validations.validateTitle(title)) {
@@ -158,12 +159,26 @@ router.post("/", async (req, res, next) => {
   }
 
   try {
+    const productExist = await Product.findOne({
+      where: {
+        name: product,
+      },
+    });
+
+    if (!productExist) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Product ${product} not found!`,
+      });
+    }
+
     const publicationCreated = await Publication.create({
       title,
       price,
       amount,
       image: image ? image : null,
       description,
+      productId: productExist.dataValues.id,
     });
 
     res.status(201).json({
