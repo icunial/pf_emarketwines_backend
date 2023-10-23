@@ -336,19 +336,12 @@ router.put("/:id", async (req, res, next) => {
 
 // Reset password
 router.put("/forgot", async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   if (validations.validateEmail(email)) {
     return res.status(400).json({
       statusCode: 400,
       msg: validations.validateEmail(email),
-    });
-  }
-
-  if (validations.validatePassword(password)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: validations.validatePassword(password),
     });
   }
 
@@ -365,19 +358,6 @@ router.put("/forgot", async (req, res, next) => {
         msg: `Email ${email} not found!`,
       });
     }
-
-    bcrypt.compare(password, emailExist.password, (err, isMatch) => {
-      if (err) {
-        return next("Error trying to reset password");
-      }
-
-      if (!isMatch) {
-        return res.status(400).json({
-          statusCode: 400,
-          msg: `Passwords not match!`,
-        });
-      }
-    });
 
     const newPassword = uuidv4();
 
