@@ -263,6 +263,57 @@ router.post("/login", async (req, res, next) => {
   })(req, res, next);
 });
 
+// Reset password
+router.put("/forgot", async (req, res, next) => {
+  const { email } = req.body;
+
+  if (validations.validateEmail(email)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateEmail(email),
+    });
+  }
+
+  try {
+    const emailExist = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!emailExist) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Email ${email} not found!`,
+      });
+    }
+
+    const newPassword = uuidv4();
+
+    const userUpdated = await User.update(
+      {
+        password: await bcrypt.hash(newPassword, 10),
+      },
+      {
+        where: {
+          email,
+        },
+      }
+    );
+
+    if (userUpdated) {
+      return res.status(200).json({
+        statusCode: 200,
+        msg: `New Password was sent to your email address!`,
+        data: userUpdated,
+        password: newPassword,
+      });
+    }
+  } catch (error) {
+    return next("Error trying to reset password");
+  }
+});
+
 // Update user
 router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -331,57 +382,6 @@ router.put("/:id", async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
-  }
-});
-
-// Reset password
-router.put("/forgot", async (req, res, next) => {
-  const { email } = req.body;
-
-  if (validations.validateEmail(email)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: validations.validateEmail(email),
-    });
-  }
-
-  try {
-    const emailExist = await User.findOne({
-      where: {
-        email,
-      },
-    });
-
-    if (!emailExist) {
-      return res.status(404).json({
-        statusCode: 404,
-        msg: `Email ${email} not found!`,
-      });
-    }
-
-    const newPassword = uuidv4();
-
-    const userUpdated = await User.update(
-      {
-        password: await bcrypt.hash(newPassword, 10),
-      },
-      {
-        where: {
-          email,
-        },
-      }
-    );
-
-    if (userUpdated) {
-      return res.status(200).json({
-        statusCode: 200,
-        msg: `New Password was sent to your email address!`,
-        data: userUpdated,
-        password: newPassword,
-      });
-    }
-  } catch (error) {
-    return next("Error trying to reset password");
   }
 });
 
