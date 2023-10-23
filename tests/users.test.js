@@ -845,4 +845,15 @@ describe("PUT /password route -> update password", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Password incorrect!");
   });
+  it("it should return 200 status code -> password updated success", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+      password2: "Password14!",
+      newPassword,
+    };
+    const response = await request(app).put("/users/password").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body.data).toBe(true);
+  });
 });
