@@ -665,4 +665,13 @@ describe("PUT /forgot route -> reset password", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email parameter is missing");
   });
+  it("it should return 400 status code -> email must be a string", async () => {
+    const user = {
+      email: 1234,
+    };
+
+    const response = await request(app).put("/users/forgot").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email must be a string");
+  });
 });
