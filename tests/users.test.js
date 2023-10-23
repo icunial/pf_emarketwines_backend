@@ -833,4 +833,16 @@ describe("PUT /password route -> update password", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Email user2@email.com not found!");
   });
+  it("it should return 400 status code -> password incorrect", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+      password2: "Password14!",
+      newPassword: "password",
+    };
+
+    const response = await request(app).put("/users/password").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password incorrect!");
+  });
 });
