@@ -821,4 +821,16 @@ describe("PUT /password route -> update password", () => {
       "Password and Password Confirmation not match"
     );
   });
+  it("it should return 404 status code -> email not found", async () => {
+    const user = {
+      email: "user2@email.com",
+      password: "Password14!",
+      password2: "Password14!",
+      newPassword,
+    };
+
+    const response = await request(app).put("/users/password").send(user);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Email user2@email.com not found!");
+  });
 });
