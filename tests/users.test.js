@@ -759,4 +759,15 @@ describe("PUT /password route -> update password", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email must be a string");
   });
+  it("it should return 400 status code -> password parameter is missing", async () => {
+    const user = {
+      email: "user1@email.com",
+      password2: "Password14!",
+      newPassword,
+    };
+
+    const response = await request(app).put("/users/password").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Password parameter is missing");
+  });
 });
