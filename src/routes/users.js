@@ -377,6 +377,7 @@ router.put("/forgot", async (req, res, next) => {
         statusCode: 200,
         msg: `New Password was sent to your email address!`,
         data: userUpdated,
+        password: newPassword,
       });
     }
   } catch (error) {
