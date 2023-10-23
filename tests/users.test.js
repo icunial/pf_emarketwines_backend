@@ -657,6 +657,8 @@ describe("POST /login route -> login process", () => {
   });
 });
 
+let newPassword;
+
 describe("PUT /forgot route -> reset password", () => {
   it("it should return 400 status code -> email parameter is missing", async () => {
     const user = {};
@@ -718,5 +720,31 @@ describe("PUT /forgot route -> reset password", () => {
     const response = await request(app).put("/users/forgot").send(user);
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Email user2@email.com not found!");
+  });
+  it("it should return a 200 status code -> new password sent", async () => {
+    const user = {
+      email: "user1@email.com",
+    };
+
+    const response = await request(app).put("/users/forgot").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body.msg).toBe(
+      "New Password was sent to your email address!"
+    );
+    newPassword = response.body.password;
+  });
+});
+
+describe("PUT /password route -> update password", () => {
+  it("it should return 400 status code -> email parameter is missing", async () => {
+    const user = {
+      password: "Password14!",
+      password2: "Password14!",
+      newPassword,
+    };
+
+    const response = await request(app).put("/users/password").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Email parameter is missing");
   });
 });
