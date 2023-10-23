@@ -9,6 +9,8 @@ const validations = require("../utils/validations/users");
 
 const passport = require("passport");
 
+const uuid = require("uuid");
+
 const {
   getUsers,
   getUserById,
@@ -288,7 +290,7 @@ router.put("/forgot", async (req, res, next) => {
       });
     }
 
-    const newPassword = uuidv4();
+    const newPassword = uuid.v4();
 
     const userUpdated = await User.update(
       {
@@ -310,7 +312,39 @@ router.put("/forgot", async (req, res, next) => {
       });
     }
   } catch (error) {
+    console.log(error.message);
     return next("Error trying to reset password");
+  }
+});
+
+// Updated password
+router.put("/password", async (req, res, next) => {
+  const { email, password, password2, newPassword } = req.body;
+
+  if (validations.validateEmail(email)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateEmail(email),
+    });
+  }
+
+  if (validations.validatePassword(password)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validatePassword(password),
+    });
+  }
+
+  if (validations.validatePasswordConfirmation(password, password2)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validatePasswordConfirmation(password, password2),
+    });
+  }
+
+  try {
+  } catch (error) {
+    return next("Error trying to update password");
   }
 });
 
