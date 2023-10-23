@@ -710,4 +710,13 @@ describe("PUT /forgot route -> reset password", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email format not valid");
   });
+  it("it should return a 404 status code -> email not found", async () => {
+    const user = {
+      email: "user2@email.com",
+    };
+
+    const response = await request(app).put("/users/forgot").send(user);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Email user2@email.com not found!");
+  });
 });
