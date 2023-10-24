@@ -981,6 +981,8 @@ describe("GET /username/:username route -> checks if username exists", () => {
   });
 });
 
+let user2_id;
+
 describe("GET /sommeliers route -> get all sommeliers", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const response = await request(app).get("/users/sommeliers");
@@ -1012,6 +1014,21 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
+  });
+  it("it should return a 201 status code -> create new user successfully", async () => {
+    const user = {
+      email: "user2@email.com",
+      username: "User Two",
+      password: "Password14!",
+      region: "Region Two",
+      phone: "12345678",
+      password2: "Password14!",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    user2_id = response.body.data.id;
+    expect(response.status).toBe(201);
+    expect(response.body.data.email).toBe("user2@email.com");
   });
   it("it should return 200 status code -> login with admin user", async () => {
     const user = {
