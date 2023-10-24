@@ -854,6 +854,7 @@ describe("PUT /password route -> update password", () => {
     };
     const response = await request(app).put("/users/password").send(user);
     expect(response.status).toBe(200);
-    expect(response.body.data).toBe(true);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].email).toBe("user1@email.com");
   });
 });
