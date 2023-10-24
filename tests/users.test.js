@@ -746,6 +746,19 @@ describe("PUT /password route -> not authorized", () => {
   });
 });
 
+describe("POST /login route -> login with reseted password", () => {
+  it("it should return a 400 status code -> incorrect password / with previous password", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Incorrect password!");
+  });
+});
+
 describe("PUT /password route -> update password", () => {
   it("it should return 400 status code -> email parameter is missing", async () => {
     const user = {
