@@ -655,6 +655,28 @@ describe("PUT /:id route -> try to update with no admin user", () => {
   });
 });
 
+describe("POST /login route -> login with admin user", () => {
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+
+  it("it should return a 200 status code -> user logged in", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+});
+
 describe("PUT /:id route -> update user", () => {
   it("it should return a 400 status code -> query parameter is missing", async () => {
     const response = await request(app).put(`/users/${user1_id}`);
