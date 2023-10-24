@@ -967,3 +967,11 @@ describe("GET /email/:email route -> checks if email exists", () => {
     expect(response.body.msg).toBe("Email address is not available");
   });
 });
+
+describe("GET /username/:username route -> checks if username exists", () => {
+  it("it should return 404 status code -> username not exists", async () => {
+    const response = await request(app).get("/users/username/User 2");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Username is available");
+  });
+});
