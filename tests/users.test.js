@@ -1155,4 +1155,12 @@ describe("GET /banned/true route -> get banned users", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("No banned users saved in DB!");
   });
+  it("it should return a 200 status code -> user updated", async () => {
+    const response = await request(app)
+      .put(`/users/${user1_id}?banned=true`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].isBanned).toBe(true);
+  });
 });
