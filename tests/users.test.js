@@ -725,9 +725,9 @@ describe("PUT /:id route -> update user", () => {
     expect(response.body.msg).toBe("ID invalid format!");
   });
   it("it should return a 404 status code -> user id not found", async () => {
-    const response = await request(app).put(
-      `/users/d3461839-61a4-4288-bb3b-0f9f8c84c37d?verified=true`
-    );
+    const response = await request(app)
+      .put(`/users/d3461839-61a4-4288-bb3b-0f9f8c84c37d?verified=true`)
+      .set("Cookie", cookie);
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(
       "User with ID: d3461839-61a4-4288-bb3b-0f9f8c84c37d not found!"
