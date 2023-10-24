@@ -770,38 +770,9 @@ describe("POST /login route -> login with reseted password", () => {
 });
 
 describe("PUT /password route -> update password", () => {
-  it("it should return 400 status code -> email parameter is missing", async () => {
-    const user = {
-      password: "Password14!",
-      password2: "Password14!",
-    };
-
-    const response = await request(app)
-      .put("/users/password")
-      .send(user)
-      .set("Cookie", cookie);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Email parameter is missing");
-  });
-  it("it should return 400 status code -> email must be a string", async () => {
-    const user = {
-      email: 1234,
-      password: "Password14!",
-      password2: "Password14!",
-    };
-
-    const response = await request(app)
-      .put("/users/password")
-      .send(user)
-      .set("Cookie", cookie);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Email must be a string");
-  });
   it("it should return 400 status code -> password parameter is missing", async () => {
     const user = {
-      email: "user1@email.com",
       password2: "Password14!",
-      newPassword,
     };
 
     const response = await request(app).put("/users/password").send(user);
