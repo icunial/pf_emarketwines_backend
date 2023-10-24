@@ -679,7 +679,9 @@ describe("POST /login route -> login with admin user", () => {
 
 describe("PUT /:id route -> update user", () => {
   it("it should return a 400 status code -> query parameter is missing", async () => {
-    const response = await request(app).put(`/users/${user1_id}`);
+    const response = await request(app)
+      .put(`/users/${user1_id}`)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Query parameter is missing!");
   });
