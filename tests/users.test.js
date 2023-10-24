@@ -740,7 +740,6 @@ describe("PUT /password route -> not authorized", () => {
     };
 
     const response = await request(app).put("/users/password").send(user);
-    console.log(response);
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
@@ -775,10 +774,12 @@ describe("PUT /password route -> update password", () => {
     const user = {
       password: "Password14!",
       password2: "Password14!",
-      newPassword,
     };
 
-    const response = await request(app).put("/users/password").send(user);
+    const response = await request(app)
+      .put("/users/password")
+      .send(user)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email parameter is missing");
   });
