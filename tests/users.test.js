@@ -1148,4 +1148,11 @@ describe("GET /banned/true route -> get banned users", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> no banned users saved in db", async () => {
+    const response = await request(app)
+      .get("/users/banned/true")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No banned users saved in DB!");
+  });
 });
