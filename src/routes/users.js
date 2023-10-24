@@ -243,6 +243,37 @@ router.get("/banned/true", ensureAuthenticated, async (req, res, next) => {
   }
 });
 
+// Get not banned users
+router.get("/banned/false", ensureAuthenticated, async (req, res, next) => {
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+
+  try {
+    const users = await getNotBannedUsers();
+
+    if (!users.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No not banned users saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: users,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Get user by ID
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
