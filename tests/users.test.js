@@ -625,6 +625,18 @@ describe("POST /login route -> login with no admin user", () => {
   });
 });
 
+describe("PUT /:id route -> try to update with no admin user", () => {
+  it("it should return a 401 status code -> not authorized", async () => {
+    const response = await request(app)
+      .put(`/users/${user1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You must have admin privileges..."
+    );
+  });
+});
+
 describe("PUT /:id route -> update user", () => {
   it("it should return a 400 status code -> query parameter is missing", async () => {
     const response = await request(app).put(`/users/${user1_id}`);
