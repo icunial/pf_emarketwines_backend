@@ -757,6 +757,17 @@ describe("POST /login route -> login with reseted password", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Incorrect password!");
   });
+  it("it should return 200 status code -> login process success", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "E-Wine2023",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
 });
 
 describe("PUT /password route -> update password", () => {
