@@ -657,8 +657,6 @@ describe("POST /login route -> login process", () => {
   });
 });
 
-let newPassword;
-
 describe("PUT /forgot route -> reset password", () => {
   it("it should return 400 status code -> email parameter is missing", async () => {
     const user = {};
@@ -731,7 +729,20 @@ describe("PUT /forgot route -> reset password", () => {
     expect(response.body.msg).toBe(
       "New Password was sent to your email address!"
     );
-    newPassword = response.body.password;
+  });
+});
+
+describe("PUT /password route -> not authorized", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const user = {
+      password: "Password14!",
+      password2: "Password14!",
+    };
+
+    const response = await request(app).put("/users/password").send(user);
+    console.log(response);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
 });
 
