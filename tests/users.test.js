@@ -788,10 +788,12 @@ describe("PUT /password route -> update password", () => {
       email: 1234,
       password: "Password14!",
       password2: "Password14!",
-      newPassword,
     };
 
-    const response = await request(app).put("/users/password").send(user);
+    const response = await request(app)
+      .put("/users/password")
+      .send(user)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Email must be a string");
   });
