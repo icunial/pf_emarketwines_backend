@@ -999,4 +999,11 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> no sommeliers saved in db", async () => {
+    const response = await request(app)
+      .get("/users/sommeliers")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No sommeliers saved in DB!");
+  });
 });
