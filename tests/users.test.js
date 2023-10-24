@@ -837,38 +837,15 @@ describe("PUT /password route -> update password", () => {
       "Password and Password Confirmation not match"
     );
   });
-  it("it should return 404 status code -> email not found", async () => {
-    const user = {
-      email: "user2@email.com",
-      password: "Password14!",
-      password2: "Password14!",
-      newPassword,
-    };
-
-    const response = await request(app).put("/users/password").send(user);
-    expect(response.status).toBe(404);
-    expect(response.body.msg).toBe("Email user2@email.com not found!");
-  });
-  it("it should return 400 status code -> password incorrect", async () => {
-    const user = {
-      email: "user1@email.com",
-      password: "Password14!",
-      password2: "Password14!",
-      newPassword: "password",
-    };
-
-    const response = await request(app).put("/users/password").send(user);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Password incorrect!");
-  });
   it("it should return 200 status code -> password updated success", async () => {
     const user = {
-      email: "user1@email.com",
       password: "Password14!",
       password2: "Password14!",
-      newPassword,
     };
-    const response = await request(app).put("/users/password").send(user);
+    const response = await request(app)
+      .put("/users/password")
+      .send(user)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].email).toBe("user1@email.com");
