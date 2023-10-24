@@ -743,6 +743,16 @@ describe("PUT /:id route -> update user", () => {
   });
 });
 
+describe("POST /login route -> logout process", () => {
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
+
 describe("PUT /forgot route -> reset password", () => {
   it("it should return 400 status code -> email parameter is missing", async () => {
     const user = {};
