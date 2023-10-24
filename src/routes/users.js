@@ -19,6 +19,8 @@ const {
   updatePassword,
   getSommeliers,
   getTotalUsersByRegion,
+  getBannedUsers,
+  getNotBannedUsers,
 } = require("../controllers/users");
 
 const {
