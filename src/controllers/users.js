@@ -1,5 +1,7 @@
 const User = require("../models/User");
 
+const bcrypt = require("bcryptjs");
+
 // Get all users
 const getUsers = async () => {
   const results = [];
@@ -180,6 +182,30 @@ const updateIsVerified = async (id, verified) => {
   }
 };
 
+// Updates password
+const updatePassword = async (id, email, password) => {
+  try {
+    const userUpdated = await User.update(
+      {
+        password: await bcrypt.hash(password, 10),
+      },
+      {
+        where: {
+          email,
+        },
+      }
+    );
+
+    if (userUpdated[0] === 1) {
+      const userFound = await getUserById(id);
+
+      return userFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to update password!");
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
@@ -187,4 +213,5 @@ module.exports = {
   updateIsSommelier,
   updateIsAdmin,
   updateIsVerified,
+  updatePassword,
 };
