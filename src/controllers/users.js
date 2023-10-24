@@ -183,7 +183,7 @@ const updateIsVerified = async (id, verified) => {
 };
 
 // Updates password
-const updatePassword = async (id, email, password) => {
+const updatePassword = async (id, password) => {
   try {
     const userUpdated = await User.update(
       {
@@ -191,7 +191,7 @@ const updatePassword = async (id, email, password) => {
       },
       {
         where: {
-          email,
+          id,
         },
       }
     );
