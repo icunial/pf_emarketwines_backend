@@ -954,3 +954,11 @@ describe("PUT /password route -> update password", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /email/:email route -> checks if email exists", () => {
+  it("it should return 404 status code -> email not exists", async () => {
+    const response = await request(app).get("/users/email/user2@email.com");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Email address is available");
+  });
+});
