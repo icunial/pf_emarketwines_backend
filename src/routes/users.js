@@ -9,8 +9,6 @@ const validations = require("../utils/validations/users");
 
 const passport = require("passport");
 
-const uuid = require("uuid");
-
 const {
   getUsers,
   getUserById,
@@ -21,7 +19,10 @@ const {
   updatePassword,
 } = require("../controllers/users");
 
-const { validateId } = require("../utils/validations/index");
+const {
+  validateId,
+  ensureAuthenticated,
+} = require("../utils/validations/index");
 
 // Get all users
 router.get("/", async (req, res, next) => {
@@ -291,7 +292,7 @@ router.put("/forgot", async (req, res, next) => {
       });
     }
 
-    const newPassword = uuid.v4();
+    const newPassword = "E-Wine2023";
 
     const userUpdated = await User.update(
       {
@@ -308,11 +309,9 @@ router.put("/forgot", async (req, res, next) => {
       return res.status(200).json({
         statusCode: 200,
         msg: `New Password was sent to your email address!`,
-        password: newPassword,
       });
     }
   } catch (error) {
-    console.log(error.message);
     return next("Error trying to reset password");
   }
 });
