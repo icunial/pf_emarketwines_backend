@@ -1058,4 +1058,23 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].email).toBe("user1@email.com");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+  it("it should return 200 status code -> login process success", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    console.log(response);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
 });
