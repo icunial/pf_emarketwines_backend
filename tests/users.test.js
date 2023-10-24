@@ -784,13 +784,14 @@ describe("PUT /password route -> update password", () => {
   });
   it("it should return 400 status code -> password must be a string", async () => {
     const user = {
-      email: "user1@email.com",
       password: 1234,
       password2: "Password14!",
-      newPassword,
     };
 
-    const response = await request(app).put("/users/password").send(user);
+    const response = await request(app)
+      .put("/users/password")
+      .send(user)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Password must be a string");
   });
