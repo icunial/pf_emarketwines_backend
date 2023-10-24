@@ -17,6 +17,7 @@ const {
   updateIsSommelier,
   updateIsVerified,
   updatePassword,
+  getSommeliers,
 } = require("../controllers/users");
 
 const {
@@ -151,6 +152,27 @@ router.get("/username/:username", async (req, res, next) => {
     });
   } catch (error) {
     return next("Error trying get a username");
+  }
+});
+
+// Get all sommeliers
+router.get("/sommeliers", ensureAuthenticated, async (req, res, next) => {
+  try {
+    const sommeliers = await getSommeliers(req.user.dataValues.id);
+
+    if (!sommeliers.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: "No sommeliers saved in DB!",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: sommeliers,
+    });
+  } catch (error) {
+    return next(error);
   }
 });
 
