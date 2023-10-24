@@ -1101,3 +1101,18 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /regions route -> get total users by region", () => {
+  it("it should return 200 status code -> login with admin user", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    console.log(response);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+});
