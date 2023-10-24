@@ -86,6 +86,34 @@ router.get("/user", (req, res) => {
   }
 });
 
+// Check if email exist
+router.get("/email/:email", async (req, res, next) => {
+  const { email } = req.params;
+
+  if (validations.validateEmail(email)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateEmail(email),
+    });
+  }
+
+  try {
+    const emailFound = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (emailFound) {
+      return res.status(200).send(true);
+    }
+
+    return res.status(404).send(false);
+  } catch (error) {
+    return next("Error trying get a email address");
+  }
+});
+
 // Get user by ID
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -355,11 +383,21 @@ router.put("/password", ensureAuthenticated, async (req, res, next) => {
 });
 
 // Update user
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   const { banned, sommelier, admin, verified } = req.query;
 
   let updatedUser;
+
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
 
   try {
     if (!validateId(id)) {
