@@ -961,4 +961,9 @@ describe("GET /email/:email route -> checks if email exists", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Email address is available");
   });
+  it("it should return 200 status code -> email exists", async () => {
+    const response = await request(app).get("/users/email/user1@email.com");
+    expect(response.status).toBe(200);
+    expect(response.body.msg).toBe("Email address is not available");
+  });
 });
