@@ -334,7 +334,7 @@ describe("POST /register route -> parameters validations", () => {
   });
 });
 
-let user1_id;
+let user1_id, admin_id;
 
 describe("POST /register route -> create new user", () => {
   it("it should return a 201 status code -> create new user successfully", async () => {
@@ -354,11 +354,29 @@ describe("POST /register route -> create new user", () => {
   });
 });
 
+describe("POST /register route -> create hardcoded admin user", () => {
+  it("it should return a 201 status code -> create new user successfully", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      username: "Admin",
+      password: "Password14!",
+      region: "Region One",
+      phone: "12345678",
+      password2: "Password14!",
+    };
+
+    const response = await request(app).post("/users/register").send(user);
+    admin_id = response.body.data.id;
+    expect(response.status).toBe(201);
+    expect(response.body.data.email).toBe("admin@ewines.com");
+  });
+});
+
 describe("GET / route -> get all users from database", () => {
   it("it should return 200 status code", async () => {
     const response = await request(app).get("/users");
     expect(response.status).toBe(200);
-    expect(response.body.data.length).toBe(1);
+    expect(response.body.data.length).toBe(2);
   });
 });
 
