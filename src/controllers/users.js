@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const User = require("../models/User");
 
 const bcrypt = require("bcryptjs");
@@ -206,6 +207,44 @@ const updatePassword = async (id, password) => {
   }
 };
 
+// Get sommeliers
+const getSommeliers = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await User.findAll({
+      where: {
+        id: {
+          [Op.not]: id,
+        },
+        isSommelier: true,
+      },
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          username: r.username,
+          email: r.email,
+          image: r.image,
+          region: r.region,
+          phone: r.phone,
+          buyLevel: r.buyLevel,
+          balance: r.balance,
+          isSommelier: r.isSommelier,
+          isBanned: r.isBanned,
+          isVerified: r.isVerified,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all sommeliers from DB!");
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
@@ -214,4 +253,5 @@ module.exports = {
   updateIsAdmin,
   updateIsVerified,
   updatePassword,
+  getSommeliers,
 };
