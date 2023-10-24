@@ -775,7 +775,10 @@ describe("PUT /password route -> update password", () => {
       password2: "Password14!",
     };
 
-    const response = await request(app).put("/users/password").send(user);
+    const response = await request(app)
+      .put("/users/password")
+      .send(user)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Password parameter is missing");
   });
