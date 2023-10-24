@@ -734,7 +734,9 @@ describe("PUT /:id route -> update user", () => {
     );
   });
   it("it should return a 200 status code -> user updated", async () => {
-    const response = await request(app).put(`/users/${user1_id}?verified=true`);
+    const response = await request(app)
+      .put(`/users/${user1_id}?verified=true`)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].isVerified).toBe(true);
