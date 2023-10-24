@@ -1006,4 +1006,11 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("No sommeliers saved in DB!");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
