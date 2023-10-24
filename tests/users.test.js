@@ -974,4 +974,9 @@ describe("GET /username/:username route -> checks if username exists", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Username is available");
   });
+  it("it should return 200 status code -> username exists", async () => {
+    const response = await request(app).get("/users/username/User One");
+    expect(response.status).toBe(200);
+    expect(response.body.msg).toBe("Username is not available");
+  });
 });
