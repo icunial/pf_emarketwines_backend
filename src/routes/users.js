@@ -86,7 +86,7 @@ router.get("/user", (req, res) => {
   }
 });
 
-// Check if email exist
+// Check if email exists
 router.get("/email/:email", async (req, res, next) => {
   const { email } = req.params;
 
@@ -105,12 +105,52 @@ router.get("/email/:email", async (req, res, next) => {
     });
 
     if (emailFound) {
-      return res.status(200).send(true);
+      return res.status(200).json({
+        statusCode: 200,
+        msg: "Email address is not available",
+      });
     }
 
-    return res.status(404).send(false);
+    return res.status(404).json({
+      statusCode: 404,
+      msg: "Email address is available",
+    });
   } catch (error) {
     return next("Error trying get a email address");
+  }
+});
+
+// Check if username exists
+router.get("/username/:username", async (req, res, next) => {
+  const { username } = req.params;
+
+  if (validations.validateUsername(username)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateUsername(username),
+    });
+  }
+
+  try {
+    const usernameFound = await User.findOne({
+      where: {
+        username,
+      },
+    });
+
+    if (usernameFound) {
+      return res.status(200).json({
+        statusCode: 200,
+        msg: "Username is not available",
+      });
+    }
+
+    return res.status(404).json({
+      statusCode: 404,
+      msg: "Username is available",
+    });
+  } catch (error) {
+    return next("Error trying get a username");
   }
 });
 
