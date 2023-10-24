@@ -421,6 +421,11 @@ describe("POST /register route -> check if email and username exist", () => {
 });
 
 describe("PUT /:id route -> update user", () => {
+  it("it should return a 401 status code -> not authorized", async () => {
+    const response = await request(app).put(`/users/${user1_id}`);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
   it("it should return a 400 status code -> query parameter is missing", async () => {
     const response = await request(app).put(`/users/${user1_id}`);
     expect(response.status).toBe(400);
