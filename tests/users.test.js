@@ -1197,4 +1197,12 @@ describe("GET /banned/false route -> get not banned users", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 200 status code -> get not banned users", async () => {
+    const response = await request(app)
+      .get("/users/banned/false")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].email).toBe("user2@email.com");
+  });
 });
