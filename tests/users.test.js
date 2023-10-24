@@ -420,65 +420,6 @@ describe("POST /register route -> check if email and username exist", () => {
   });
 });
 
-describe("PUT /:id route -> update user", () => {
-  it("it should return a 401 status code -> not authorized", async () => {
-    const response = await request(app).put(`/users/${user1_id}`);
-    expect(response.status).toBe(401);
-    expect(response.body.msg).toBe("You are not authorized! Please login...");
-  });
-  it("it should return a 400 status code -> query parameter is missing", async () => {
-    const response = await request(app).put(`/users/${user1_id}`);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Query parameter is missing!");
-  });
-  it("it should return a 400 status code -> banned query value must be true or false", async () => {
-    const response = await request(app).put(`/users/${user1_id}?banned=hola`);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Banned query value must be true or false");
-  });
-  it("it should return a 400 status code -> sommelier query value must be true or false", async () => {
-    const response = await request(app).put(
-      `/users/${user1_id}?sommelier=hola`
-    );
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe(
-      "Sommelier query value must be true or false"
-    );
-  });
-  it("it should return a 400 status code -> admin query value must be true or false", async () => {
-    const response = await request(app).put(`/users/${user1_id}?admin=hola`);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Admin query value must be true or false");
-  });
-  it("it should return a 400 status code -> verified query value must be true or false", async () => {
-    const response = await request(app).put(`/users/${user1_id}?verified=hola`);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe(
-      "Verified query value must be true or false"
-    );
-  });
-  it("it should return a 400 status code -> id invalid format", async () => {
-    const response = await request(app).put(`/users/1?verified=true`);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("ID invalid format!");
-  });
-  it("it should return a 404 status code -> user id not found", async () => {
-    const response = await request(app).put(
-      `/users/d3461839-61a4-4288-bb3b-0f9f8c84c37d?verified=true`
-    );
-    expect(response.status).toBe(404);
-    expect(response.body.msg).toBe(
-      "User with ID: d3461839-61a4-4288-bb3b-0f9f8c84c37d not found!"
-    );
-  });
-  it("it should return a 200 status code -> user updated", async () => {
-    const response = await request(app).put(`/users/${user1_id}?verified=true`);
-    expect(response.status).toBe(200);
-    expect(response.body.data.length).toBe(1);
-    expect(response.body.data[0].isVerified).toBe(true);
-  });
-});
-
 let cookie;
 
 describe("POST /login route -> login process", () => {
@@ -659,6 +600,82 @@ describe("POST /login route -> login process", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
+  });
+});
+
+describe("PUT /:id route -> no user logged in", () => {
+  it("it should return a 401 status code -> not authorized", async () => {
+    const response = await request(app).put(`/users/${user1_id}`);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
+
+describe("POST /login route -> login with no admin user", () => {
+  it("it should return a 200 status code -> user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+});
+
+describe("PUT /:id route -> update user", () => {
+  it("it should return a 400 status code -> query parameter is missing", async () => {
+    const response = await request(app).put(`/users/${user1_id}`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Query parameter is missing!");
+  });
+  it("it should return a 400 status code -> banned query value must be true or false", async () => {
+    const response = await request(app).put(`/users/${user1_id}?banned=hola`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Banned query value must be true or false");
+  });
+  it("it should return a 400 status code -> sommelier query value must be true or false", async () => {
+    const response = await request(app).put(
+      `/users/${user1_id}?sommelier=hola`
+    );
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Sommelier query value must be true or false"
+    );
+  });
+  it("it should return a 400 status code -> admin query value must be true or false", async () => {
+    const response = await request(app).put(`/users/${user1_id}?admin=hola`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Admin query value must be true or false");
+  });
+  it("it should return a 400 status code -> verified query value must be true or false", async () => {
+    const response = await request(app).put(`/users/${user1_id}?verified=hola`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "Verified query value must be true or false"
+    );
+  });
+  it("it should return a 400 status code -> id invalid format", async () => {
+    const response = await request(app).put(`/users/1?verified=true`);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+  it("it should return a 404 status code -> user id not found", async () => {
+    const response = await request(app).put(
+      `/users/d3461839-61a4-4288-bb3b-0f9f8c84c37d?verified=true`
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "User with ID: d3461839-61a4-4288-bb3b-0f9f8c84c37d not found!"
+    );
+  });
+  it("it should return a 200 status code -> user updated", async () => {
+    const response = await request(app).put(`/users/${user1_id}?verified=true`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].isVerified).toBe(true);
   });
 });
 
