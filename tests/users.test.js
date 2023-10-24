@@ -980,3 +980,11 @@ describe("GET /username/:username route -> checks if username exists", () => {
     expect(response.body.msg).toBe("Username is not available");
   });
 });
+
+describe("GET /sommeliers route -> get all sommeliers", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).get("/users/sommeliers");
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
