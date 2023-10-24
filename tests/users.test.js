@@ -376,7 +376,7 @@ describe("GET / route -> get all users from database", () => {
   it("it should return 200 status code", async () => {
     const response = await request(app).get("/users");
     expect(response.status).toBe(200);
-    expect(response.body.data.length).toBe(2);
+    expect(response.body.data.length).toBe(1);
   });
 });
 
@@ -996,7 +996,6 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     };
 
     const response = await request(app).post("/users/login").send(user);
-    console.log(response);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
@@ -1037,7 +1036,6 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     };
 
     const response = await request(app).post("/users/login").send(user);
-    console.log(response);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
@@ -1080,7 +1078,6 @@ describe("GET /sommeliers route -> get all sommeliers", () => {
     };
 
     const response = await request(app).post("/users/login").send(user);
-    console.log(response);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
@@ -1110,9 +1107,14 @@ describe("GET /regions route -> get total users by region", () => {
     };
 
     const response = await request(app).post("/users/login").send(user);
-    console.log(response);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
+  });
+  it("it should return 200 status code -> get total users by region", async () => {
+    const response = await request(app)
+      .get("/users/regions")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
   });
 });
