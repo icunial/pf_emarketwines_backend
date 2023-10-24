@@ -1186,4 +1186,15 @@ describe("GET /banned/false route -> get not banned users", () => {
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
+  it("it should return 200 status code -> login with admin user", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
 });
