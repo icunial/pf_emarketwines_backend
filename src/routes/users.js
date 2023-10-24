@@ -18,6 +18,7 @@ const {
   updateIsAdmin,
   updateIsSommelier,
   updateIsVerified,
+  updatePassword,
 } = require("../controllers/users");
 
 const { validateId } = require("../utils/validations/index");
@@ -307,7 +308,6 @@ router.put("/forgot", async (req, res, next) => {
       return res.status(200).json({
         statusCode: 200,
         msg: `New Password was sent to your email address!`,
-        data: userUpdated,
         password: newPassword,
       });
     }
@@ -317,7 +317,7 @@ router.put("/forgot", async (req, res, next) => {
   }
 });
 
-// Updated password
+// Update password
 router.put("/password", async (req, res, next) => {
   const { email, password, password2, newPassword } = req.body;
 
@@ -343,6 +343,48 @@ router.put("/password", async (req, res, next) => {
   }
 
   try {
+    const emailExist = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!emailExist) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Email ${email} not found!`,
+      });
+    }
+
+    bcrypt.compare(newPassword, emailExist.password, async (err, isMatch) => {
+      if (err) {
+        return next("Error trying to update password");
+      }
+      if (isMatch) {
+        const updatedUser = await updatePassword(
+          emailExist.id,
+          email,
+          password
+        );
+
+        if (!updatedUser.length) {
+          return res.status(404).json({
+            statusCode: 404,
+            msg: `User with ID: ${id} not found!`,
+          });
+        }
+
+        res.status(200).json({
+          statusCode: 200,
+          data: updatedUser,
+        });
+      } else {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: "Password incorrect!",
+        });
+      }
+    });
   } catch (error) {
     return next("Error trying to update password");
   }
