@@ -18,6 +18,7 @@ const {
   updateIsVerified,
   updatePassword,
   getSommeliers,
+  getTotalUsersByRegion,
 } = require("../controllers/users");
 
 const {
@@ -170,6 +171,39 @@ router.get("/sommeliers", ensureAuthenticated, async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       data: sommeliers,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get total users by region
+router.get("/regions", ensureAuthenticated, async (req, res, next) => {
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+
+  try {
+    const users = await getUsers();
+
+    if (!users.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No users saved in DB!`,
+      });
+    }
+
+    const totalUsersByRegion = await getTotalUsersByRegion(users);
+
+    res.status(200).json({
+      statusCode: 200,
+      data: totalUsersByRegion,
     });
   } catch (error) {
     return next(error);
