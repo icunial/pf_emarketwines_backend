@@ -8,7 +8,13 @@ const getUsers = async () => {
   const results = [];
 
   try {
-    const dbResults = await User.findAll();
+    const dbResults = await User.findAll({
+      where: {
+        email: {
+          [Op.not]: "admin@ewines.com",
+        },
+      },
+    });
 
     if (dbResults) {
       dbResults.forEach((r) => {
@@ -245,6 +251,21 @@ const getSommeliers = async (id) => {
   }
 };
 
+// Get total users by region
+const getTotalUsersByRegion = async (users) => {
+  let regions = {};
+
+  for (let x = 0; x < users.length; x++) {
+    if (regions.hasOwnProperty(users[x].region)) {
+      regions[users[x].region] = regions[users[x].region] + 1;
+    } else {
+      regions[users[x].region] = 1;
+    }
+  }
+
+  return regions;
+};
+
 module.exports = {
   getUsers,
   getUserById,
@@ -254,4 +275,5 @@ module.exports = {
   updateIsVerified,
   updatePassword,
   getSommeliers,
+  getTotalUsersByRegion,
 };
