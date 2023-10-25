@@ -21,6 +21,7 @@ const {
   updateIsBannedPublication,
   updateAmountPublication,
   getPublicationsWithoutId,
+  getPublicationsWithWordWithoutId,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -29,6 +30,25 @@ router.get("/", async (req, res, next) => {
 
   try {
     if (word) {
+      if (req.user) {
+        const publications = await getPublicationsWithWordWithoutId(
+          req.user.id,
+          word
+        );
+
+        if (!publications.length) {
+          return res.status(404).json({
+            statusCode: 404,
+            msg: `No publications saved in DB!`,
+          });
+        }
+
+        return res.status(200).json({
+          statusCode: 200,
+          data: publications,
+        });
+      }
+
       const publicationsWithWord = await getPublicationsWithWord(word);
 
       if (!publicationsWithWord.length) {
