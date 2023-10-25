@@ -121,6 +121,13 @@ describe("POST /varietals route -> Create new varietal validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Description must be a string");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
 
 let varietal1_id, varietal2_id, varietal3_id;
