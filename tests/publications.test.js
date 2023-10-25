@@ -162,7 +162,19 @@ describe("GET /publications route -> no publications saved in DB", () => {
   });
 });
 
-/* describe("POST /publications route -> create new publication validations", () => {
+describe("POST /publications route -> create new publication validations", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const publication = {
+      title: "Publication 1",
+      price: 100,
+      amount: 100,
+      description: "Description Publication 1",
+      product: "Product 1",
+    };
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
   it("it should return 400 status code -> title parameter is missing", async () => {
     const publication = {
       price: 100,
@@ -281,7 +293,8 @@ describe("GET /publications route -> no publications saved in DB", () => {
   });
 });
 
-describe("POST /publicaations route -> product validations", () => {
+/*
+describe("POST /publications route -> product validations", () => {
   it("it should return 404 status code -> product not found", async () => {
     const publication = {
       title: "Publication 1",
