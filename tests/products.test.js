@@ -345,7 +345,10 @@ describe("POST /products route -> product name exists validation", () => {
       origin: "Origin 1",
       cellar: "Cellar",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe(
       `Name ${product.name} exists. Try with another one!`
