@@ -698,4 +698,12 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.body.data[0].title).toBe("Publication 1");
     expect(response.body.data[0].id).toBe(publication1_id);
   });
+  it("it should return 200 status code -> get banned publications", async () => {
+    const response = await request(app)
+      .get("/publications/banned")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].id).toBe(publication1_id);
+  });
 });
