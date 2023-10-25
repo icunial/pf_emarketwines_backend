@@ -476,11 +476,11 @@ describe("DELETE /varietals/:id route -> delete varietal", () => {
   });
 });
 
-describe("GET /varietals route -> no varietals saved in DB", () => {
-  it("it should return 404 status code -> no varietals saved in DB", async () => {
+describe("GET /varietals route -> get all varietals", () => {
+  it("it should return 200 status code -> no varietals saved in DB", async () => {
     const response = await request(app).get("/varietals");
-    expect(response.status).toBe(404);
-    expect(response.body.msg).toBe("No varietals saved in DB!");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(2);
   });
 });
 
