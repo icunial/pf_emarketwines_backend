@@ -14,11 +14,30 @@ const {
   getVarietalById,
   updateVarietal,
   deleteVarietal,
+  getVarietalsByName,
 } = require("../controllers/varietals");
 
 // Get all varietals
 router.get("/", async (req, res, next) => {
+  const { name } = req.query;
+
   try {
+    if (name) {
+      const varietals = await getVarietalsByName(name);
+
+      if (!varietals.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Varietals with name: ${name} not found!`,
+        });
+      }
+
+      return res.status(200).json({
+        statusCode: 200,
+        data: varietals,
+      });
+    }
+
     const varietals = await getVarietals();
 
     if (!varietals.length) {
