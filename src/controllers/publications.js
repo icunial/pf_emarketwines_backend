@@ -496,6 +496,55 @@ const orderPublicationsLessPrice = async () => {
   }
 };
 
+// Get publications ordered from lowest price to highest without logged in user id
+const orderPublicationsLessPriceWithoutId = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+      where: {
+        userId: {
+          [Op.not]: id,
+        },
+        isBanned: false,
+      },
+      order: [["price", "ASC"]],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error(
+      "Error trying to order publications from highest price to lowest"
+    );
+  }
+};
+
 // Get publications ordered by name from A to Z
 const orderPublicationsByNameAtoZ = async () => {
   const results = [];
@@ -668,4 +717,5 @@ module.exports = {
   getAllPublications,
   getBannedPublications,
   orderPublicationsMorePriceWithoutId,
+  orderPublicationsLessPriceWithoutId,
 };
