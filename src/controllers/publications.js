@@ -361,6 +361,17 @@ const orderPublicationsMorePrice = async () => {
 
   try {
     const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
       where: {
         isBanned: false,
       },
@@ -376,6 +387,57 @@ const orderPublicationsMorePrice = async () => {
           amount: r.amount,
           image: r.image,
           description: r.description,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error(
+      "Error trying to order publications from highest price to lowest"
+    );
+  }
+};
+
+// Get publications ordered from highest price to lowest without logged in user id
+const orderPublicationsMorePriceWithoutId = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+      where: {
+        userId: {
+          [Op.not]: id,
+        },
+        isBanned: false,
+      },
+      order: [["price", "DESC"]],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          username: r.user.username,
+          email: r.user.email,
         });
       });
     }
@@ -394,6 +456,17 @@ const orderPublicationsLessPrice = async () => {
 
   try {
     const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
       where: {
         isBanned: false,
       },
@@ -409,6 +482,8 @@ const orderPublicationsLessPrice = async () => {
           amount: r.amount,
           image: r.image,
           description: r.description,
+          username: r.user.username,
+          email: r.user.email,
         });
       });
     }
@@ -427,6 +502,17 @@ const orderPublicationsByNameAtoZ = async () => {
 
   try {
     const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
       where: {
         isBanned: false,
       },
@@ -442,6 +528,8 @@ const orderPublicationsByNameAtoZ = async () => {
           amount: r.amount,
           image: r.image,
           description: r.description,
+          username: r.user.username,
+          email: r.user.email,
         });
       });
     }
@@ -458,6 +546,17 @@ const orderPublicationsByNameZtoA = async () => {
 
   try {
     const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
       where: {
         isBanned: false,
       },
@@ -473,6 +572,8 @@ const orderPublicationsByNameZtoA = async () => {
           amount: r.amount,
           image: r.image,
           description: r.description,
+          username: r.user.username,
+          email: r.user.email,
         });
       });
     }
@@ -566,4 +667,5 @@ module.exports = {
   getPublicationsWithWordWithoutId,
   getAllPublications,
   getBannedPublications,
+  orderPublicationsMorePriceWithoutId,
 };
