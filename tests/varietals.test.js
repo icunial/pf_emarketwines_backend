@@ -76,7 +76,10 @@ describe("POST /varietals route -> Create new varietal validations", () => {
       description: "Description Varietal 1",
     };
 
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name parameter is missing");
   });
@@ -86,7 +89,10 @@ describe("POST /varietals route -> Create new varietal validations", () => {
       description: "Description Varietal 1",
     };
 
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name must be a string");
   });
@@ -95,7 +101,10 @@ describe("POST /varietals route -> Create new varietal validations", () => {
       name: "Varietal 1",
     };
 
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Description parameter is missing");
   });
@@ -105,7 +114,10 @@ describe("POST /varietals route -> Create new varietal validations", () => {
       description: 1234,
     };
 
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Description must be a string");
   });
