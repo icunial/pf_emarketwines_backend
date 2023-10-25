@@ -119,6 +119,22 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 401 status code -> no admin privileges", async () => {
+    const product = {
+      type: "Type 1",
+      varietal: "Varietal 1",
+      origin: "Origin 1",
+      cellar: "Cellar 1",
+    };
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You must have admin privileges..."
+    );
+  });
   /*  it("it should return a 200 status code -> admin user logged in", async () => {
     const user = {
       email: "admin@ewines.com",
