@@ -546,3 +546,17 @@ describe("GET /order/:opt route -> order features routes", () => {
     expect(response.body.msg).toBe("Filter not available!");
   });
 });
+
+describe("GET /order/:opt route -> order features routes with user logged in", () => {
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+});
