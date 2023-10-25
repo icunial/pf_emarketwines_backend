@@ -660,4 +660,11 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app)
+      .put("/publications/1/true")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
