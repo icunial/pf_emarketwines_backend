@@ -13,6 +13,7 @@ afterAll((done) => {
 });
 
 let user1_id, admin_id;
+let cookie;
 
 describe("POST /users/register route -> create a no admin new user", () => {
   it("it should return a 201 status code -> create new user successfully", async () => {
@@ -69,7 +70,10 @@ describe("POST /varietals route -> Create new varietal success", () => {
       name: "Varietal 1",
       description: "Description Varietal 1",
     };
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     varietal1_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Varietal 1");
