@@ -5,7 +5,10 @@ const Product = require("../models/Product");
 const Varietal = require("../models/Varietal");
 
 const validations = require("../utils/validations/products");
-const { validateId } = require("../utils/validations/index");
+const {
+  validateId,
+  ensureAuthenticated,
+} = require("../utils/validations/index");
 
 const { getProducts, getProductbyId } = require("../controllers/products");
 
@@ -61,8 +64,18 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Create New Product
-router.post("/", async (req, res, next) => {
+router.post("/", ensureAuthenticated, async (req, res, next) => {
   const { name, type, varietal, origin, cellar, image } = req.body;
+
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
 
   // Validations
   if (validations.validateName(name)) {
