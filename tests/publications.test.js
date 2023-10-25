@@ -394,6 +394,13 @@ describe("POST /publications route -> create new publication success", () => {
     expect(response.body.data.title).toBe("Publication 2");
     publication2_id = response.body.data.id;
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
 
 /*
