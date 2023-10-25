@@ -514,3 +514,12 @@ describe("GET /publications/:id route -> get publication by id", () => {
     expect(response.body.data[0].email).toBe("user1@email.com");
   });
 });
+
+describe("GET /order/:opt route -> order features routes", () => {
+  it("it should return 200 status code -> more opt", async () => {
+    const response = await request(app).get("/publications/order/more");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(5);
+    expect(response.body.data[0].price).toBe(3000);
+  });
+});
