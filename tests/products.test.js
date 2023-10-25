@@ -97,6 +97,17 @@ describe("GET /products route -> no products saved in DB", () => {
 });
 
 describe("POST /products route -> create new product validations", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const product = {
+      type: "Type 1",
+      varietal: "Varietal 1",
+      origin: "Origin 1",
+      cellar: "Cellar 1",
+    };
+    const response = await request(app).post("/products").send(product);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
   it("it should return 400 status code -> name parameter is missing", async () => {
     const product = {
       type: "Type 1",
