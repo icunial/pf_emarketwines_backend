@@ -148,6 +148,18 @@ const getPublicationsWithWord = async (word) => {
 
   try {
     const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+
       where: {
         isBanned: false,
         [Op.or]: [
@@ -174,6 +186,69 @@ const getPublicationsWithWord = async (word) => {
           amount: r.amount,
           image: r.image,
           description: r.description,
+          varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get publications containing a word!");
+  }
+};
+
+// Get publications by Word without logged in user id
+const getPublicationsWithWordWithoutId = async (id, word) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+
+      where: {
+        userId: {
+          [Op.not]: id,
+        },
+        isBanned: false,
+        [Op.or]: [
+          {
+            title: {
+              [Op.iLike]: `%${word}%`,
+            },
+          },
+          {
+            description: {
+              [Op.iLike]: `%${word}%`,
+            },
+          },
+        ],
+      },
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
         });
       });
     }
@@ -392,4 +467,5 @@ module.exports = {
   updateIsBannedPublication,
   updateAmountPublication,
   getPublicationsWithoutId,
+  getPublicationsWithWordWithoutId,
 };
