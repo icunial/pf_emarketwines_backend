@@ -123,6 +123,20 @@ describe("POST /varietals route -> Create new varietal success", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 401 status code -> no admin privileges", async () => {
+    const varietal = {
+      name: "Varietal 1",
+      description: "Description Varietal 1",
+    };
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You must have admin privileges..."
+    );
+  });
   it("it should return 201 status code -> new varietal created", async () => {
     const varietal = {
       name: "Varietal 1",
