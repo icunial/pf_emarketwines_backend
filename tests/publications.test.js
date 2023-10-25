@@ -634,4 +634,11 @@ describe("GET /banned route -> get banned publications", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("No banned publications saved in DB!");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
