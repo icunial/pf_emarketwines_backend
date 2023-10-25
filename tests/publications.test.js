@@ -446,6 +446,23 @@ describe("POST /publications route -> create new publication success", () => {
     expect(response.body.data.title).toBe("Publication 4");
     publication4_id = response.body.data.id;
   });
+  it("it should return 201 status code -> new publication success", async () => {
+    const publication = {
+      title: "Publication 5",
+      price: 3000,
+      amount: 120,
+      description: "Description Publication 5",
+      product: "Product 2",
+    };
+
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.title).toBe("Publication 5");
+    publication5_id = response.body.data.id;
+  });
 });
 
 /*
