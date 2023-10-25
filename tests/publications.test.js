@@ -599,3 +599,18 @@ describe("GET /order/:opt route -> order features routes with user logged in", (
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /all route -> get all publications", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const publication = {
+      title: "Publication 1",
+      price: 100,
+      amount: 100,
+      description: "Description Publication 1",
+      product: "Product 1",
+    };
+    const response = await request(app).post("/publications").send(publication);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
