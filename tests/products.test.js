@@ -142,7 +142,7 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
-  /*  it("it should return a 200 status code -> admin user logged in", async () => {
+  it("it should return a 200 status code -> admin user logged in", async () => {
     const user = {
       email: "admin@ewines.com",
       password: "Password14!",
@@ -152,7 +152,7 @@ describe("POST /products route -> create new product validations", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
-  }); */
+  });
   it("it should return 400 status code -> name parameter is missing", async () => {
     const product = {
       type: "Type 1",
@@ -160,7 +160,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name parameter is missing");
   });
@@ -172,7 +175,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name must be a string");
   });
@@ -183,7 +189,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Type parameter is missing");
   });
@@ -195,7 +204,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Type must be a string");
   });
@@ -206,7 +218,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Varietal parameter is missing");
   });
@@ -218,7 +233,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Varietal must be a string");
   });
@@ -229,7 +247,10 @@ describe("POST /products route -> create new product validations", () => {
       varietal: "Varietal 1",
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Origin parameter is missing");
   });
@@ -241,7 +262,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: 1234,
       cellar: "Cellar 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Origin must be a string");
   });
@@ -252,7 +276,10 @@ describe("POST /products route -> create new product validations", () => {
       varietal: "Varietal 1",
       origin: "Origin 1",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Cellar parameter is missing");
   });
@@ -264,7 +291,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: 1234,
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Cellar must be a string");
   });
@@ -276,7 +306,10 @@ describe("POST /products route -> create new product validations", () => {
       origin: "Origin 1",
       cellar: "Cellar",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(`Varietal ${product.varietal} not found!`);
   });
