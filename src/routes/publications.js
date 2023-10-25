@@ -22,6 +22,10 @@ const {
   updateAmountPublication,
   getPublicationsWithoutId,
   getPublicationsWithWordWithoutId,
+  orderPublicationsByNameAtoZWithoutId,
+  orderPublicationsByNameZtoAWithoutId,
+  orderPublicationsLessPriceWithoutId,
+  orderPublicationsMorePriceWithoutId,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -135,6 +139,35 @@ router.get("/order/:opt", async (req, res, next) => {
   let results = [];
 
   try {
+    if (req.user) {
+      if (opt === "more") {
+        results = await orderPublicationsMorePriceWithoutId(req.user.id);
+      } else if (opt === "less") {
+        results = await orderPublicationsLessPriceWithoutId(req.user.id);
+      } else if (opt === "az") {
+        results = await orderPublicationsByNameAtoZWithoutId(req.user.id);
+      } else if (opt === "za") {
+        results = await orderPublicationsByNameZtoAWithoutId(req.user.id);
+      } else {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: `Filter not available!`,
+        });
+      }
+
+      if (!results.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `No publications saved in DB!`,
+        });
+      }
+
+      res.status(200).json({
+        statusCode: 200,
+        data: results,
+      });
+    }
+
     if (opt === "more") {
       results = await orderPublicationsMorePrice();
     } else if (opt === "less") {
