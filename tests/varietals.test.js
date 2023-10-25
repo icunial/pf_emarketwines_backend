@@ -493,3 +493,11 @@ describe("GET /varietals/:id route -> get varietal by id", () => {
     );
   });
 });
+
+describe("GET /varietals route -> get varietal by name", () => {
+  it("it should return 404 status code -> no varietals saved in DB", async () => {
+    const response = await request(app).get("/varietals?name=hola");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("Varietals with name: hola not found!");
+  });
+});
