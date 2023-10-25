@@ -478,9 +478,15 @@ describe("GET /publications route -> get all publications", () => {
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(2);
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
 
-/*
 describe("GET /publications/:id route -> get publication by id", () => {
   it("it should return 400 status code -> id invalid format", async () => {
     const response = await request(app).get("/publications/1");
@@ -506,4 +512,3 @@ describe("GET /publications/:id route -> get publication by id", () => {
     expect(response.body.data[0].id).toBe(publication1_id);
   });
 });
- */
