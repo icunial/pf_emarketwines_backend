@@ -567,4 +567,12 @@ describe("GET /order/:opt route -> order features routes with user logged in", (
     expect(response.body.data.length).toBe(3);
     expect(response.body.data[0].price).toBe(3000);
   });
+  it("it should return 200 status code -> more opt", async () => {
+    const response = await request(app)
+      .get("/publications/order/less")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(3);
+    expect(response.body.data[0].price).toBe(1500);
+  });
 });
