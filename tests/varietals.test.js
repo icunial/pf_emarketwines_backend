@@ -467,6 +467,13 @@ describe("DELETE /varietals/:id route -> delete varietal", () => {
     expect(response.status).toBe(200);
     expect(response.body.data[0].id).toBe(varietal1_id);
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
 
 describe("GET /varietals route -> no varietals saved in DB", () => {
