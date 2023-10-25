@@ -255,6 +255,13 @@ describe("POST /varietals route -> varietal already exists", () => {
 });
 
 describe("PUT /varietals/:id route -> updated varietal", () => {
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
   it("it should return 400 status code -> id invalid format", async () => {
     const varietal = {
       name: "New Name",
