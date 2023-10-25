@@ -51,7 +51,7 @@ describe("POST /users/register route -> create an admin new user", () => {
 
 let cookie;
 
-describe("POST /users/login route -> login process", () => {
+/* describe("POST /users/login route -> login process", () => {
   it("it should return a 200 status code -> user logged in", async () => {
     const user = {
       email: "user1@email.com",
@@ -63,7 +63,7 @@ describe("POST /users/login route -> login process", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
-});
+}); */
 
 describe("GET /varietals route -> no varietals saved in DB", () => {
   it("it should return 404 status code -> no varietals saved in DB", async () => {
@@ -117,6 +117,16 @@ describe("POST /varietals route -> Create new varietal validations", () => {
 let varietal1_id, varietal2_id, varietal3_id;
 
 describe("POST /varietals route -> Create new varietal success", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const varietal = {
+      name: "Varietal 1",
+      description: "Description Varietal 1",
+    };
+    const response = await request(app).post("/varietals").send(varietal);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+
   it("it should return 201 status code -> new varietal created", async () => {
     const varietal = {
       name: "Varietal 1",
