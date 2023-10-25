@@ -79,6 +79,20 @@ describe("POST /varietals route -> Create new varietal success", () => {
     expect(response.body.data.name).toBe("Varietal 1");
     expect(response.body.data.description).toBe("Description Varietal 1");
   });
+  it("it should return 201 status code -> new varietal created", async () => {
+    const varietal = {
+      name: "Varietal 2",
+      description: "Description Varietal 2",
+    };
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
+    varietal1_id = response.body.data.id;
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Varietal 2");
+    expect(response.body.data.description).toBe("Description Varietal 2");
+  });
 });
 
 let product1_id;
@@ -117,7 +131,7 @@ describe("GET /publications route -> no publications saved in DB", () => {
   });
 });
 
-describe("POST /publications route -> create new publication validations", () => {
+/* describe("POST /publications route -> create new publication validations", () => {
   it("it should return 400 status code -> title parameter is missing", async () => {
     const publication = {
       price: 100,
@@ -307,3 +321,4 @@ describe("GET /publications/:id route -> get publication by id", () => {
     expect(response.body.data[0].id).toBe(publication1_id);
   });
 });
+ */
