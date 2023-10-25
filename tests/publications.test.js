@@ -625,3 +625,13 @@ describe("GET /all route -> get all publications", () => {
     expect(response.body.data.length).toBe(5);
   });
 });
+
+describe("GET /banned route -> get banned publications", () => {
+  it("it should return 404 status code -> no banned publications", async () => {
+    const response = await request(app)
+      .get("/publications/banned")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No banned publications saved in DB!");
+  });
+});
