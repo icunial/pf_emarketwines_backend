@@ -5,7 +5,10 @@ const Publication = require("../models/Publication");
 const Product = require("../models/Product");
 
 const validations = require("../utils/validations/publications");
-const { validateId } = require("../utils/validations/index");
+const {
+  validateId,
+  ensureAuthenticated,
+} = require("../utils/validations/index");
 
 const {
   getPublications,
@@ -17,6 +20,7 @@ const {
   orderPublicationsByNameZtoA,
   updateIsBannedPublication,
   updateAmountPublication,
+  getPublicationsWithoutId,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -39,6 +43,23 @@ router.get("/", async (req, res, next) => {
         data: publicationsWithWord,
       });
     }
+
+    if (req.user) {
+      const publications = await getPublicationsWithoutId(req.user.id);
+
+      if (!publications.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `No publications saved in DB!`,
+        });
+      }
+
+      return res.status(200).json({
+        statusCode: 200,
+        data: publications,
+      });
+    }
+
     const publications = await getPublications();
 
     if (!publications.length) {
@@ -126,7 +147,7 @@ router.get("/order/:opt", async (req, res, next) => {
 });
 
 // Create new publication
-router.post("/", async (req, res, next) => {
+router.post("/", ensureAuthenticated, async (req, res, next) => {
   const { title, price, amount, image, description, product } = req.body;
 
   // Validations
@@ -179,6 +200,7 @@ router.post("/", async (req, res, next) => {
       image: image ? image : null,
       description,
       productId: productExist.dataValues.id,
+      userId: req.user.id,
     });
 
     res.status(201).json({
