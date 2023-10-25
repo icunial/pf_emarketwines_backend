@@ -1,6 +1,7 @@
 const Publication = require("../models/Publication");
 const Product = require("../models/Product");
 const Varietal = require("../models/Varietal.js");
+const User = require("../models/User");
 
 const { Op } = require("sequelize");
 
@@ -9,17 +10,26 @@ const getPublications = async () => {
   const results = [];
 
   try {
-    const dbResults = await Publication.findAll({
-      include: {
-        model: Product,
-        include: {
-          model: Varietal,
+    const dbResults = await Publication.findAll(
+      {
+        include: [
+          {
+            model: Product,
+            include: {
+              model: Varietal,
+            },
+          },
+          {
+            model: User,
+          },
+        ],
+      },
+      {
+        where: {
+          isBanned: false,
         },
-      },
-      where: {
-        isBanned: false,
-      },
-    });
+      }
+    );
 
     if (dbResults) {
       dbResults.forEach((r) => {
@@ -32,6 +42,58 @@ const getPublications = async () => {
           description: r.description,
           product: r.product.name,
           varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all publications from DB!");
+  }
+};
+
+// Get all publications without user logged in id
+const getPublicationsWithoutId = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+      where: {
+        isBanned: false,
+        userId: {
+          [Op.not]: id,
+        },
+      },
+    });
+
+    console.log(dbResults);
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          product: r.product.name,
+          varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
         });
       });
     }
@@ -329,4 +391,5 @@ module.exports = {
   orderPublicationsByNameZtoA,
   updateIsBannedPublication,
   updateAmountPublication,
+  getPublicationsWithoutId,
 };
