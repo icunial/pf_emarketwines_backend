@@ -318,7 +318,10 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
       description: "New Description",
     };
 
-    const response = await request(app).put("/varietals/1").send(varietal);
+    const response = await request(app)
+      .put("/varietals/1")
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
@@ -327,7 +330,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/${varietal1_id}`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name and description are both empty!");
   });
@@ -339,7 +343,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/2c79ae06-c7d1-40f9-a647-2b7f9508b5ab`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(
       "Varietal with ID: 2c79ae06-c7d1-40f9-a647-2b7f9508b5ab not found!"
@@ -353,7 +358,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/${varietal1_id}`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Name must be a string");
   });
@@ -365,7 +371,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/${varietal1_id}`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Description must be a string");
   });
@@ -377,7 +384,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/${varietal1_id}`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data[0].name).toBe("New Name");
     expect(response.body.data[0].description).toBe("New Description");
@@ -389,7 +397,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/${varietal1_id}`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data[0].name).toBe("New Name Varietal 1");
     expect(response.body.data[0].description).toBe("New Description");
@@ -401,7 +410,8 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
 
     const response = await request(app)
       .put(`/varietals/${varietal1_id}`)
-      .send(varietal);
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data[0].name).toBe("New Name Varietal 1");
     expect(response.body.data[0].description).toBe(
