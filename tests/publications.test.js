@@ -193,7 +193,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Title parameter is missing");
   });
@@ -205,7 +208,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Title must be a string");
   });
@@ -216,7 +222,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Price parameter is missing");
   });
@@ -228,7 +237,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Price must be a number");
   });
@@ -240,7 +252,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Price must be higher than 0");
   });
@@ -251,7 +266,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Amount parameter is missing");
   });
@@ -263,7 +281,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Amount must be a number");
   });
@@ -275,7 +296,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: "Description Publication 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Amount must be higher than 0");
   });
@@ -286,7 +310,10 @@ describe("POST /publications route -> create new publication validations", () =>
       amount: 100,
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Description parameter is missing");
   });
@@ -298,7 +325,10 @@ describe("POST /publications route -> create new publication validations", () =>
       description: 1234,
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Description must be a string");
   });
