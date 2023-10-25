@@ -1238,4 +1238,13 @@ describe("DELETE /:id route -> delete user by id", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> user not found", async () => {
+    const response = await request(app)
+      .delete("/users/7fd047d7-3dc9-471c-8dce-d8d48674c726")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "User with ID: 7fd047d7-3dc9-471c-8dce-d8d48674c726 not found!"
+    );
+  });
 });
