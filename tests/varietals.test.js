@@ -262,6 +262,15 @@ describe("PUT /varietals/:id route -> updated varietal", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
+  it("it should return 401 status code -> not authorized", async () => {
+    const varietal = {
+      name: "New Name",
+      description: "New Description",
+    };
+    const response = await request(app).put("/varietals/1").send(varietal);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
   it("it should return 400 status code -> id invalid format", async () => {
     const varietal = {
       name: "New Name",
