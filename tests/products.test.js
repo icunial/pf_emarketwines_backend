@@ -354,6 +354,13 @@ describe("POST /products route -> product name exists validation", () => {
       `Name ${product.name} exists. Try with another one!`
     );
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
 
 describe("GET /products route -> get all products", () => {
