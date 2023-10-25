@@ -445,21 +445,25 @@ describe("DELETE /varietals/:id route -> delete varietal", () => {
     cookie = response.headers["set-cookie"];
   });
   it("it should return 400 status code -> id invalid format", async () => {
-    const response = await request(app).delete("/varietals/1");
+    const response = await request(app)
+      .delete("/varietals/1")
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
   it("it should return 404 status code -> varietal not found", async () => {
-    const response = await request(app).delete(
-      "/varietals/2c79ae06-c7d1-40f9-a647-2b7f9508b5ab"
-    );
+    const response = await request(app)
+      .delete("/varietals/2c79ae06-c7d1-40f9-a647-2b7f9508b5ab")
+      .set("Cookie", cookie);
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(
       `Varietal with ID: 2c79ae06-c7d1-40f9-a647-2b7f9508b5ab not found!`
     );
   });
   it("it should return 200 status code -> varietal deleted", async () => {
-    const response = await request(app).delete(`/varietals/${varietal1_id}`);
+    const response = await request(app)
+      .delete(`/varietals/${varietal1_id}`)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data[0].id).toBe(varietal1_id);
   });
