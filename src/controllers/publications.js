@@ -101,26 +101,22 @@ const getBannedPublications = async () => {
   const results = [];
 
   try {
-    const dbResults = await Publication.findAll(
-      {
-        include: [
-          {
-            model: Product,
-            include: {
-              model: Varietal,
-            },
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
           },
-          {
-            model: User,
-          },
-        ],
-      },
-      {
-        where: {
-          isBanned: true,
         },
-      }
-    );
+        {
+          model: User,
+        },
+      ],
+      where: {
+        isBanned: true,
+      },
+    });
 
     if (dbResults) {
       dbResults.forEach((r) => {
