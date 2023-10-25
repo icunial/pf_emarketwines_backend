@@ -342,6 +342,29 @@ const getNotBannedUsers = async () => {
   }
 };
 
+// Delete user by id
+const deleteUserById = async (id) => {
+  try {
+    const userFound = await getUserById(id);
+
+    if (!userFound.length) {
+      return [];
+    }
+
+    const deletedUser = await User.destroy({
+      where: {
+        id,
+      },
+    });
+
+    if (deletedUser === 1) {
+      return userFound;
+    }
+  } catch (error) {
+    throw new Error("Error trying to delete a user!");
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
@@ -354,4 +377,5 @@ module.exports = {
   getTotalUsersByRegion,
   getBannedUsers,
   getNotBannedUsers,
+  deleteUserById,
 };
