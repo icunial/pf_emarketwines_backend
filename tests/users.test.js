@@ -1255,4 +1255,10 @@ describe("DELETE /:id route -> delete user by id", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].email).toBe("user1@email.com");
   });
+  it("it should return 200 status code", async () => {
+    const response = await request(app).get("/users");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].email).toBe("user2@email.com");
+  });
 });
