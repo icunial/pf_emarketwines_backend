@@ -12,7 +12,7 @@ afterAll((done) => {
   done();
 });
 
-let user1_id, admin_id;
+let user1_id, user2_id, admin_id;
 let cookie;
 
 describe("POST /users/register route -> create a no admin new user", () => {
@@ -42,7 +42,7 @@ describe("POST /users/register route -> create a no admin new user", () => {
     };
 
     const response = await request(app).post("/users/register").send(user);
-    user1_id = response.body.data.id;
+    user2_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.email).toBe("user2@email.com");
   });
@@ -66,7 +66,7 @@ describe("POST /users/register route -> create an admin new user", () => {
   });
 });
 
-let varietal1_id;
+let varietal1_id, varietal2_id;
 
 describe("POST /varietals route -> Create new varietal success", () => {
   it("it should return a 200 status code -> admin user logged in", async () => {
@@ -103,14 +103,14 @@ describe("POST /varietals route -> Create new varietal success", () => {
       .post("/varietals")
       .send(varietal)
       .set("Cookie", cookie);
-    varietal1_id = response.body.data.id;
+    varietal2_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Varietal 2");
     expect(response.body.data.description).toBe("Description Varietal 2");
   });
 });
 
-let product1_id;
+let product1_id, product2_id;
 
 describe("POST /products route -> create new product success", () => {
   it("it should return 201 status code -> new product created", async () => {
@@ -119,7 +119,7 @@ describe("POST /products route -> create new product success", () => {
       type: "Type 1",
       varietal: "Varietal 1",
       origin: "Origin 1",
-      cellar: "Cellar",
+      cellar: "Cellar 1",
     };
     const response = await request(app)
       .post("/products")
@@ -128,6 +128,22 @@ describe("POST /products route -> create new product success", () => {
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Product 1");
     product1_id = response.body.data.id;
+  });
+  it("it should return 201 status code -> new product created", async () => {
+    const product = {
+      name: "Product 2",
+      type: "Type 2",
+      varietal: "Varietal 2",
+      origin: "Origin 2",
+      cellar: "Cellar 2",
+    };
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Product 2");
+    product2_id = response.body.data.id;
   });
   it("it should return a 200 status code -> logout process", async () => {
     const response = await request(app)
