@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Varietal = require("../models/Varietal");
 
 // Get all varietals
@@ -122,9 +123,38 @@ const deleteVarietal = async (id) => {
   }
 };
 
+const getVarietalsByName = async (name) => {
+  const results = [];
+
+  try {
+    const dbResults = await Varietal.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          name: r.name,
+          description: r.description,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all varietals by name from DB!");
+  }
+};
+
 module.exports = {
   getVarietals,
   getVarietalById,
   updateVarietal,
   deleteVarietal,
+  getVarietalsByName,
 };
