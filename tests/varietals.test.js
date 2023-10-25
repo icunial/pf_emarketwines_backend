@@ -433,6 +433,17 @@ describe("DELETE /varietals/:id route -> delete varietal", () => {
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
+  it("it should return a 200 status code -> admin user logged in", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
   it("it should return 400 status code -> id invalid format", async () => {
     const response = await request(app).delete("/varietals/1");
     expect(response.status).toBe(400);
