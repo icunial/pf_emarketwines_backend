@@ -135,6 +135,13 @@ describe("POST /products route -> create new product validations", () => {
       "You are not authorized! You must have admin privileges..."
     );
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
   /*  it("it should return a 200 status code -> admin user logged in", async () => {
     const user = {
       email: "admin@ewines.com",
