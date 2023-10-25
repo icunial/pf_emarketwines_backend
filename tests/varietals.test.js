@@ -209,7 +209,7 @@ describe("GET /varietals route -> get all varietals", () => {
   it("it should return 200 status code -> get all varietals", async () => {
     const response = await request(app).get("/varietals");
     expect(response.status).toBe(200);
-    expect(response.body.data.length).toBe(1);
+    expect(response.body.data.length).toBe(3);
     expect(response.body.data[0].id).toBe(varietal1_id);
   });
 });
