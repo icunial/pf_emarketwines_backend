@@ -326,7 +326,10 @@ describe("POST /products route -> create new product success", () => {
       origin: "Origin 1",
       cellar: "Cellar",
     };
-    const response = await request(app).post("/products").send(product);
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Product 1");
     product1_id = response.body.data.id;
