@@ -495,9 +495,14 @@ describe("GET /varietals/:id route -> get varietal by id", () => {
 });
 
 describe("GET /varietals route -> get varietal by name", () => {
-  it("it should return 404 status code -> no varietals saved in DB", async () => {
+  it("it should return 404 status code -> varietal name not found", async () => {
     const response = await request(app).get("/varietals?name=hola");
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Varietals with name: hola not found!");
+  });
+  it("it should return 200 status code -> get varietals by name", async () => {
+    const response = await request(app).get("/varietals?name=v");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(2);
   });
 });
