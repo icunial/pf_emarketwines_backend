@@ -12,6 +12,7 @@ const passport = require("passport");
 const Publication = require("./src/models/Publication");
 const Product = require("./src/models/Product");
 const Varietal = require("./src/models/Varietal");
+const User = require("./src/models/User");
 
 // Models Relationships
 Product.hasMany(Publication);
@@ -19,6 +20,9 @@ Publication.belongsTo(Product);
 
 Varietal.hasMany(Product);
 Product.belongsTo(Varietal);
+
+User.hasMany(Publication);
+Publication.belongsTo(User);
 
 // Body-Parser Middleware
 app.use(express.json());
@@ -64,14 +68,14 @@ app.use((err, req, res, next) => {
 });
 
 // Initialized Express Server
-db.sync({}).then(() => {
+/* db.sync({}).then(() => {
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
   });
-});
-
-/* app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
 }); */
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`);
+});
 
 module.exports = app;
