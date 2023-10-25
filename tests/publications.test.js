@@ -681,7 +681,7 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Banned must be a true or false");
   });
-  it("it should return 400 status code -> publication not found", async () => {
+  it("it should return 494 status code -> publication not found", async () => {
     const response = await request(app)
       .put("/publications/45495fb5-e131-4683-afe7-37208301e73c?banned=true")
       .set("Cookie", cookie);
@@ -689,5 +689,13 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.body.msg).toBe(
       "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
     );
+  });
+  it("it should return 200 status code -> publication updated success", async () => {
+    const response = await request(app)
+      .put(`/publications/${publication1_id}?banned=true`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data[0].title).toBe("Publication 1");
+    expect(response.body.data[0].id).toBe(publication1_id);
   });
 });
