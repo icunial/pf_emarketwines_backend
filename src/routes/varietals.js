@@ -4,7 +4,10 @@ const router = express.Router();
 const Varietal = require("../models/Varietal");
 
 const validations = require("../utils/validations/varietals");
-const { validateId } = require("../utils/validations/index");
+const {
+  validateId,
+  ensureAuthenticated,
+} = require("../utils/validations/index");
 
 const {
   getVarietals,
@@ -65,8 +68,18 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Create New Varietal
-router.post("/", async (req, res, next) => {
+router.post("/", ensureAuthenticated, async (req, res, next) => {
   const { name, description } = req.body;
+
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
 
   // Validations
   if (validations.validateName(name)) {
@@ -112,9 +125,19 @@ router.post("/", async (req, res, next) => {
 });
 
 // Update Varietal
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   const { name, description } = req.body;
+
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
 
   if (!validateId(id)) {
     return res.status(400).json({
@@ -168,8 +191,19 @@ router.put("/:id", async (req, res, next) => {
 });
 
 // Delete Varietal
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
+
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+
   if (!validateId(id)) {
     return res.status(400).json({
       statusCode: 404,
