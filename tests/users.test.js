@@ -1261,4 +1261,11 @@ describe("DELETE /:id route -> delete user by id", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].email).toBe("user2@email.com");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
