@@ -26,9 +26,103 @@ const {
   orderPublicationsByNameZtoAWithoutId,
   orderPublicationsLessPriceWithoutId,
   orderPublicationsMorePriceWithoutId,
+  getAllPublications,
+  getBannedPublications,
 } = require("../controllers/publications");
 
 // Get all publications
+router.get("/all", ensureAuthenticated, async (req, res, next) => {
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+
+  try {
+    const publications = await getAllPublications();
+
+    if (!publications.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No publications saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: publications,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get all publications
+router.get("/banned", ensureAuthenticated, async (req, res, next) => {
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+
+  try {
+    const publications = await getBannedPublications();
+
+    if (!publications.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No publications saved in DB!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: publications,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get publication by ID
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const publication = await getPublicationById(id);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: publication,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get not banned publications
 router.get("/", async (req, res, next) => {
   const { word } = req.query;
 
@@ -96,36 +190,6 @@ router.get("/", async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       data: publications,
-    });
-  } catch (error) {
-    return next(error);
-  }
-});
-
-// Get publication by ID
-router.get("/:id", async (req, res, next) => {
-  const { id } = req.params;
-
-  if (!validateId(id)) {
-    return res.status(400).json({
-      statusCode: 404,
-      msg: `ID invalid format!`,
-    });
-  }
-
-  try {
-    const publication = await getPublicationById(id);
-
-    if (!publication.length) {
-      return res.status(404).json({
-        statusCode: 404,
-        msg: `Publication with ID: ${id} not found!`,
-      });
-    }
-
-    res.status(200).json({
-      statusCode: 200,
-      data: publication,
     });
   } catch (error) {
     return next(error);
