@@ -662,9 +662,16 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
   });
   it("it should return 400 status code -> id invalid format", async () => {
     const response = await request(app)
-      .put("/publications/1/true")
+      .put("/publications/1?banned=true")
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
+  });
+  it("it should return 400 status code -> banned parameter is missing", async () => {
+    const response = await request(app)
+      .put("/publications/45495fb5-e131-4683-afe7-37208301e73c")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Banned parameter is missing");
   });
 });
