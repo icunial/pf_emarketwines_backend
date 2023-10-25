@@ -674,4 +674,11 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Banned parameter is missing");
   });
+  it("it should return 400 status code -> banned must be true or false", async () => {
+    const response = await request(app)
+      .put("/publications/45495fb5-e131-4683-afe7-37208301e73c?banned=hola")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Banned must be a true or false");
+  });
 });
