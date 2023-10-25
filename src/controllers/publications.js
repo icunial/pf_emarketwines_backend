@@ -680,6 +680,53 @@ const orderPublicationsByNameZtoA = async () => {
   }
 };
 
+// Get publications ordered by name from Z to A without logged in user id
+const orderPublicationsByNameZtoAWithoutId = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+      where: {
+        userId: {
+          [Op.not]: id,
+        },
+        isBanned: false,
+      },
+      order: [["title", "DESC"]],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to order publications by name from Z to A");
+  }
+};
+
 // Ban or not publication
 const updateIsBannedPublication = async (id, banned) => {
   try {
@@ -766,4 +813,5 @@ module.exports = {
   orderPublicationsMorePriceWithoutId,
   orderPublicationsLessPriceWithoutId,
   orderPublicationsByNameAtoZWithoutId,
+  orderPublicationsByNameZtoAWithoutId,
 };
