@@ -110,12 +110,17 @@ const getPublicationById = async (id) => {
 
   try {
     const dbResult = await Publication.findByPk(id, {
-      include: {
-        model: Product,
-        include: {
-          model: Varietal,
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
         },
-      },
+        {
+          model: User,
+        },
+      ],
     });
 
     if (dbResult) {
@@ -132,6 +137,8 @@ const getPublicationById = async (id) => {
         origin: dbResult.product.origin,
         cellar: dbResult.product.cellar,
         varietal: dbResult.product.varietal.name,
+        username: dbResult.user.username,
+        email: dbResult.user.email,
       });
     }
 
