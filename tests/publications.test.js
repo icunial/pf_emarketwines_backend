@@ -528,4 +528,10 @@ describe("GET /order/:opt route -> order features routes", () => {
     expect(response.body.data.length).toBe(5);
     expect(response.body.data[0].price).toBe(100);
   });
+  it("it should return 200 status code -> less opt", async () => {
+    const response = await request(app).get("/publications/order/az");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(5);
+    expect(response.body.data[0].title).toBe("Publication 1");
+  });
 });
