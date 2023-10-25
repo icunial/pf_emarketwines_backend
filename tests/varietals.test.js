@@ -144,6 +144,17 @@ describe("POST /varietals route -> Create new varietal success", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
+  it("it should return a 200 status code -> admin user logged in", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
   it("it should return 201 status code -> new varietal created", async () => {
     const varietal = {
       name: "Varietal 1",
