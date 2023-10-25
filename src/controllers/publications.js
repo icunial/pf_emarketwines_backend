@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 const { Op } = require("sequelize");
 
-// Get all publications
+// Get all not banned publications
 const getPublications = async () => {
   const results = [];
 
@@ -27,6 +27,97 @@ const getPublications = async () => {
       {
         where: {
           isBanned: false,
+        },
+      }
+    );
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          product: r.product.name,
+          varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all publications from DB!");
+  }
+};
+
+// Get all publications
+const getAllPublications = async () => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          product: r.product.name,
+          varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all publications from DB!");
+  }
+};
+
+// Get all banned publications
+const getBannedPublications = async () => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll(
+      {
+        include: [
+          {
+            model: Product,
+            include: {
+              model: Varietal,
+            },
+          },
+          {
+            model: User,
+          },
+        ],
+      },
+      {
+        where: {
+          isBanned: true,
         },
       }
     );
@@ -78,8 +169,6 @@ const getPublicationsWithoutId = async (id) => {
         },
       },
     });
-
-    console.log(dbResults);
 
     if (dbResults) {
       dbResults.forEach((r) => {
@@ -475,4 +564,6 @@ module.exports = {
   updateAmountPublication,
   getPublicationsWithoutId,
   getPublicationsWithWordWithoutId,
+  getAllPublications,
+  getBannedPublications,
 };
