@@ -382,13 +382,17 @@ router.put("/amount/:id", async (req, res, next) => {
 });
 
 // Ban or not publications
-router.put("/:id/:banned", async (req, res, next) => {
-  const { id, banned } = req.params;
+router.put("/:id", ensureAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+  const { banned } = req.query;
 
-  if (validations.validateBanned(banned)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: validations.validateBanned(banned),
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
     });
   }
 
@@ -396,6 +400,13 @@ router.put("/:id/:banned", async (req, res, next) => {
     return res.status(400).json({
       statusCode: 400,
       msg: `ID invalid format!`,
+    });
+  }
+
+  if (validations.validateBanned(banned)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateBanned(banned),
     });
   }
 
