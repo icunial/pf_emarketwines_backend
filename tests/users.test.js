@@ -1247,4 +1247,12 @@ describe("DELETE /:id route -> delete user by id", () => {
       "User with ID: 7fd047d7-3dc9-471c-8dce-d8d48674c726 not found!"
     );
   });
+  it("it should return 200 status code -> user deleted success", async () => {
+    const response = await request(app)
+      .delete(`/users/${user1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].email).toBe("user1@email.com");
+  });
 });
