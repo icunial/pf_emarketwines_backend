@@ -510,5 +510,7 @@ describe("GET /publications/:id route -> get publication by id", () => {
     expect(response.body.data[0].product).toBe("Product 1");
     expect(response.body.data[0].varietal).toBe("Varietal 1");
     expect(response.body.data[0].id).toBe(publication1_id);
+    expect(response.body.data[0].username).toBe("User One");
+    expect(response.body.data[0].email).toBe("user1@email.com");
   });
 });
