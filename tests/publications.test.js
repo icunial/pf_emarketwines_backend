@@ -471,6 +471,13 @@ describe("GET /publications route -> get all publications", () => {
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(5);
   });
+  it("it should return 200 status code -> get all publications without user logged in id", async () => {
+    const response = await request(app)
+      .get("/publications")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(2);
+  });
 });
 
 /*
