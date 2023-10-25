@@ -505,4 +505,9 @@ describe("GET /varietals route -> get varietal by name", () => {
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(2);
   });
+  it("it should return 200 status code -> get varietals by name", async () => {
+    const response = await request(app).get("/varietals?name=2");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+  });
 });
