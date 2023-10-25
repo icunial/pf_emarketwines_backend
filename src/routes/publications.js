@@ -79,7 +79,7 @@ router.get("/banned", ensureAuthenticated, async (req, res, next) => {
     if (!publications.length) {
       return res.status(404).json({
         statusCode: 404,
-        msg: `No publications saved in DB!`,
+        msg: `No banned publications saved in DB!`,
       });
     }
 
