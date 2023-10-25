@@ -706,4 +706,9 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].id).toBe(publication1_id);
   });
+  it("it should return 200 status code -> get not banned publications", async () => {
+    const response = await request(app).get("/publications");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(4);
+  });
 });
