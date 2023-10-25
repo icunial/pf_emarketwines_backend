@@ -177,7 +177,10 @@ describe("POST /varietals route -> Create new varietal success", () => {
       name: "Varietal 2",
       description: "Description Varietal 2",
     };
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     varietal2_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Varietal 2");
@@ -191,7 +194,10 @@ describe("POST /varietals route -> Create new varietal success", () => {
       name: "Varietal 3",
       description: "Description Varietal 3",
     };
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     varietal3_id = response.body.data.id;
     expect(response.status).toBe(201);
     expect(response.body.data.name).toBe("Varietal 3");
