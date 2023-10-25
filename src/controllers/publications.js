@@ -10,26 +10,23 @@ const getPublications = async () => {
   const results = [];
 
   try {
-    const dbResults = await Publication.findAll(
-      {
-        include: [
-          {
-            model: Product,
-            include: {
-              model: Varietal,
-            },
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
           },
-          {
-            model: User,
-          },
-        ],
-      },
-      {
-        where: {
-          isBanned: false,
         },
-      }
-    );
+        {
+          model: User,
+        },
+      ],
+
+      where: {
+        isBanned: false,
+      },
+    });
 
     if (dbResults) {
       dbResults.forEach((r) => {
