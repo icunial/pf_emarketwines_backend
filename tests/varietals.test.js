@@ -51,20 +51,6 @@ describe("POST /users/register route -> create an admin new user", () => {
 
 let cookie;
 
-/* describe("POST /users/login route -> login process", () => {
-  it("it should return a 200 status code -> user logged in", async () => {
-    const user = {
-      email: "user1@email.com",
-      password: "Password14!",
-    };
-
-    const response = await request(app).post("/users/login").send(user);
-    expect(response.status).toBe(200);
-    expect(response.body).toBe(true);
-    cookie = response.headers["set-cookie"];
-  });
-}); */
-
 describe("GET /varietals route -> no varietals saved in DB", () => {
   it("it should return 404 status code -> no varietals saved in DB", async () => {
     const response = await request(app).get("/varietals");
@@ -126,7 +112,17 @@ describe("POST /varietals route -> Create new varietal success", () => {
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
+  it("it should return a 200 status code -> user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
 
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
   it("it should return 201 status code -> new varietal created", async () => {
     const varietal = {
       name: "Varietal 1",
