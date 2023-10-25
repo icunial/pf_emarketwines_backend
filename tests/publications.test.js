@@ -540,4 +540,9 @@ describe("GET /order/:opt route -> order features routes", () => {
     expect(response.body.data.length).toBe(5);
     expect(response.body.data[0].title).toBe("Publication 5");
   });
+  it("it should return 400 status code -> filter not available", async () => {
+    const response = await request(app).get("/publications/order/other");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Filter not available!");
+  });
 });
