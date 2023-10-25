@@ -137,6 +137,13 @@ describe("POST /varietals route -> Create new varietal success", () => {
       "You are not authorized! You must have admin privileges..."
     );
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
   it("it should return 201 status code -> new varietal created", async () => {
     const varietal = {
       name: "Varietal 1",
