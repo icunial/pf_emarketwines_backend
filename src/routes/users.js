@@ -21,6 +21,7 @@ const {
   getTotalUsersByRegion,
   getBannedUsers,
   getNotBannedUsers,
+  deleteUserById,
 } = require("../controllers/users");
 
 const {
@@ -617,6 +618,46 @@ router.put("/:id", ensureAuthenticated, async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       data: updatedUser,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Delete user
+router.delete("/:id", ensureAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const deletedUser = await deleteUserById(id);
+
+    if (!deletedUser.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `User with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: deletedUser,
     });
   } catch (error) {
     return next(error);
