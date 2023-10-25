@@ -334,7 +334,6 @@ describe("POST /publications route -> create new publication validations", () =>
   });
 });
 
-/*
 describe("POST /publications route -> product validations", () => {
   it("it should return 404 status code -> product not found", async () => {
     const publication = {
@@ -342,15 +341,19 @@ describe("POST /publications route -> product validations", () => {
       price: 100,
       amount: 100,
       description: "Description Publication 1",
-      product: "Product 2",
+      product: "Product 3",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(404);
-    expect(response.body.msg).toBe("Product Product 2 not found!");
+    expect(response.body.msg).toBe("Product Product 3 not found!");
   });
 });
 
+/*
 let publication1_id;
 
 describe("POST /publications route -> create new publication success", () => {
