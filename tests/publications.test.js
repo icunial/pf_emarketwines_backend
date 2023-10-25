@@ -591,4 +591,11 @@ describe("GET /order/:opt route -> order features routes with user logged in", (
     expect(response.body.data.length).toBe(3);
     expect(response.body.data[0].title).toBe("Publication 5");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
