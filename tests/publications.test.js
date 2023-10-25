@@ -353,8 +353,11 @@ describe("POST /publications route -> product validations", () => {
   });
 });
 
-/*
-let publication1_id;
+let publication1_id,
+  publication2_id,
+  publication3_id,
+  publication4_id,
+  publication5_id;
 
 describe("POST /publications route -> create new publication success", () => {
   it("it should return 201 status code -> new publication success", async () => {
@@ -366,12 +369,34 @@ describe("POST /publications route -> create new publication success", () => {
       product: "Product 1",
     };
 
-    const response = await request(app).post("/publications").send(publication);
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
     expect(response.status).toBe(201);
     expect(response.body.data.title).toBe("Publication 1");
     publication1_id = response.body.data.id;
   });
+  it("it should return 201 status code -> new publication success", async () => {
+    const publication = {
+      title: "Publication 2",
+      price: 500,
+      amount: 1000,
+      description: "Description Publication 2",
+      product: "Product 2",
+    };
+
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.title).toBe("Publication 2");
+    publication2_id = response.body.data.id;
+  });
 });
+
+/*
 
 describe("GET /publications route -> get all publications", () => {
   it("it should return 200 status code -> get all publications", async () => {
