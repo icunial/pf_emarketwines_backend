@@ -243,7 +243,10 @@ describe("POST /varietals route -> varietal already exists", () => {
       name: "Varietal 1",
       description: "Description Varietal 2",
     };
-    const response = await request(app).post("/varietals").send(varietal);
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe(
       "Varietal Varietal 1 exists. Try with another one!"
