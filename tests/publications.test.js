@@ -567,7 +567,7 @@ describe("GET /order/:opt route -> order features routes with user logged in", (
     expect(response.body.data.length).toBe(3);
     expect(response.body.data[0].price).toBe(3000);
   });
-  it("it should return 200 status code -> more opt", async () => {
+  it("it should return 200 status code -> less opt", async () => {
     const response = await request(app)
       .get("/publications/order/less")
       .set("Cookie", cookie);
@@ -575,12 +575,20 @@ describe("GET /order/:opt route -> order features routes with user logged in", (
     expect(response.body.data.length).toBe(3);
     expect(response.body.data[0].price).toBe(1500);
   });
-  it("it should return 200 status code -> more opt", async () => {
+  it("it should return 200 status code -> az opt", async () => {
     const response = await request(app)
       .get("/publications/order/az")
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(3);
     expect(response.body.data[0].title).toBe("Publication 3");
+  });
+  it("it should return 200 status code -> za opt", async () => {
+    const response = await request(app)
+      .get("/publications/order/za")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(3);
+    expect(response.body.data[0].title).toBe("Publication 5");
   });
 });
