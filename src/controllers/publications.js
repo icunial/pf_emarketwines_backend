@@ -787,12 +787,6 @@ const updateIsBannedPublication = async (id, banned) => {
 // Update amount publication
 const updateAmountPublication = async (id, amount) => {
   try {
-    const publicationFound = await getPublicationById(id);
-
-    if (!publicationFound.length) {
-      return [];
-    }
-
     let updatedPublication;
 
     if (amount === "0") {
