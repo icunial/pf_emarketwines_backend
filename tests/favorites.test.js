@@ -338,3 +338,16 @@ describe("POST /:id route -> post a favorite", () => {
     expect(response.body.msg).toBe("You cannot favorite a publication twice!");
   });
 });
+
+describe("GET /:id route -> get all favorites of a publication", () => {
+  it("it should return a 400 status code -> publication not found", async () => {
+    const response = await request(app).get(
+      "/favorites/45495fb5-e131-4683-afe7-37208301e73c"
+    );
+
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
+    );
+  });
+});
