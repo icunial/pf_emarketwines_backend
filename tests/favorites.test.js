@@ -393,4 +393,9 @@ describe("DELETE /favorites/:id route -> delete a favorite", () => {
       `You removed your favorite of publication ${publication1_id}`
     );
   });
+  it("it should return a 200 status code -> get all favorites", async () => {
+    const response = await request(app).get(`/favorites/${publication1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.favorites).toBe(0);
+  });
 });
