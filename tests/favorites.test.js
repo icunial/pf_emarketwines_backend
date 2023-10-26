@@ -321,4 +321,13 @@ describe("POST /:id route -> post a favorite", () => {
       "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
     );
   });
+  it("it should return a 201 status code -> favorite created success", async () => {
+    const response = await request(app)
+      .post(`/favorites/${publication1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.msg).toBe(
+      `You favorited publication: ${publication1_id}!`
+    );
+  });
 });
