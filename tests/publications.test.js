@@ -744,4 +744,11 @@ describe("PUT /amount/:id route -> update publication amount", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 400 status code -> amount parameter is missing", async () => {
+    const response = await request(app)
+      .put("/publications/amount/45495fb5-e131-4683-afe7-37208301e73c")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Amount parameter is missing");
+  });
 });
