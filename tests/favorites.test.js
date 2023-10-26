@@ -340,7 +340,7 @@ describe("POST /:id route -> post a favorite", () => {
 });
 
 describe("GET /:id route -> get all favorites of a publication", () => {
-  it("it should return a 400 status code -> publication not found", async () => {
+  it("it should return a 404 status code -> publication not found", async () => {
     const response = await request(app).get(
       "/favorites/45495fb5-e131-4683-afe7-37208301e73c"
     );
@@ -363,7 +363,7 @@ describe("GET /:id route -> get all favorites of a publication", () => {
 });
 
 describe("DELETE /favorites/:id route -> delete a favorite", () => {
-  it("it should return a 400 status code -> publication not found", async () => {
+  it("it should return a 404 status code -> publication not found", async () => {
     const response = await request(app)
       .delete("/favorites/45495fb5-e131-4683-afe7-37208301e73c")
       .set("Cookie", cookie);
@@ -371,6 +371,16 @@ describe("DELETE /favorites/:id route -> delete a favorite", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(
       "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
+    );
+  });
+  it("it should return a 400 status code -> can not delete a favorite", async () => {
+    const response = await request(app)
+      .delete(`/favorites/${publication2_id}`)
+      .set("Cookie", cookie);
+
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "You can not delete a favorite of a publication you did not favorite!"
     );
   });
 });
