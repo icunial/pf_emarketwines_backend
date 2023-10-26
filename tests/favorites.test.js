@@ -65,3 +65,47 @@ describe("POST /users/register route -> create an admin new user", () => {
     expect(response.body.data.email).toBe("admin@ewines.com");
   });
 });
+
+let varietal1_id, varietal2_id;
+
+describe("POST /varietals route -> Create new varietal success", () => {
+  it("it should return a 200 status code -> admin user logged in", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 201 status code -> new varietal created", async () => {
+    const varietal = {
+      name: "Varietal 1",
+      description: "Description Varietal 1",
+    };
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
+    varietal1_id = response.body.data.id;
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Varietal 1");
+    expect(response.body.data.description).toBe("Description Varietal 1");
+  });
+  it("it should return 201 status code -> new varietal created", async () => {
+    const varietal = {
+      name: "Varietal 2",
+      description: "Description Varietal 2",
+    };
+    const response = await request(app)
+      .post("/varietals")
+      .send(varietal)
+      .set("Cookie", cookie);
+    varietal2_id = response.body.data.id;
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Varietal 2");
+    expect(response.body.data.description).toBe("Description Varietal 2");
+  });
+});
