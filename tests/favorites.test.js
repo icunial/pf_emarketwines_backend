@@ -285,3 +285,13 @@ describe("POST /publications route -> create new publication success", () => {
 });
 
 /******************************************************** */
+
+describe("POST /:id route -> post a favorite", () => {
+  it("it should return a 401 status code -> not authorized", async () => {
+    const response = await request(app).post(
+      "/favorites/45495fb5-e131-4683-afe7-37208301e73c"
+    );
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
