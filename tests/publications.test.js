@@ -797,4 +797,11 @@ describe("PUT /amount/:id route -> update publication amount", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].amount).toBe(50);
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
