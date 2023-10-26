@@ -7,10 +7,6 @@ const Favorite = db.define("favorite", {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  isBanned: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
 });
 
 module.exports = Favorite;
