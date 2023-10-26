@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Publication = require("../models/Publication");
 const Favorite = require("../models/Favorite");
+const User = require("../models/User");
 
 const { getPublicationById } = require("../controllers/publications");
 
@@ -11,6 +12,65 @@ const {
   ensureAuthenticated,
 } = require("../utils/validations/index");
 
+// Get favorites of a publication
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const results = [];
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const publication = await getPublicationById(id);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    const favorites = await Favorite.findAll({
+      include: [
+        {
+          model: Publication,
+        },
+        {
+          model: User,
+        },
+      ],
+      where: {
+        publicationId: id,
+      },
+    });
+
+    if (favorites) {
+      favorites.forEach((r) => {
+        results.push({
+          publication: r.publication.title,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    console.log(results);
+
+    res.status(200).json({
+      statusCode: 200,
+      favorites: results.length,
+      data: results,
+    });
+  } catch (error) {
+    return next("Error trying to get all favorites of a publication");
+  }
+});
+
+// Create a new favorite
 router.post("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
 
