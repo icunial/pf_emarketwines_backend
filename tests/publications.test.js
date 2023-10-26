@@ -760,4 +760,13 @@ describe("PUT /amount/:id route -> update publication amount", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Amount must be a number");
   });
+  it("it should return 400 status code -> amount must be 0 or higher", async () => {
+    const response = await request(app)
+      .put(
+        "/publications/amount/45495fb5-e131-4683-afe7-37208301e73c?amount=-1"
+      )
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Amount must be 0 or higher");
+  });
 });
