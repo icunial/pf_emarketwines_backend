@@ -350,4 +350,9 @@ describe("GET /:id route -> get all favorites of a publication", () => {
       "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
     );
   });
+  it("it should return a 200 status code -> get all favorites", async () => {
+    const response = await request(app).get(`/favorites/${publication2_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.favorites).toBe(0);
+  });
 });
