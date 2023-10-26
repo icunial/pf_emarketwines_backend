@@ -719,3 +719,11 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("PUT /amount/:id route -> update publication amount", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).get("/publications/all");
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
