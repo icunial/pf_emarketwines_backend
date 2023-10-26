@@ -350,9 +350,9 @@ describe("GET /:id route -> get all favorites of a publication", () => {
       "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
     );
   });
-  it("it should return a 200 status code -> get all favorites", async () => {
+  it("it should return a 404 status code -> no favorites", async () => {
     const response = await request(app).get(`/favorites/${publication2_id}`);
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(404);
     expect(response.body.favorites).toBe(0);
   });
   it("it should return a 200 status code -> get all favorites", async () => {
@@ -393,9 +393,9 @@ describe("DELETE /favorites/:id route -> delete a favorite", () => {
       `You removed your favorite of publication ${publication1_id}`
     );
   });
-  it("it should return a 200 status code -> get all favorites", async () => {
+  it("it should return a 404 status code -> no favorites", async () => {
     const response = await request(app).get(`/favorites/${publication1_id}`);
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(404);
     expect(response.body.favorites).toBe(0);
   });
   it("it should return a 200 status code -> logout process", async () => {
