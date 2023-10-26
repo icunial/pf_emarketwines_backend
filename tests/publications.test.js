@@ -722,7 +722,7 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
 
 describe("PUT /amount/:id route -> update publication amount", () => {
   it("it should return 401 status code -> not authorized", async () => {
-    const response = await request(app).get("/publications/all");
+    const response = await request(app).put("/publications/amount/1");
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
@@ -736,5 +736,12 @@ describe("PUT /amount/:id route -> update publication amount", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
+  });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app)
+      .put("/publications/amount/1")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
   });
 });
