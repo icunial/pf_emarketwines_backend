@@ -330,4 +330,11 @@ describe("POST /:id route -> post a favorite", () => {
       `You favorited publication: ${publication1_id}!`
     );
   });
+  it("it should return a 400 status code -> can not favorite twice", async () => {
+    const response = await request(app)
+      .post(`/favorites/${publication1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("You cannot favorite a publication twice!");
+  });
 });
