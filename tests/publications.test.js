@@ -711,4 +711,11 @@ describe("PUT /:id/:banned route -> bar or not publications", () => {
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(4);
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
