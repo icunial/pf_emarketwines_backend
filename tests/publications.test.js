@@ -780,4 +780,13 @@ describe("PUT /amount/:id route -> update publication amount", () => {
       "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
     );
   });
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app)
+      .put(`/publications/amount/${publication3_id}?amount=50`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You can only update your publications..."
+    );
+  });
 });
