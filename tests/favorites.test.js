@@ -109,3 +109,47 @@ describe("POST /varietals route -> Create new varietal success", () => {
     expect(response.body.data.description).toBe("Description Varietal 2");
   });
 });
+
+let product1_id, product2_id;
+
+describe("POST /products route -> create new product success", () => {
+  it("it should return 201 status code -> new product created", async () => {
+    const product = {
+      name: "Product 1",
+      type: "Type 1",
+      varietal: "Varietal 1",
+      origin: "Origin 1",
+      cellar: "Cellar 1",
+    };
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Product 1");
+    product1_id = response.body.data.id;
+  });
+  it("it should return 201 status code -> new product created", async () => {
+    const product = {
+      name: "Product 2",
+      type: "Type 2",
+      varietal: "Varietal 2",
+      origin: "Origin 2",
+      cellar: "Cellar 2",
+    };
+    const response = await request(app)
+      .post("/products")
+      .send(product)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.name).toBe("Product 2");
+    product2_id = response.body.data.id;
+  });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
