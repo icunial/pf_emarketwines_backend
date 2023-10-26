@@ -330,7 +330,7 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
 });
 
 // Update publication amount
-router.put("/amount/:id", async (req, res, next) => {
+router.put("/amount/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
   const { amount } = req.query;
 
@@ -363,14 +363,26 @@ router.put("/amount/:id", async (req, res, next) => {
   }
 
   try {
-    const updatedPublication = await updateAmountPublication(id, amount);
+    const publication = await getPublicationById(id);
 
-    if (!updatedPublication.length) {
+    if (!publication.length) {
       return res.status(404).json({
         statusCode: 404,
         msg: `Publication with ID: ${id} not found!`,
       });
     }
+
+    if (publication[0].username !== req.user.username) {
+      return res.status(401).json({
+        statusCode: 401,
+        msg: "You are not authorized! You can only update your publications...",
+      });
+    }
+
+    const updatedPublication = await updateAmountPublication(
+      id,
+      parseInt(amount)
+    );
 
     res.status(200).json({
       statusCode: 200,
