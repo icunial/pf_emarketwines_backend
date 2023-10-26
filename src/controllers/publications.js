@@ -24,6 +24,9 @@ const getPublications = async () => {
       ],
 
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
       },
     });
@@ -156,6 +159,9 @@ const getPublicationsWithoutId = async (id) => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
         userId: {
           [Op.not]: id,
@@ -250,6 +256,9 @@ const getPublicationsWithWord = async (word) => {
       ],
 
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
         [Op.or]: [
           {
@@ -307,6 +316,9 @@ const getPublicationsWithWordWithoutId = async (id, word) => {
       ],
 
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         userId: {
           [Op.not]: id,
         },
@@ -366,6 +378,9 @@ const orderPublicationsMorePrice = async () => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
       },
       order: [["price", "DESC"]],
@@ -412,6 +427,9 @@ const orderPublicationsMorePriceWithoutId = async (id) => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         userId: {
           [Op.not]: id,
         },
@@ -461,6 +479,9 @@ const orderPublicationsLessPrice = async () => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
       },
       order: [["price", "ASC"]],
@@ -507,6 +528,9 @@ const orderPublicationsLessPriceWithoutId = async (id) => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         userId: {
           [Op.not]: id,
         },
@@ -556,6 +580,9 @@ const orderPublicationsByNameAtoZ = async () => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
       },
       order: [["title", "ASC"]],
@@ -600,6 +627,9 @@ const orderPublicationsByNameAtoZWithoutId = async (id) => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         userId: {
           [Op.not]: id,
         },
@@ -647,6 +677,9 @@ const orderPublicationsByNameZtoA = async () => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         isBanned: false,
       },
       order: [["title", "DESC"]],
@@ -691,6 +724,9 @@ const orderPublicationsByNameZtoAWithoutId = async (id) => {
         },
       ],
       where: {
+        amount: {
+          [Op.gt]: 0,
+        },
         userId: {
           [Op.not]: id,
         },
