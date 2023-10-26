@@ -355,4 +355,9 @@ describe("GET /:id route -> get all favorites of a publication", () => {
     expect(response.status).toBe(200);
     expect(response.body.favorites).toBe(0);
   });
+  it("it should return a 200 status code -> get all favorites", async () => {
+    const response = await request(app).get(`/favorites/${publication1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.favorites).toBe(1);
+  });
 });
