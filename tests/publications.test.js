@@ -769,4 +769,15 @@ describe("PUT /amount/:id route -> update publication amount", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Amount must be 0 or higher");
   });
+  it("it should return 404 status code -> publication not found", async () => {
+    const response = await request(app)
+      .put(
+        "/publications/amount/45495fb5-e131-4683-afe7-37208301e73c?amount=50"
+      )
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 45495fb5-e131-4683-afe7-37208301e73c not found!"
+    );
+  });
 });
