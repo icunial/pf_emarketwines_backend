@@ -383,4 +383,14 @@ describe("DELETE /favorites/:id route -> delete a favorite", () => {
       "You can not delete a favorite of a publication you did not favorite!"
     );
   });
+  it("it should return a 200 status code -> delete favorite success", async () => {
+    const response = await request(app)
+      .delete(`/favorites/${publication1_id}`)
+      .set("Cookie", cookie);
+
+    expect(response.status).toBe(200);
+    expect(response.body.msg).toBe(
+      `You removed your favorite of publication ${publication1_id}`
+    );
+  });
 });
