@@ -789,4 +789,12 @@ describe("PUT /amount/:id route -> update publication amount", () => {
       "You are not authorized! You can only update your publications..."
     );
   });
+  it("it should return 200 status code -> updated publication success", async () => {
+    const response = await request(app)
+      .put(`/publications/amount/${publication1_id}?amount=50`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].amount).toBe(50);
+  });
 });
