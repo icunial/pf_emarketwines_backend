@@ -891,3 +891,13 @@ describe("GET /buys/sales -> get user sales", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /buys/publication/:id route -> get publication buys", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).get(
+      "/buys/publication/8022e314-e56a-4eff-8c10-fae4a0eadc40"
+    );
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
