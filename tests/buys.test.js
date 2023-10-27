@@ -911,4 +911,13 @@ describe("GET /buys/publication/:id route -> get publication buys", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> publication not found", async () => {
+    const response = await request(app)
+      .get("/buys/publication/8022e314-e56a-4eff-8c10-fae4a0eadc40")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
