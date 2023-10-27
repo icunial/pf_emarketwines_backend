@@ -546,14 +546,14 @@ describe("POST /buys route -> create new buy validations", () => {
 });
 
 describe("GET /buys route -> no buys saved in db", () => {
-  it("it should return a 200 status code -> logout process", async () => {
+  it("it should return 200 status code -> logout process", async () => {
     const response = await request(app)
       .get("/users/logout")
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
-  it("it should return a 200 status code -> admin user logged in", async () => {
+  it("it should return 200 status code -> admin user logged in", async () => {
     const user = {
       email: "admin@ewines.com",
       password: "Password14!",
@@ -569,7 +569,7 @@ describe("GET /buys route -> no buys saved in db", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("No Buys saved in DB!");
   });
-  it("it should return a 200 status code -> logout process", async () => {
+  it("it should return 200 status code -> logout process", async () => {
     const response = await request(app)
       .get("/users/logout")
       .set("Cookie", cookie);
@@ -579,7 +579,7 @@ describe("GET /buys route -> no buys saved in db", () => {
 });
 
 describe("POST /buys route -> new buy created success", () => {
-  it("it should return a 200 status code -> no admin user logged in", async () => {
+  it("it should return 200 status code -> no admin user logged in", async () => {
     const user = {
       email: "user1@email.com",
       password: "Password14!",
@@ -605,7 +605,7 @@ describe("POST /buys route -> new buy created success", () => {
     expect(response.body.data.publicationId).toBe(publication3_id);
     expect(response.body.data.userId).toBe(user1_id);
   });
-  it("it should return a 200 status code -> logout process", async () => {
+  it("it should return 200 status code -> logout process", async () => {
     const response = await request(app)
       .get("/users/logout")
       .set("Cookie", cookie);
@@ -620,7 +620,7 @@ describe("GET /buys route -> get all buys", () => {
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
-  it("it should return a 200 status code -> no admin user logged in", async () => {
+  it("it should return 200 status code -> no admin user logged in", async () => {
     const user = {
       email: "user1@email.com",
       password: "Password14!",
@@ -638,14 +638,14 @@ describe("GET /buys route -> get all buys", () => {
       "You are not authorized! You must have admin privileges..."
     );
   });
-  it("it should return a 200 status code -> logout process", async () => {
+  it("it should return 200 status code -> logout process", async () => {
     const response = await request(app)
       .get("/users/logout")
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
-  it("it should return a 200 status code -> admin user logged in", async () => {
+  it("it should return 200 status code -> admin user logged in", async () => {
     const user = {
       email: "admin@ewines.com",
       password: "Password14!",
@@ -655,5 +655,10 @@ describe("GET /buys route -> get all buys", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
+  });
+  it("it should return 200 status code -> get all buys", async () => {
+    const response = await request(app).get("/buys").set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
   });
 });
