@@ -694,4 +694,13 @@ describe("GET /buys/:id route -> get buy by id", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> buy not found", async () => {
+    const response = await request(app)
+      .get("/buys/8022e314-e56a-4eff-8c10-fae4a0eadc40")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Buy with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
