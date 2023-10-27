@@ -63,6 +63,45 @@ router.get("/sales", ensureAuthenticated, async (req, res, next) => {
   }
 });
 
+// Get publication buys
+router.get("/publication/:id", ensureAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+  try {
+    const publication = await getPublicationById(id);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    const buys = await getPublicationBuys(id);
+
+    if (!buys.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `The publication ${id} does not have buys!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      buysAmount: buys.length,
+      data: buys,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Get buy by id
 router.get("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
