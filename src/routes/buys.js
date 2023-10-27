@@ -21,6 +21,27 @@ const {
 
 const { getPublicationById } = require("../controllers/publications");
 
+// Get user buys
+router.get("/own", ensureAuthenticated, async (req, res, next) => {
+  try {
+    const buys = await getUserBuys(req.user.id);
+
+    if (!buys.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: "You have no buys!",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: buys,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Get buy by id
 router.get("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
