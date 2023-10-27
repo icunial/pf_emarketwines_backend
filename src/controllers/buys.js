@@ -77,7 +77,124 @@ const getBuyById = async (id) => {
   }
 };
 
+// Get user sales
+const getUserSales = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Buy.findAll({
+      include: [
+        {
+          model: Publication,
+          where: {
+            userId: id,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          currency: r.currency,
+          paymentMethod: r.paymentMethod,
+          totalAmount: r.totalAmount,
+          publication: r.publication.title,
+          username: r.user.username,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all user sales");
+  }
+};
+
+// Get user buys
+const getUserBuys = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Buy.findAll({
+      include: [
+        {
+          model: Publication,
+        },
+        {
+          model: User,
+          where: {
+            id,
+          },
+        },
+      ],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          currency: r.currency,
+          paymentMethod: r.paymentMethod,
+          totalAmount: r.totalAmount,
+          publication: r.publication.title,
+          username: r.user.username,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all buys");
+  }
+};
+
+// Get publication buys
+const getPublicationBuys = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Buy.findAll({
+      include: [
+        {
+          model: Publication,
+          where: {
+            id,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          currency: r.currency,
+          paymentMethod: r.paymentMethod,
+          totalAmount: r.totalAmount,
+          publication: r.publication.title,
+          username: r.user.username,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all buys");
+  }
+};
+
 module.exports = {
   getAllBuys,
   getBuyById,
+  getUserSales,
+  getUserBuys,
+  getPublicationBuys,
 };
