@@ -769,4 +769,11 @@ describe("GET /buys/:id route -> get buy by id", () => {
     expect(response.body.data[0].id).toBe(buy1_id);
     expect(response.body.data[0].username).toBe("User One");
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
