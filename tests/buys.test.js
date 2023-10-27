@@ -343,7 +343,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CARD",
-      totalAmount: 1000,
     };
 
     const response = await request(app).post("/buys").send(buy);
@@ -364,7 +363,6 @@ describe("POST /buys route -> create new buy validations", () => {
   it("it should return 400 status code -> currency parameter is missing", async () => {
     const buy = {
       paymentMethod: "CARD",
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -379,7 +377,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: 1234,
       paymentMethod: "CARD",
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -394,7 +391,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "EUR",
       paymentMethod: "CARD",
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -408,7 +404,6 @@ describe("POST /buys route -> create new buy validations", () => {
   it("it should return 400 status code -> payment method is missing", async () => {
     const buy = {
       currency: "ARG",
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -423,7 +418,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: 1234,
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -438,7 +432,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "DEB",
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -449,55 +442,10 @@ describe("POST /buys route -> create new buy validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Payment Method not available");
   });
-  it("it should return 400 status code -> total amount parameter is missing", async () => {
-    const buy = {
-      currency: "ARG",
-      paymentMethod: "CASH",
-      publicationId: 1,
-    };
-
-    const response = await request(app)
-      .post("/buys")
-      .send(buy)
-      .set("Cookie", cookie);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Total Amount parameter is missing");
-  });
-  it("it should return 400 status code -> total amount must be higher than 0", async () => {
-    const buy = {
-      currency: "ARG",
-      paymentMethod: "CASH",
-      totalAmount: 0,
-      publicationId: 1,
-    };
-
-    const response = await request(app)
-      .post("/buys")
-      .send(buy)
-      .set("Cookie", cookie);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Total Amount must be higher than 0");
-  });
-  it("it should return 400 status code -> total amount must be a number", async () => {
-    const buy = {
-      currency: "ARG",
-      paymentMethod: "CASH",
-      totalAmount: "hola",
-      publicationId: 1,
-    };
-
-    const response = await request(app)
-      .post("/buys")
-      .send(buy)
-      .set("Cookie", cookie);
-    expect(response.status).toBe(400);
-    expect(response.body.msg).toBe("Total Amount must be a number");
-  });
   it("it should return 400 status code -> publication id parameter is missing", async () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
     };
 
     const response = await request(app)
@@ -511,7 +459,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
       publicationId: 1,
     };
 
@@ -526,7 +473,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
       publicationId: "8022e314-e56a-4eff-8c10-fae4a0eadc40",
     };
 
@@ -543,7 +489,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
       publicationId: "8022e314-e56a-4eff-8c10-fae4a0eadc40",
     };
 
@@ -560,7 +505,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
       publicationId: publication1_id,
     };
 
@@ -575,7 +519,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
       publicationId: publication2_id,
     };
 
@@ -590,7 +533,6 @@ describe("POST /buys route -> create new buy validations", () => {
     const buy = {
       currency: "ARG",
       paymentMethod: "CASH",
-      totalAmount: 1000,
       publicationId: publication6_id,
     };
 
@@ -600,5 +542,23 @@ describe("POST /buys route -> create new buy validations", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("You can not buy your own publication!");
+  });
+});
+
+describe("POST /buys route -> new buy created success", () => {
+  it("it should return 201 status code -> new buy created success", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      publicationId: publication3_id,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.publicationId).toBe(publication3_id);
+    expect(response.body.data.userId).toBe(user1_id);
   });
 });
