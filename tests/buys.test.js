@@ -680,7 +680,7 @@ describe("GET /buys/:id route -> get buy by id", () => {
   });
   it("it should return 200 status code -> no admin user logged in", async () => {
     const user = {
-      email: "user1@email.com",
+      email: "user2@email.com",
       password: "Password14!",
     };
 
@@ -688,5 +688,10 @@ describe("GET /buys/:id route -> get buy by id", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
+  });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).get("/buys/1").set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
   });
 });
