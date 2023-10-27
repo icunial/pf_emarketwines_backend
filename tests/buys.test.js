@@ -545,7 +545,51 @@ describe("POST /buys route -> create new buy validations", () => {
   });
 });
 
+describe("GET /buys route -> no buys saved in db", () => {
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+  it("it should return a 200 status code -> admin user logged in", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 404 status code -> no buys saved in db", async () => {
+    const response = await request(app).get("/buys").set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("No Buys saved in DB!");
+  });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
+
 describe("POST /buys route -> new buy created success", () => {
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
   it("it should return 201 status code -> new buy created success", async () => {
     const buy = {
       currency: "ARG",
