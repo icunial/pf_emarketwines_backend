@@ -937,4 +937,11 @@ describe("GET /buys/publication/:id route -> get publication buys", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.buysAmount).toBe(1);
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
