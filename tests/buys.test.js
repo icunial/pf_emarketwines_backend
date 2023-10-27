@@ -777,3 +777,11 @@ describe("GET /buys/:id route -> get buy by id", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /buys/own -> get user buys", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).get("/buys/own");
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});

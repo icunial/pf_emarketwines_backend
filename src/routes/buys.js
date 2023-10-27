@@ -11,7 +11,13 @@ const {
   ensureAuthenticated,
 } = require("../utils/validations/index");
 
-const { getAllBuys, getBuyById } = require("../controllers/buys");
+const {
+  getAllBuys,
+  getBuyById,
+  getUserBuys,
+  getUserSales,
+  getPublicationBuys,
+} = require("../controllers/buys");
 
 const { getPublicationById } = require("../controllers/publications");
 
