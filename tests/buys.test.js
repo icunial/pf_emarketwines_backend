@@ -158,7 +158,8 @@ let publication1_id,
   publication2_id,
   publication3_id,
   publication4_id,
-  publication5_id;
+  publication5_id,
+  publication6_id;
 
 describe("POST /publications route -> create new publication success", () => {
   it("it should return a 200 status code -> no admin user logged in", async () => {
@@ -205,6 +206,23 @@ describe("POST /publications route -> create new publication success", () => {
     expect(response.status).toBe(201);
     expect(response.body.data.title).toBe("Publication 2");
     publication2_id = response.body.data.id;
+  });
+  it("it should return 201 status code -> new publication success", async () => {
+    const publication = {
+      title: "Publication 6",
+      price: 500,
+      amount: 1000,
+      description: "Description Publication 6",
+      product: "Product 2",
+    };
+
+    const response = await request(app)
+      .post("/publications")
+      .send(publication)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.title).toBe("Publication 6");
+    publication6_id = response.body.data.id;
   });
   it("it should return 200 status code -> updated publication success", async () => {
     const response = await request(app)
@@ -567,5 +585,20 @@ describe("POST /buys route -> create new buy validations", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Publication does not have stock!");
+  });
+  it("it should return 400 status code -> publication is yours", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      totalAmount: 1000,
+      publicationId: publication6_id,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("You can not buy your own publication!");
   });
 });
