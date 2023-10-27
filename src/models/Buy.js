@@ -7,14 +7,6 @@ const Buy = db.define("buy", {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  idFront: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  idBack: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   currency: {
     type: DataTypes.STRING,
     allowNull: false,
