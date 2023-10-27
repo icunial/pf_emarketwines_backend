@@ -733,4 +733,14 @@ describe("GET /buys/:id route -> get buy by id", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 200 status code -> get buy by id", async () => {
+    const response = await request(app)
+      .get(`/buys/${buy1_id}`)
+      .set("Cookie", cookie);
+    console.log(response);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].id).toBe(buy1_id);
+    expect(response.body.data[0].username).toBe("User One");
+  });
 });
