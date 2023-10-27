@@ -208,7 +208,7 @@ describe("POST /publications route -> create new publication success", () => {
   });
   it("it should return 200 status code -> updated publication success", async () => {
     const response = await request(app)
-      .put(`/publications/amount/${publication1_id}?amount=0`)
+      .put(`/publications/amount/${publication2_id}?amount=0`)
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
@@ -552,5 +552,20 @@ describe("POST /buys route -> create new buy validations", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("You can not buy a banned publication!");
+  });
+  it("it should return 400 status code -> publication is banned", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      totalAmount: 1000,
+      publicationId: publication2_id,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Publication does not have stock!");
   });
 });
