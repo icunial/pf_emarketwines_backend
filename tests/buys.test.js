@@ -470,4 +470,21 @@ describe("POST /buys route -> create new buy validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> publication not found", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      totalAmount: 1000,
+      publicationId: "8022e314-e56a-4eff-8c10-fae4a0eadc40",
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
