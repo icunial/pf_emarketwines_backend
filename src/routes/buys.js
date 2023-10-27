@@ -76,6 +76,13 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
         msg: "Publication does not have stock!",
       });
     }
+
+    if (publication[0].username === req.user.username) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: "You can not buy your own publication!",
+      });
+    }
   } catch (error) {
     return next(error);
   }
