@@ -795,4 +795,9 @@ describe("GET /buys/own -> get user buys", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> no buys", async () => {
+    const response = await request(app).get("/buys/own").set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("You have no buys!");
+  });
 });
