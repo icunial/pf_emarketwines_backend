@@ -663,4 +663,11 @@ describe("GET /buys route -> get all buys", () => {
     expect(response.body.data[0].publication).toBe("Publication 3");
     expect(response.body.data[0].username).toBe("User One");
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
