@@ -737,7 +737,33 @@ describe("GET /buys/:id route -> get buy by id", () => {
     const response = await request(app)
       .get(`/buys/${buy1_id}`)
       .set("Cookie", cookie);
-    console.log(response);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].id).toBe(buy1_id);
+    expect(response.body.data[0].username).toBe("User One");
+  });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+  it("it should return 200 status code -> admin user logged in", async () => {
+    const user = {
+      email: "admin@ewines.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 200 status code -> get buy by id", async () => {
+    const response = await request(app)
+      .get(`/buys/${buy1_id}`)
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].id).toBe(buy1_id);
