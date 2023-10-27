@@ -36,6 +36,20 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
       msg: validations.validateTotalAmount(totalAmount),
     });
   }
+
+  if (!publicationId) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: "Publication ID parameter is missing",
+    });
+  }
+
+  if (!validateId(publicationId)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
 });
 
 module.exports = router;
