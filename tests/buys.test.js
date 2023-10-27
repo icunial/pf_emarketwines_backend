@@ -578,6 +578,8 @@ describe("GET /buys route -> no buys saved in db", () => {
   });
 });
 
+let buy1_id;
+
 describe("POST /buys route -> new buy created success", () => {
   it("it should return 200 status code -> no admin user logged in", async () => {
     const user = {
@@ -604,6 +606,7 @@ describe("POST /buys route -> new buy created success", () => {
     expect(response.status).toBe(201);
     expect(response.body.data.publicationId).toBe(publication3_id);
     expect(response.body.data.userId).toBe(user1_id);
+    buy1_id = response.body.data.id;
   });
   it("it should return 200 status code -> logout process", async () => {
     const response = await request(app)
@@ -701,6 +704,15 @@ describe("GET /buys/:id route -> get buy by id", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(
       "Buy with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
+  it("it should return 401 status code -> buy not yours", async () => {
+    const response = await request(app)
+      .get(`/buys/${buy1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You can not access to a buy that is not yours..."
     );
   });
 });
