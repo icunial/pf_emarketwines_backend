@@ -20,17 +20,7 @@ const validatePaymentMethod = (paymentMethod) => {
   return false;
 };
 
-// Validates total amount
-const validateTotalAmount = (totalAmount) => {
-  if (totalAmount === 0 || totalAmount < 0)
-    return "Total Amount must be higher than 0";
-  if (!totalAmount) return "Total Amount parameter is missing";
-  if (typeof totalAmount !== "number") return "Total Amount must be a number";
-  return false;
-};
-
 module.exports = {
   validateCurrency,
   validatePaymentMethod,
-  validateTotalAmount,
 };
