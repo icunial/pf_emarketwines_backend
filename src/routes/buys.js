@@ -11,7 +11,80 @@ const {
   ensureAuthenticated,
 } = require("../utils/validations/index");
 
+const { getAllBuys, getBuyById } = require("../controllers/buys");
+
 const { getPublicationById } = require("../controllers/publications");
+
+// Get buy by id
+router.get("/:id", ensureAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const buy = await getBuyById(id);
+
+    if (!buy.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Buy with ID: ${id} not found!`,
+      });
+    }
+
+    if (
+      req.user.email !== "admin@ewines.com" &&
+      req.user.isAdmin === false &&
+      req.user.username !== buy[0].username
+    ) {
+      return res.status(401).json({
+        statusCode: 401,
+        msg: "You are not authorized! You can not access to a buy that is not yours...",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: buy,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get all buys
+router.get("/", ensureAuthenticated, async (req, res, next) => {
+  if (
+    req.user.dataValues.email !== "admin@ewines.com" &&
+    req.user.dataValues.isAdmin === false
+  ) {
+    return res.status(401).json({
+      statusCode: 401,
+      msg: "You are not authorized! You must have admin privileges...",
+    });
+  }
+  try {
+    const buys = await getAllBuys();
+
+    if (!buys.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: "No Buys saved in DB!",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: buys,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // Create new buy
 router.post("/", ensureAuthenticated, async (req, res, next) => {
