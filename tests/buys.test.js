@@ -850,4 +850,11 @@ describe("GET /buys/sales -> get user sales", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> no sales", async () => {
+    const response = await request(app)
+      .get("/buys/sales")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("You have no sales!");
+  });
 });
