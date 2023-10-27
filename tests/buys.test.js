@@ -426,4 +426,19 @@ describe("POST /buys route -> create new buy validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Total Amount must be higher than 0");
   });
+  it("it should return 400 status code -> total amount must be a number", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      totalAmount: "hola",
+      publicationId: 1,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Total Amount must be a number");
+  });
 });
