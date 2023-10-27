@@ -15,7 +15,7 @@ const { getPublicationById } = require("../controllers/publications");
 
 // Create new buy
 router.post("/", ensureAuthenticated, async (req, res, next) => {
-  const { publicationId, currency, paymentMethod, totalAmount } = req.body;
+  const { publicationId, currency, paymentMethod } = req.body;
 
   // Validations
   if (validations.validateCurrency(currency)) {
@@ -29,13 +29,6 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
     return res.status(400).json({
       statusCode: 400,
       msg: validations.validatePaymentMethod(paymentMethod),
-    });
-  }
-
-  if (validations.validateTotalAmount(totalAmount)) {
-    return res.status(400).json({
-      statusCode: 400,
-      msg: validations.validateTotalAmount(totalAmount),
     });
   }
 
@@ -83,8 +76,21 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
         msg: "You can not buy your own publication!",
       });
     }
+
+    const buyCreated = await Buy.create({
+      currency: currency.toUpperCase(),
+      paymentMethod: paymentMethod.toUpperCase(),
+      totalAmount: publication[0].price,
+      publicationId,
+      userId: req.user.id,
+    });
+
+    res.status(201).json({
+      statusCode: 201,
+      data: buyCreated,
+    });
   } catch (error) {
-    return next(error);
+    return next("Error trying to create a new buy");
   }
 });
 
