@@ -784,4 +784,15 @@ describe("GET /buys/own -> get user buys", () => {
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
+  it("it should return 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user2@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
 });
