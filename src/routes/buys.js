@@ -11,6 +11,8 @@ const {
   ensureAuthenticated,
 } = require("../utils/validations/index");
 
+const { getPublicationById } = require("../controllers/publications");
+
 // Create new buy
 router.post("/", ensureAuthenticated, async (req, res, next) => {
   const { publicationId, currency, paymentMethod, totalAmount } = req.body;
@@ -49,6 +51,26 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
       statusCode: 400,
       msg: `ID invalid format!`,
     });
+  }
+
+  try {
+    const publication = await getPublicationById(publicationId);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${publicationId} not found!`,
+      });
+    }
+
+    if (publication[0].isBanned === true) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: "You can not buy a banned publication!",
+      });
+    }
+  } catch (error) {
+    return next(error);
   }
 });
 
