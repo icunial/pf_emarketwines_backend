@@ -929,4 +929,12 @@ describe("GET /buys/publication/:id route -> get publication buys", () => {
       `The publication ${publication1_id} does not have buys!`
     );
   });
+  it("it should return 200 status code -> get publication buys", async () => {
+    const response = await request(app)
+      .get(`/buys/publication/${publication3_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.buysAmount).toBe(1);
+  });
 });
