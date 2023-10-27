@@ -240,6 +240,13 @@ describe("POST /publications route -> create new publication success", () => {
     expect(response.body.data[0].title).toBe("Publication 1");
     expect(response.body.data[0].id).toBe(publication1_id);
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
   it("it should return a 200 status code -> no admin user logged in", async () => {
     const user = {
       email: "user2@email.com",
