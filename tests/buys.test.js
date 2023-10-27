@@ -455,4 +455,19 @@ describe("POST /buys route -> create new buy validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Publication ID parameter is missing");
   });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      totalAmount: 1000,
+      publicationId: 1,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
