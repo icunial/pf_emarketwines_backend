@@ -587,4 +587,11 @@ describe("GET /buys route -> get all buys", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 401 status code -> no admin privileges", async () => {
+    const response = await request(app).get("/buys").set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You must have admin privileges..."
+    );
+  });
 });
