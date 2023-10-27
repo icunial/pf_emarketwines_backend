@@ -397,4 +397,18 @@ describe("POST /buys route -> create new buy validations", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Payment Method not available");
   });
+  it("it should return 400 status code -> total amount parameter is missing", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      publicationId: 1,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Total Amount parameter is missing");
+  });
 });
