@@ -875,4 +875,12 @@ describe("GET /buys/sales -> get user sales", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 200 status code -> get user sales", async () => {
+    const response = await request(app)
+      .get("/buys/sales")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].id).toBe(buy1_id);
+  });
 });
