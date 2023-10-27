@@ -283,3 +283,19 @@ describe("POST /publications route -> create new publication success", () => {
     expect(response.body).toBe(true);
   });
 });
+
+/********************************** */
+
+describe("POST /buys route -> create new buy validations", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CARD",
+      totalAmount: 1000,
+    };
+
+    const response = await request(app).post("/buys").send(buy);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
