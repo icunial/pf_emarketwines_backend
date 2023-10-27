@@ -309,4 +309,18 @@ describe("POST /buys route -> create new buy validations", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> currency parameter is missing", async () => {
+    const buy = {
+      paymentMethod: "CARD",
+      totalAmount: 1000,
+      publicationId: 1,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Currency parameter is missing");
+  });
 });
