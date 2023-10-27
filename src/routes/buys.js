@@ -42,6 +42,27 @@ router.get("/own", ensureAuthenticated, async (req, res, next) => {
   }
 });
 
+// Get user sales
+router.get("/sales", ensureAuthenticated, async (req, res, next) => {
+  try {
+    const sales = await getUserSales(req.user.id);
+
+    if (!sales.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: "You have no sales!",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: sales,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Get buy by id
 router.get("/:id", ensureAuthenticated, async (req, res, next) => {
   const { id } = req.params;
