@@ -660,5 +660,7 @@ describe("GET /buys route -> get all buys", () => {
     const response = await request(app).get("/buys").set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].publication).toBe("Publication 3");
+    expect(response.body.data[0].username).toBe("User One");
   });
 });
