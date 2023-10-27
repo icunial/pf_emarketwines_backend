@@ -206,6 +206,14 @@ describe("POST /publications route -> create new publication success", () => {
     expect(response.body.data.title).toBe("Publication 2");
     publication2_id = response.body.data.id;
   });
+  it("it should return 200 status code -> updated publication success", async () => {
+    const response = await request(app)
+      .put(`/publications/amount/${publication1_id}?amount=0`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].amount).toBe(0);
+  });
   it("it should return a 200 status code -> logout process", async () => {
     const response = await request(app)
       .get("/users/logout")
@@ -469,6 +477,23 @@ describe("POST /buys route -> create new buy validations", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
+  });
+  it("it should return 404 status code -> publication not found", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      totalAmount: 1000,
+      publicationId: "8022e314-e56a-4eff-8c10-fae4a0eadc40",
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
   });
   it("it should return 404 status code -> publication not found", async () => {
     const buy = {
