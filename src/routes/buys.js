@@ -69,6 +69,13 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
         msg: "You can not buy a banned publication!",
       });
     }
+
+    if (publication[0].amount === 0) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: "Publication does not have stock!",
+      });
+    }
   } catch (error) {
     return next(error);
   }
