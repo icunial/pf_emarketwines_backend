@@ -406,4 +406,18 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Buy ID parameter is missing");
   });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const reviewBuy = {
+      stars: 5,
+      text: "This is a new review buy",
+      buyId: 1,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
