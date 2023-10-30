@@ -420,4 +420,20 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 494 status code -> buy not found", async () => {
+    const reviewBuy = {
+      stars: 5,
+      text: "This is a new review buy",
+      buyId: "8022e314-e56a-4eff-8c10-fae4a0eadc40",
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Buy with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
