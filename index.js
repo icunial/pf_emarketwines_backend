@@ -15,6 +15,7 @@ const Varietal = require("./src/models/Varietal");
 const User = require("./src/models/User");
 const Favorite = require("./src/models/Favorite");
 const Buy = require("./src/models/Buy");
+const ReviewBuy = require("./src/models/ReviewBuy");
 
 // Models Relationships
 Product.hasMany(Publication);
@@ -37,6 +38,12 @@ Buy.belongsTo(User);
 
 Publication.hasMany(Buy);
 Buy.belongsTo(Publication);
+
+Buy.hasMany(ReviewBuy);
+ReviewBuy.belongsTo(Buy);
+
+User.hasMany(ReviewBuy);
+ReviewBuy.belongsTo(User);
 
 // Body-Parser Middleware
 app.use(express.json());
