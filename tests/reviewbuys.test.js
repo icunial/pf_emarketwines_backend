@@ -393,4 +393,17 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> buy id parameter is missing", async () => {
+    const reviewBuy = {
+      stars: 5,
+      text: "This is a new review buy",
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Buy ID parameter is missing");
+  });
 });
