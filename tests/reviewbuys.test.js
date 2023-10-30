@@ -384,7 +384,7 @@ describe("POST /reviewBuy route -> create new review buy", () => {
   });
   it("it should return 200 status code -> no admin user logged in", async () => {
     const user = {
-      email: "user1@email.com",
+      email: "user2@email.com",
       password: "Password14!",
     };
 
@@ -420,7 +420,7 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
-  it("it should return 494 status code -> buy not found", async () => {
+  it("it should return 404 status code -> buy not found", async () => {
     const reviewBuy = {
       stars: 5,
       text: "This is a new review buy",
@@ -434,6 +434,22 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe(
       "Buy with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
+  it("it should return 400 status code -> buy is not yours", async () => {
+    const reviewBuy = {
+      stars: 5,
+      text: "This is a new review buy",
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      `This buy is not yours. You can not leave a review!`
     );
   });
 });
