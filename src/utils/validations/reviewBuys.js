@@ -6,6 +6,14 @@ const validateStars = (stars) => {
   return false;
 };
 
+// Validates text
+const validateText = (text) => {
+  if (!text) return "Text paratemer is missing";
+  if (typeof text !== "string") return "Text must be a string";
+  return false;
+};
+
 module.exports = {
   validateStars,
+  validateText,
 };
