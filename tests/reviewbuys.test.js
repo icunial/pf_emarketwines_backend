@@ -369,3 +369,17 @@ describe("POST /buys route -> new buy created success", () => {
 });
 
 /************************************** */
+
+describe("POST /reviewBuy route -> create new review buy", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const reviewBuy = {
+      stars: 5,
+      text: "This is a new review buy",
+      buyId: 1,
+    };
+
+    const response = await request(app).post("/reviewBuys").send(reviewBuy);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
