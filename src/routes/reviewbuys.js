@@ -11,7 +11,57 @@ const {
 
 const validations = require("../utils/validations/reviewBuys");
 
-const { getBuyById } = requiere("../controllers/buys.js");
+const { getBuyById, getPublicationBuys } = require("../controllers/buys.js");
+const { getPublicationById } = require("../controllers/publications");
+const { getReviewBuys } = require("../controllers/reviewBuys");
+
+// Get all review buys from a publication
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const publication = await getPublicationById(id);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    const buys = await getPublicationBuys(id);
+
+    if (!buys.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `The publication ${id} does not have buys!`,
+      });
+    }
+
+    const reviewBuys = await getReviewBuys(id);
+
+    if (!reviewBuys.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: "This publication does not have review buys!",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: reviewBuys,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // Create new review buy
 router.post("/", ensureAuthenticated, async (req, res, next) => {
@@ -20,11 +70,11 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
   if (!buyId) {
     return res.status(400).json({
       statusCode: 400,
-      msg: "Buy ID paratemer is missing",
+      msg: "Buy ID parameter is missing",
     });
   }
 
-  if (!validateId(id)) {
+  if (!validateId(buyId)) {
     return res.status(400).json({
       statusCode: 400,
       msg: `ID invalid format!`,
@@ -37,11 +87,11 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
     if (!buyFound.length) {
       return res.status(404).json({
         statusCode: 404,
-        msg: `Buy with ID: ${id} not found!`,
+        msg: `Buy with ID: ${buyId} not found!`,
       });
     }
 
-    if (buyFound.username !== req.user.username) {
+    if (buyFound[0].username !== req.user.username) {
       return res.status(400).json({
         statusCode: 400,
         msg: `This buy is not yours. You can not leave a review!`,
