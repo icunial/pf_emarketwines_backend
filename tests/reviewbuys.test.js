@@ -483,4 +483,18 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Stars parameter is missing");
   });
+  it("it should return 400 status code -> stars must be a number", async () => {
+    const reviewBuy = {
+      stars: "Hola",
+      text: "This is a new review buy",
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Stars must be a number");
+  });
 });
