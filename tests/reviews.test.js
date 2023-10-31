@@ -480,4 +480,20 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Text must be a string");
   });
+  it("it should return 201 status code -> new review created", async () => {
+    const review = {
+      text: "This is a review",
+      productId: product1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+
+    expect(response.status).toBe(201);
+    expect(response.body.data.text).toBe("This is a review");
+    expect(response.body.data.productId).toBe(product1_id);
+    expect(response.body.data.userId).toBe(user2_id);
+  });
 });
