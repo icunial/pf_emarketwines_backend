@@ -577,9 +577,18 @@ describe("POST /reviewBuys route -> create new review buy", () => {
 });
 
 describe("GET /reviewBuys route -> get review buys from a publications", () => {
-  it("it should return 400 status -> id invalid format", async () => {
+  it("it should return 400 status code -> id invalid format", async () => {
     const response = await request(app).get("/reviewBuys/1");
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
+  });
+  it("it should return 404 status code -> publication not found", async () => {
+    const response = await request(app).get(
+      "/reviewBuys/8022e314-e56a-4eff-8c10-fae4a0eadc40"
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
   });
 });
