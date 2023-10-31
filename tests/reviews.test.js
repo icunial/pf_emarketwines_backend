@@ -467,4 +467,17 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Text parameter is missing");
   });
+  it("it should return 400 status code -> text must be a string", async () => {
+    const review = {
+      text: 1234,
+      productId: product1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Text must be a string");
+  });
 });
