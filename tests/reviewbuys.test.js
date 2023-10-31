@@ -553,4 +553,18 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.body.data.text).toBe("This is a buy review");
     expect(response.body.data.stars).toBe(3);
   });
+  it("it should return 400 status code -> only one review", async () => {
+    const reviewBuy = {
+      stars: 3,
+      text: "This is a buy review",
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("You can only leave one review!");
+  });
 });
