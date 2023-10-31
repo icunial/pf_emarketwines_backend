@@ -591,4 +591,8 @@ describe("GET /reviewBuys route -> get review buys from a publications", () => {
       "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
     );
   });
+  it("it should return 200 status code -> get review buys", async () => {
+    const response = await request(app).get(`/reviewBuys/${publication3_id}`);
+    expect(response.status).toBe(200);
+  });
 });
