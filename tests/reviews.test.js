@@ -455,4 +455,16 @@ describe("POST /reviews route -> create new review", () => {
       "Product with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
     );
   });
+  it("it should return 400 status code -> text parameter is missing", async () => {
+    const review = {
+      productId: product1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Text parameter is missing");
+  });
 });
