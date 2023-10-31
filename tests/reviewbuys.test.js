@@ -497,4 +497,18 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Stars must be a number");
   });
+  it("it should return 400 status code -> stars must be between 0 and 5", async () => {
+    const reviewBuy = {
+      stars: 10,
+      text: "This is a new review buy",
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Stars must be between 0 and 5");
+  });
 });
