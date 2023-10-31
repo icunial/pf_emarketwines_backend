@@ -357,3 +357,18 @@ describe("PUT /:id route -> update user", () => {
     expect(response.body).toBe(true);
   });
 });
+
+/********************************** */
+
+describe("POST /reviews route -> create new review", () => {
+  it("it should return 401 status code -> not authorizd", async () => {
+    const review = {
+      text: "This is a review",
+      productId: 1,
+    };
+
+    const response = await request(app).post("/reviews").send(review);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
