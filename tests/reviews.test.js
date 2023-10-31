@@ -440,4 +440,19 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> product not found", async () => {
+    const review = {
+      text: "This is a review",
+      productId: "8022e314-e56a-4eff-8c10-fae4a0eadc40",
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Product with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
