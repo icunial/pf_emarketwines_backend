@@ -594,5 +594,14 @@ describe("GET /reviewBuys route -> get review buys from a publications", () => {
   it("it should return 200 status code -> get review buys", async () => {
     const response = await request(app).get(`/reviewBuys/${publication3_id}`);
     expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].text).toBe("This is a buy review");
+  });
+  it("it should return 404 status code -> no buys", async () => {
+    const response = await request(app).get(`/reviewBuys/${publication1_id}`);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      `The publication ${publication1_id} does not have buys!`
+    );
   });
 });
