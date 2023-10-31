@@ -496,4 +496,18 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.body.data.productId).toBe(product1_id);
     expect(response.body.data.userId).toBe(user2_id);
   });
+  it("it should return 400 status code -> only one review", async () => {
+    const review = {
+      text: "This is a review",
+      productId: product1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("You can only leave one review!");
+  });
 });
