@@ -349,13 +349,6 @@ describe("PUT /:id route -> update user", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].isSommelier).toBe(true);
   });
-  it("it should return a 200 status code -> logout process", async () => {
-    const response = await request(app)
-      .get("/users/logout")
-      .set("Cookie", cookie);
-    expect(response.status).toBe(200);
-    expect(response.body).toBe(true);
-  });
 });
 
 /********************************** */
@@ -370,6 +363,13 @@ describe("POST /reviews route -> create new review", () => {
     const response = await request(app).post("/reviews").send(review);
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
   });
   it("it should return a 200 status code -> no admin user logged in", async () => {
     const user = {
@@ -396,5 +396,12 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.body.msg).toBe(
       "You are not authorized! You have to be a sommelier..."
     );
+  });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
   });
 });
