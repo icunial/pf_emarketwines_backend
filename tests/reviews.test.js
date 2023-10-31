@@ -415,4 +415,29 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> id parameter is missing", async () => {
+    const review = {
+      text: "This is a review",
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Product Id is missing");
+  });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const review = {
+      text: "This is a review",
+      productId: 1,
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
