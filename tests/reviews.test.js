@@ -361,7 +361,7 @@ describe("PUT /:id route -> update user", () => {
 /********************************** */
 
 describe("POST /reviews route -> create new review", () => {
-  it("it should return 401 status code -> not authorizd", async () => {
+  it("it should return 401 status code -> not authorized", async () => {
     const review = {
       text: "This is a review",
       productId: 1,
@@ -381,5 +381,20 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
+  });
+  it("it should return 401 status code -> user not sommelier", async () => {
+    const review = {
+      text: "This is a review",
+      productId: 1,
+    };
+
+    const response = await request(app)
+      .post("/reviews")
+      .send(review)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe(
+      "You are not authorized! You have to be a sommelier..."
+    );
   });
 });
