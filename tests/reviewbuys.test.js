@@ -511,4 +511,17 @@ describe("POST /reviewBuy route -> create new review buy", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Stars must be between 0 and 5");
   });
+  it("it should return 400 status code -> text parameter is missing", async () => {
+    const reviewBuy = {
+      stars: 3,
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Text parameter is missing");
+  });
 });
