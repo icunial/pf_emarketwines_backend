@@ -370,7 +370,7 @@ describe("POST /buys route -> new buy created success", () => {
 
 /************************************** */
 
-describe("POST /reviewBuy route -> create new review buy", () => {
+describe("POST /reviewBuys route -> create new review buy", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const reviewBuy = {
       stars: 5,
@@ -573,5 +573,13 @@ describe("POST /reviewBuy route -> create new review buy", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
+  });
+});
+
+describe("GET /reviewBuys route -> get review buys from a publications", () => {
+  it("it should return 400 status -> id invalid format", async () => {
+    const response = await request(app).get("/reviewBuys/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
   });
 });
