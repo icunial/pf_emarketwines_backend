@@ -338,6 +338,8 @@ describe("POST /publications route -> create new publication success", () => {
 
 /************************************ */
 
+let question1_id;
+
 describe("POST /questions route -> create new question", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const question = {
@@ -439,5 +441,20 @@ describe("POST /questions route -> create new question", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Text must be a string");
+  });
+  it("it should return 201 status code -> question created success", async () => {
+    const question = {
+      publicationId: publication3_id,
+      text: "Question 1?",
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.text).toBe("Question 1?");
+    expect(response.body.data.answer).toBe(null);
+    question1_id = response.body.data.id;
   });
 });
