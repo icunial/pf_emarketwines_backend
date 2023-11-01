@@ -72,7 +72,7 @@ describe("POST /conversations/message route -> create new message", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const message = {
       userId: 1,
-      message: "Message 1",
+      text: "Message 1",
     };
 
     const response = await request(app)
@@ -94,7 +94,7 @@ describe("POST /conversations/message route -> create new message", () => {
   });
   it("it should return 400 status code -> user id is missing", async () => {
     const message = {
-      message: "Message 1",
+      text: "Message 1",
     };
 
     const response = await request(app)
@@ -107,7 +107,7 @@ describe("POST /conversations/message route -> create new message", () => {
   it("it should return 400 status code -> id invalid format", async () => {
     const message = {
       userId: 1,
-      message: "Message 1",
+      text: "Message 1",
     };
 
     const response = await request(app)
@@ -120,7 +120,7 @@ describe("POST /conversations/message route -> create new message", () => {
   it("it should return 404 status code -> user not found", async () => {
     const message = {
       userId: "a5503462-9dfb-4c8c-9a4a-c87a5f87f937",
-      message: "Message 1",
+      text: "Message 1",
     };
 
     const response = await request(app)
@@ -135,7 +135,7 @@ describe("POST /conversations/message route -> create new message", () => {
   it("it should return 400 status code -> message to yourself", async () => {
     const message = {
       userId: user1_id,
-      message: "Message 1",
+      text: "Message 1",
     };
 
     const response = await request(app)
@@ -145,7 +145,7 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe(`You can not send a message to yourself!`);
   });
-  it("it should return 400 status code -> message parameter is missing", async () => {
+  it("it should return 400 status code -> text parameter is missing", async () => {
     const message = {
       userId: user2_id,
     };
@@ -155,12 +155,12 @@ describe("POST /conversations/message route -> create new message", () => {
       .send(message)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
-    expect(response.body.msg).toBe(`Message parameter is missing`);
+    expect(response.body.msg).toBe(`Text parameter is missing`);
   });
-  it("it should return 400 status code -> message must be a string", async () => {
+  it("it should return 400 status code -> text must be a string", async () => {
     const message = {
       userId: user2_id,
-      message: 1234,
+      text: 1234,
     };
 
     const response = await request(app)
@@ -168,6 +168,6 @@ describe("POST /conversations/message route -> create new message", () => {
       .send(message)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
-    expect(response.body.msg).toBe(`Message must be a string`);
+    expect(response.body.msg).toBe(`Text must be a string`);
   });
 });
