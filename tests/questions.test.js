@@ -457,4 +457,11 @@ describe("POST /questions route -> create new question", () => {
     expect(response.body.data.answer).toBe(null);
     question1_id = response.body.data.id;
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
