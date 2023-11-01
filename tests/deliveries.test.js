@@ -479,4 +479,11 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.body.data.status).toBe("PENDING");
     expect(response.body.data.buyId).toBe(buy1_id);
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
