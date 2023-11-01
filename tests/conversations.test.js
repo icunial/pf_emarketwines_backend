@@ -157,4 +157,17 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe(`Message parameter is missing`);
   });
+  it("it should return 400 status code -> message must be a string", async () => {
+    const message = {
+      userId: user2_id,
+      message: 1234,
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(`Message must be a string`);
+  });
 });
