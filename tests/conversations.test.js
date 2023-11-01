@@ -295,4 +295,13 @@ describe("GET /conversations/:id route -> get conversation by id", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> conversation not found", async () => {
+    const response = await request(app)
+      .get(`/conversations/cfb4c748-1f05-45cc-9e35-df84c3ad5e78`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Conversation with ID: cfb4c748-1f05-45cc-9e35-df84c3ad5e78 not found!"
+    );
+  });
 });
