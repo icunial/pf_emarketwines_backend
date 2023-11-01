@@ -227,6 +227,20 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.body.data.userId).toBe(user1_id);
     expect(response.body.data.text).toBe("Message 2");
   });
+  it("it should return 201 status code -> message created success", async () => {
+    const message = {
+      userId: user2_id,
+      text: "Message 3",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.userId).toBe(user1_id);
+    expect(response.body.data.text).toBe("Message 3");
+  });
   it("it should return a 200 status code -> logout process", async () => {
     const response = await request(app)
       .get("/users/logout")
@@ -303,5 +317,19 @@ describe("GET /conversations/:id route -> get conversation by id", () => {
     expect(response.body.msg).toBe(
       "Conversation with ID: cfb4c748-1f05-45cc-9e35-df84c3ad5e78 not found!"
     );
+  });
+  it("it should return 200 status code -> get conversation", async () => {
+    const response = await request(app)
+      .get(`/conversations/${conversation1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(3);
+  });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
   });
 });
