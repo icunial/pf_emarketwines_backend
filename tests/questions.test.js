@@ -581,4 +581,16 @@ describe("PUT /questions/answer/:id route -> create new answer to question", () 
     expect(response.body.data[0].text).toBe("Question 1?");
     expect(response.body.data[0].answer).toBe("Answer 1");
   });
+  it("it should return 400 status code -> you have already answered this question", async () => {
+    const answer = {
+      answer: 1234,
+    };
+
+    const response = await request(app)
+      .put(`/questions/answer/${question1_id}`)
+      .send(answer)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("You have already answered this question");
+  });
 });
