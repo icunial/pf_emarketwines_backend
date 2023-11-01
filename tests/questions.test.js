@@ -489,4 +489,16 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 401 status code -> id invalid format", async () => {
+    const answer = {
+      answer: "Answer 1",
+    };
+
+    const response = await request(app)
+      .post("/questions/answer/1")
+      .send(answer)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
