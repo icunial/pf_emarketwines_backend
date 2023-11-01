@@ -337,3 +337,16 @@ describe("POST /publications route -> create new publication success", () => {
 });
 
 /************************************ */
+
+describe("POST /questions route -> create new question", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const question = {
+      publicationId: 1,
+      text: "Question 1?",
+    };
+
+    const response = await request(app).post("/questions").send(question);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
