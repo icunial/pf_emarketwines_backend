@@ -601,3 +601,11 @@ describe("PUT /questions/answer/:id route -> create new answer to question", () 
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /questions/publication/:id route -> get publication questions", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).get("/questions/publication/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+});
