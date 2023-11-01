@@ -626,4 +626,14 @@ describe("GET /questions/publication/:id route -> get publication questions", ()
       `Publication Publication 1 does not have questions!`
     );
   });
+  it("it should return 404 status code -> no questions", async () => {
+    const response = await request(app).get(
+      `/questions/publication/${publication3_id}`
+    );
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].text).toBe("Question 1?");
+    expect(response.body.data[0].answer).toBe("Answer 1");
+    expect(response.body.data[0].username).toBe("User One");
+  });
 });
