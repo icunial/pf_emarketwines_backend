@@ -132,4 +132,17 @@ describe("POST /conversations/message route -> create new message", () => {
       `User with ID: a5503462-9dfb-4c8c-9a4a-c87a5f87f937 not found!`
     );
   });
+  it("it should return 400 status code -> message to yourself", async () => {
+    const message = {
+      userId: user1_id,
+      message: "Message 1",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(`You can not send a message to yourself!`);
+  });
 });
