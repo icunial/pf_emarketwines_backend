@@ -400,4 +400,19 @@ describe("POST /questions route -> create new question", () => {
       "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
     );
   });
+  it("it should return 400 status code -> your publication", async () => {
+    const question = {
+      publicationId: publication1_id,
+      text: "Question 1?",
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "You can not ask a question in your publication!"
+    );
+  });
 });
