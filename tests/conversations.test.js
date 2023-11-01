@@ -92,4 +92,16 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> user id is missing", async () => {
+    const message = {
+      message: "Message 1",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("User ID is missing");
+  });
 });
