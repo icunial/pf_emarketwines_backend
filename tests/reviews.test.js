@@ -539,4 +539,10 @@ describe("GET /reviews/:id route -> get product reviews", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("This product does not have reviews!");
   });
+  it("it should return 200 status code -> get reviews", async () => {
+    const response = await request(app).get(`/reviews/${product1_id}`);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].username).toBe("User Two");
+  });
 });
