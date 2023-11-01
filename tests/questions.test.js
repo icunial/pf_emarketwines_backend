@@ -466,15 +466,13 @@ describe("POST /questions route -> create new question", () => {
   });
 });
 
-describe("POST /questions/answer/:id route -> create new answer to question", () => {
+describe("PUT /questions/answer/:id route -> create new answer to question", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const answer = {
       answer: "Answer 1",
     };
 
-    const response = await request(app)
-      .post("/questions/answer/1")
-      .send(answer);
+    const response = await request(app).put("/questions/answer/1").send(answer);
     expect(response.status).toBe(401);
     expect(response.body.msg).toBe("You are not authorized! Please login...");
   });
@@ -495,7 +493,7 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     };
 
     const response = await request(app)
-      .post("/questions/answer/1")
+      .put("/questions/answer/1")
       .send(answer)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
@@ -507,7 +505,7 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     };
 
     const response = await request(app)
-      .post("/questions/answer/8022e314-e56a-4eff-8c10-fae4a0eadc40")
+      .put("/questions/answer/8022e314-e56a-4eff-8c10-fae4a0eadc40")
       .send(answer)
       .set("Cookie", cookie);
     expect(response.status).toBe(404);
@@ -521,7 +519,7 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     };
 
     const response = await request(app)
-      .post(`/questions/answer/${question1_id}`)
+      .put(`/questions/answer/${question1_id}`)
       .send(answer)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
@@ -551,7 +549,7 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     const answer = {};
 
     const response = await request(app)
-      .post(`/questions/answer/${question1_id}`)
+      .put(`/questions/answer/${question1_id}`)
       .send(answer)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
@@ -563,7 +561,7 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     };
 
     const response = await request(app)
-      .post(`/questions/answer/${question1_id}`)
+      .put(`/questions/answer/${question1_id}`)
       .send(answer)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
