@@ -28,6 +28,44 @@ const getQuestionById = async (id) => {
   }
 };
 
+// Get publication questions
+const getQuestions = async (id) => {
+  const results = [];
+
+  try {
+    const dbResults = await Question.findAll({
+      include: [
+        {
+          model: Publication,
+          where: {
+            id,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          text: r.text,
+          answer: r.answer,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get publication questions!");
+  }
+};
+
 module.exports = {
   getQuestionById,
+  getQuestions,
 };
