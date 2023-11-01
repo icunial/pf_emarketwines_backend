@@ -9,9 +9,48 @@ const {
 const validations = require("../utils/validations/questions");
 
 const { getPublicationById } = require("../controllers/publications");
-const { getQuestionById } = require("../controllers/questions");
+const { getQuestionById, getQuestions } = require("../controllers/questions");
 
 const Question = require("../models/Question");
+
+// Get publication questions
+router.get("/publication/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const publication = await getPublicationById(id);
+
+    if (!publication.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication with ID: ${id} not found!`,
+      });
+    }
+
+    const questions = await getQuestions(id);
+
+    if (!questions.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Publication ${publication[0].title} does not have questions!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: questions,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // Create new answer
 router.put("/answer/:id", ensureAuthenticated, async (req, res, next) => {
@@ -123,6 +162,7 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
     const question = await Question.create({
       text,
       publicationId,
+      userId: req.user.id,
     });
 
     res.status(201).json({
