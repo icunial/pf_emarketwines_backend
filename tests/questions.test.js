@@ -567,4 +567,18 @@ describe("PUT /questions/answer/:id route -> create new answer to question", () 
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Answer must be a string");
   });
+  it("it should return 200 status code -> question updated", async () => {
+    const answer = {
+      answer: "Answer 1",
+    };
+
+    const response = await request(app)
+      .put(`/questions/answer/${question1_id}`)
+      .send(answer)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].text).toBe("Question 1?");
+    expect(response.body.data[0].answer).toBe("Answer 1");
+  });
 });
