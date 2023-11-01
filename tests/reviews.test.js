@@ -534,4 +534,9 @@ describe("GET /reviews/:id route -> get product reviews", () => {
       "Product with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
     );
   });
+  it("it should return 404 status code -> no reviews", async () => {
+    const response = await request(app).get(`/reviews/${product2_id}`);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("This product does not have reviews!");
+  });
 });
