@@ -415,4 +415,16 @@ describe("POST /questions route -> create new question", () => {
       "You can not ask a question in your publication!"
     );
   });
+  it("it should return 400 status code -> text is missing", async () => {
+    const question = {
+      publicationId: publication3_id,
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Text parameter is missing");
+  });
 });
