@@ -557,4 +557,16 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Answer parameter is missing");
   });
+  it("it should return 400 status code -> answer must be a string", async () => {
+    const answer = {
+      answer: 1234,
+    };
+
+    const response = await request(app)
+      .post(`/questions/answer/${question1_id}`)
+      .send(answer)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Answer must be a string");
+  });
 });
