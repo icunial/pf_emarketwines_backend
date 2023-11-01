@@ -201,4 +201,11 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.body.data.userId).toBe(user1_id);
     expect(response.body.data.text).toBe("Message 2");
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
