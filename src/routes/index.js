@@ -11,6 +11,7 @@ const reviewBuysRouter = require("./reviewbuys");
 const reviewsRouter = require("./reviews");
 const questionsRouter = require("./questions");
 const deliveriesRouter = require("./deliveries");
+const conversationsRouter = require("./conversations");
 
 // Specify routers root routes
 router.use("/publications", publicationsRouter);
@@ -23,5 +24,6 @@ router.use("/reviewBuys", reviewBuysRouter);
 router.use("/reviews", reviewsRouter);
 router.use("/questions", questionsRouter);
 router.use("/deliveries", deliveriesRouter);
+router.use("/conversations", conversationsRouter);
 
 module.exports = router;
