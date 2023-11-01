@@ -262,4 +262,11 @@ describe("GET /conversations route -> get user conversations", () => {
     expect(response.body.data[0].username).toBe("User Two");
     expect(response.body.data[0].id).toBe(conversation1_id);
   });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
