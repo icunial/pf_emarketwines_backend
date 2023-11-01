@@ -85,6 +85,13 @@ describe("GET /conversations route -> get user conversations", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> no conversations", async () => {
+    const response = await request(app)
+      .get("/conversations")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("You have no conversations!");
+  });
 });
 
 let conversation1_id;
