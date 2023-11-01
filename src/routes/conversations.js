@@ -8,10 +8,65 @@ const {
 } = require("../utils/validations/index");
 
 const { getUserById } = require("../controllers/users");
-const { getConversationByMembers } = require("../controllers/conversations");
+const {
+  getConversationByMembers,
+  getConversations,
+  getConversationById,
+} = require("../controllers/conversations");
 
 const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
+
+// Get conversation by id
+router.get("/:id", ensureAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 404,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const conversation = await getConversationById(id, req.user.id);
+
+    if (!conversation.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Conversation with ID: ${id} not found!`,
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: conversation,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get conversations
+router.get("/", ensureAuthenticated, async (req, res, next) => {
+  try {
+    const conversations = await getConversations(req.user.id);
+
+    if (!conversations.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: "You have no conversations!",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      data: conversations,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // Create new message
 router.post("/message", ensureAuthenticated, async (req, res, next) => {
@@ -82,7 +137,7 @@ router.post("/message", ensureAuthenticated, async (req, res, next) => {
     const message = await Message.create({
       text,
       userId: req.user.id,
-      conversationId: conversationFound.id,
+      conversationId: conversationFound[0].id,
     });
 
     res.status(201).json({
