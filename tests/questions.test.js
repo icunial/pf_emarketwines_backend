@@ -547,4 +547,14 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> answer parameter is missing", async () => {
+    const answer = {};
+
+    const response = await request(app)
+      .post(`/questions/answer/${question1_id}`)
+      .send(answer)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Answer parameter is missing");
+  });
 });
