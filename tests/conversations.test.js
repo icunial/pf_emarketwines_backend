@@ -68,6 +68,8 @@ describe("POST /users/register route -> create an admin new user", () => {
 
 /********* */
 
+let conversation1_id;
+
 describe("POST /conversations/message route -> create new message", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const message = {
@@ -169,5 +171,20 @@ describe("POST /conversations/message route -> create new message", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe(`Text must be a string`);
+  });
+  it("it should return 201 status code -> message created success", async () => {
+    const message = {
+      userId: user2_id,
+      text: "Message 1",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.userId).toBe(user1_id);
+    expect(response.body.data.text).toBe("Message 1");
+    conversation1_id = response.body.data.conversationId;
   });
 });
