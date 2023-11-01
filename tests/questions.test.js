@@ -617,4 +617,13 @@ describe("GET /questions/publication/:id route -> get publication questions", ()
       "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
     );
   });
+  it("it should return 404 status code -> no questions", async () => {
+    const response = await request(app).get(
+      `/questions/publication/${publication1_id}`
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      `Publication Publication 1 does not have questions!`
+    );
+  });
 });
