@@ -501,4 +501,18 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> question not found", async () => {
+    const answer = {
+      answer: "Answer 1",
+    };
+
+    const response = await request(app)
+      .post("/questions/answer/8022e314-e56a-4eff-8c10-fae4a0eadc40")
+      .send(answer)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Question with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
