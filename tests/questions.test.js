@@ -608,4 +608,13 @@ describe("GET /questions/publication/:id route -> get publication questions", ()
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> publication not found", async () => {
+    const response = await request(app).get(
+      "/questions/publication/8022e314-e56a-4eff-8c10-fae4a0eadc40"
+    );
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Publication with ID: 8022e314-e56a-4eff-8c10-fae4a0eadc40 not found!"
+    );
+  });
 });
