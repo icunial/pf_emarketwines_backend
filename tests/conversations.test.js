@@ -65,3 +65,20 @@ describe("POST /users/register route -> create an admin new user", () => {
     expect(response.body.data.email).toBe("admin@ewines.com");
   });
 });
+
+/********* */
+
+describe("POST /conversations/message route -> create new message", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const message = {
+      userId: 1,
+      message: "Message 1",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message);
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
