@@ -145,4 +145,16 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe(`You can not send a message to yourself!`);
   });
+  it("it should return 400 status code -> message parameter is missing", async () => {
+    const message = {
+      userId: user2_id,
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(`Message parameter is missing`);
+  });
 });
