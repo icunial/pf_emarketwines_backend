@@ -9,7 +9,74 @@ const {
 const validations = require("../utils/validations/questions");
 
 const { getPublicationById } = require("../controllers/publications");
+const { getQuestionById } = require("../controllers/questions");
+
 const Question = require("../models/Question");
+
+// Create new answer
+router.put("/answer/:id", ensureAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+  const { answer } = req.body;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
+
+  try {
+    const question = await getQuestionById(id);
+
+    if (!question.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Question with ID: ${id} not found!`,
+      });
+    }
+
+    if (question[0].userId !== req.user.id) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: "You can not answer questions in publication that is not yours",
+      });
+    }
+
+    if (question[0].answer !== null) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: "You have already answered this question",
+      });
+    }
+
+    if (validations.validateAnswer(answer)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: validations.validateAnswer(answer),
+      });
+    }
+
+    const updateQuestion = await Question.update(
+      { answer },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updateQuestion[0] === 1) {
+      const questionFound = await getQuestionById(id);
+
+      res.status(200).json({
+        statusCode: 200,
+        data: questionFound,
+      });
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // Create new question
 router.post("/", ensureAuthenticated, async (req, res, next) => {
