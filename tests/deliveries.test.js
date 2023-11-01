@@ -434,4 +434,18 @@ describe("POST /deliveries route -> create new delivery", () => {
       "Buy with ID: ff068332-bb6f-479d-a8c8-af31070daa01 not found!"
     );
   });
+  it("it should return 400 status code -> buy not yours", async () => {
+    const delivery = {
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/deliveries")
+      .send(delivery)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      `You can not deliver a buy that is not yours!`
+    );
+  });
 });
