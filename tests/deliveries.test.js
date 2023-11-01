@@ -420,4 +420,18 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> buy not found", async () => {
+    const delivery = {
+      buyId: "ff068332-bb6f-479d-a8c8-af31070daa01",
+    };
+
+    const response = await request(app)
+      .post("/deliveries")
+      .send(delivery)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Buy with ID: ff068332-bb6f-479d-a8c8-af31070daa01 not found!"
+    );
+  });
 });
