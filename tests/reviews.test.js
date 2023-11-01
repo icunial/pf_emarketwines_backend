@@ -518,3 +518,11 @@ describe("POST /reviews route -> create new review", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /reviews/:id route -> get product reviews", () => {
+  it("it should return 400 status code -> id invalid format", async () => {
+    const response = await request(app).get("/reviews/1");
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
+});
