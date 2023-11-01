@@ -427,4 +427,17 @@ describe("POST /questions route -> create new question", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Text parameter is missing");
   });
+  it("it should return 400 status code -> text must be a string", async () => {
+    const question = {
+      publicationId: publication3_id,
+      text: 1234,
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Text must be a string");
+  });
 });
