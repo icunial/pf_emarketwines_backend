@@ -68,7 +68,7 @@ describe("POST /users/register route -> create an admin new user", () => {
 
 /********* */
 
-describe("GET /conversations route -> get user conversations", () => {
+describe("GET /conversations route -> no conversations", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const response = await request(app).get("/conversations");
     expect(response.status).toBe(401);
@@ -233,5 +233,33 @@ describe("POST /conversations/message route -> create new message", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
+  });
+});
+
+describe("GET /conversations route -> get user conversations", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).get("/conversations");
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 200 status code -> get user conversations", async () => {
+    const response = await request(app)
+      .get("/conversations")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].username).toBe("User Two");
+    expect(response.body.data[0].id).toBe(conversation1_id);
   });
 });
