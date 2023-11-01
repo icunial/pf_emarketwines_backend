@@ -540,11 +540,22 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
-  it("it should return 404 status code -> status parameter is missing", async () => {
+  it("it should return 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user2@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 400 status code -> status parameter is missing", async () => {
     const response = await request(app)
       .put(`/deliveries/${delivery1_id}`)
       .set("Cookie", cookie);
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Status parameter is missing");
   });
 });
