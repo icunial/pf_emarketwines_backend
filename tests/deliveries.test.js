@@ -558,4 +558,11 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Status parameter is missing");
   });
+  it("it should return 400 status code -> status not available", async () => {
+    const response = await request(app)
+      .put(`/deliveries/${delivery1_id}?status=pendiente`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Status not available");
+  });
 });
