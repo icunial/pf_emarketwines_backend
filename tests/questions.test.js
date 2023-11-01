@@ -593,4 +593,11 @@ describe("PUT /questions/answer/:id route -> create new answer to question", () 
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("You have already answered this question");
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
