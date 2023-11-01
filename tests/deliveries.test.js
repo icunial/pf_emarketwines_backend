@@ -512,4 +512,13 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> delivery not found", async () => {
+    const response = await request(app)
+      .put("/deliveries/a5503462-9dfb-4c8c-9a4a-c87a5f87f937?status=pending")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      "Delivery with ID: a5503462-9dfb-4c8c-9a4a-c87a5f87f937 not found!"
+    );
+  });
 });
