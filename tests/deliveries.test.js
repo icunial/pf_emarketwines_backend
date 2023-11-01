@@ -487,3 +487,11 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("PUT /deliveries/:id route -> update delivery status", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).put("/deliveries/1?status=pending");
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
