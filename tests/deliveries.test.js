@@ -466,4 +466,17 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 201 status code -> new delivery success", async () => {
+    const delivery = {
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/deliveries")
+      .send(delivery)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.status).toBe("PENDING");
+    expect(response.body.data.buyId).toBe(buy1_id);
+  });
 });
