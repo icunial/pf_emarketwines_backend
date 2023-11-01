@@ -9,6 +9,7 @@ const favoritesRouter = require("./favorites");
 const buysRouter = require("./buys");
 const reviewBuysRouter = require("./reviewbuys");
 const reviewsRouter = require("./reviews");
+const questionsRouter = require("./questions");
 
 // Specify routers root routes
 router.use("/publications", publicationsRouter);
@@ -19,5 +20,6 @@ router.use("/favorites", favoritesRouter);
 router.use("/buys", buysRouter);
 router.use("/reviewBuys", reviewBuysRouter);
 router.use("/reviews", reviewsRouter);
+router.use("/questions", questionsRouter);
 
 module.exports = router;
