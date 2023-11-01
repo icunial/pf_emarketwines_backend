@@ -398,4 +398,14 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> buy id is missing", async () => {
+    const delivery = {};
+
+    const response = await request(app)
+      .post("/deliveries")
+      .send(delivery)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Buy ID is missing");
+  });
 });
