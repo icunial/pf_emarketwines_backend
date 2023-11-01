@@ -9,14 +9,65 @@ const {
 const validations = require("../utils/validations/deliveries");
 
 const { getBuyById } = require("../controllers/buys");
+const { getDeliveryById } = require("../controllers/deliveries");
 
 const Delivery = require("../models/Delivery");
 
 // Update delivery status
 router.put("/:id", ensureAuthenticated, async (req, res, next) => {
   const { status } = req.query;
+  const { id } = req.params;
+
+  if (!validateId(id)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: `ID invalid format!`,
+    });
+  }
 
   try {
+    const delivery = await getDeliveryById(id);
+
+    if (!delivery.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Delivery with ID: ${id} not found!`,
+      });
+    }
+
+    if (delivery[0].userId !== req.user.id) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: "You can not update a delivery that is not yours!",
+      });
+    }
+
+    if (validations.validateStatus(status)) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: validations.validateStatus(status),
+      });
+    }
+
+    const deliveryUpdated = await Delivery.update(
+      {
+        status: status.toUpperCase(),
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (deliveryUpdated[0] === 1) {
+      const delivery = await getDeliveryById(id);
+
+      res.status(200).json({
+        statusCode: 200,
+        data: delivery,
+      });
+    }
   } catch (error) {
     return next(error);
   }
