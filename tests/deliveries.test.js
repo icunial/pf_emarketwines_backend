@@ -524,11 +524,20 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
       "Delivery with ID: a5503462-9dfb-4c8c-9a4a-c87a5f87f937 not found!"
     );
   });
-  it("it should return 404 status code -> status parameter is missing", async () => {
+  it("it should return 400 status code -> delivery is not yours", async () => {
     const response = await request(app)
       .put(`/deliveries/${delivery1_id}`)
       .set("Cookie", cookie);
     expect(response.status).toBe(400);
+    expect(response.body.msg).toBe(
+      "You can not update a delivery that is not yours!"
+    );
+  });
+  it("it should return 404 status code -> status parameter is missing", async () => {
+    const response = await request(app)
+      .put(`/deliveries/${delivery1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
     expect(response.body.msg).toBe("Status parameter is missing");
   });
 });
