@@ -565,4 +565,12 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Status not available");
   });
+  it("it should return 200 status code -> update delivery success", async () => {
+    const response = await request(app)
+      .put(`/deliveries/${delivery1_id}?status=in transit`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(1);
+    expect(response.body.data[0].status).toBe("IN TRANSIT");
+  });
 });
