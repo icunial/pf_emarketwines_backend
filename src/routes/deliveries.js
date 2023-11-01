@@ -12,6 +12,16 @@ const { getBuyById } = require("../controllers/buys");
 
 const Delivery = require("../models/Delivery");
 
+// Update delivery status
+router.put("/:id", ensureAuthenticated, async (req, res, next) => {
+  const { status } = req.query;
+
+  try {
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Create new delivery
 router.post("/", ensureAuthenticated, async (req, res, next) => {
   const { buyId } = req.body;
