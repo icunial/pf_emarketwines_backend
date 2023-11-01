@@ -529,4 +529,11 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
       "You can not answer questions in publication that is not yours"
     );
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
