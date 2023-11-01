@@ -533,6 +533,13 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
       "You can not update a delivery that is not yours!"
     );
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
   it("it should return 404 status code -> status parameter is missing", async () => {
     const response = await request(app)
       .put(`/deliveries/${delivery1_id}`)
