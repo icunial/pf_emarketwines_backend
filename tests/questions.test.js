@@ -372,4 +372,17 @@ describe("POST /questions route -> create new question", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Publication ID is missing");
   });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const question = {
+      publicationId: 1,
+      text: "Question 1?",
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
