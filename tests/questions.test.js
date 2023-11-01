@@ -536,4 +536,15 @@ describe("POST /questions/answer/:id route -> create new answer to question", ()
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
   });
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user2@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
 });
