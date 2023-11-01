@@ -360,4 +360,16 @@ describe("POST /questions route -> create new question", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 400 status code -> publication id is missing", async () => {
+    const question = {
+      text: "Question 1?",
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Publication ID is missing");
+  });
 });
