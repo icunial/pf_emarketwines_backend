@@ -408,4 +408,16 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Buy ID is missing");
   });
+  it("it should return 400 status code -> id invalid format", async () => {
+    const delivery = {
+      buyId: 1,
+    };
+
+    const response = await request(app)
+      .post("/deliveries")
+      .send(delivery)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID invalid format!");
+  });
 });
