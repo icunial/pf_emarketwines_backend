@@ -117,4 +117,19 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID invalid format!");
   });
+  it("it should return 404 status code -> user not found", async () => {
+    const message = {
+      userId: "a5503462-9dfb-4c8c-9a4a-c87a5f87f937",
+      message: "Message 1",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(
+      `User with ID: a5503462-9dfb-4c8c-9a4a-c87a5f87f937 not found!`
+    );
+  });
 });
