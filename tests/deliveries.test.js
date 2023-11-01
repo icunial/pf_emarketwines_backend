@@ -377,6 +377,8 @@ describe("POST /buys route -> new buy created success", () => {
 
 /***************** */
 
+let delivery1_id;
+
 describe("POST /deliveries route -> create new delivery", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const delivery = {
@@ -478,6 +480,7 @@ describe("POST /deliveries route -> create new delivery", () => {
     expect(response.status).toBe(201);
     expect(response.body.data.status).toBe("PENDING");
     expect(response.body.data.buyId).toBe(buy1_id);
+    delivery1_id = response.body.data.id;
   });
   it("it should return 200 status code -> logout process", async () => {
     const response = await request(app)
@@ -520,5 +523,12 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
     expect(response.body.msg).toBe(
       "Delivery with ID: a5503462-9dfb-4c8c-9a4a-c87a5f87f937 not found!"
     );
+  });
+  it("it should return 404 status code -> status parameter is missing", async () => {
+    const response = await request(app)
+      .put(`/deliveries/${delivery1_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Status parameter is missing");
   });
 });
