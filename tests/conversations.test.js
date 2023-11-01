@@ -187,4 +187,18 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.body.data.text).toBe("Message 1");
     conversation1_id = response.body.data.conversationId;
   });
+  it("it should return 201 status code -> message created success", async () => {
+    const message = {
+      userId: user2_id,
+      text: "Message 2",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.userId).toBe(user1_id);
+    expect(response.body.data.text).toBe("Message 2");
+  });
 });
