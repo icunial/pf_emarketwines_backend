@@ -573,4 +573,11 @@ describe("PUT /deliveries/:id route -> update delivery status", () => {
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].status).toBe("IN TRANSIT");
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
