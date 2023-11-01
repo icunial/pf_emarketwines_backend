@@ -67,6 +67,7 @@ const getBuyById = async (id) => {
           totalAmount: r.totalAmount,
           publication: r.publication.title,
           username: r.user.username,
+          userId: r.publication.userId,
         });
       });
     }
