@@ -54,6 +54,57 @@ const getPublications = async () => {
   }
 };
 
+// Get all not banned publications with pagination
+const getPublicationsWithPagination = async (page) => {
+  const results = [];
+
+  try {
+    const dbResults = await Publication.findAll({
+      include: [
+        {
+          model: Product,
+          include: {
+            model: Varietal,
+          },
+        },
+        {
+          model: User,
+        },
+      ],
+
+      where: {
+        amount: {
+          [Op.gt]: 0,
+        },
+        isBanned: false,
+      },
+      limit: 20,
+      offset: page * 20 - 20,
+    });
+
+    if (dbResults) {
+      dbResults.forEach((r) => {
+        results.push({
+          id: r.id,
+          title: r.title,
+          price: r.price,
+          amount: r.amount,
+          image: r.image,
+          description: r.description,
+          product: r.product.name,
+          varietal: r.product.varietal.name,
+          username: r.user.username,
+          email: r.user.email,
+        });
+      });
+    }
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all publications from DB!");
+  }
+};
+
 // Get all publications
 const getAllPublications = async () => {
   const results = [];
@@ -838,4 +889,5 @@ module.exports = {
   orderPublicationsLessPriceWithoutId,
   orderPublicationsByNameAtoZWithoutId,
   orderPublicationsByNameZtoAWithoutId,
+  getPublicationsWithPagination,
 };
