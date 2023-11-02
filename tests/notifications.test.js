@@ -547,3 +547,30 @@ describe("POST /conversations/message route -> create new message", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("GET /notifications route -> get notifications", () => {
+  it("it should return 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user2@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 200 status code -> get notifications", async () => {
+    const response = await request(app)
+      .get("/notifications")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+  });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
