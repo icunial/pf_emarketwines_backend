@@ -338,6 +338,14 @@ describe("POST /publications route -> create new publication success", () => {
 
 /*************************** */
 
+describe("GET /notifications route -> no notifications", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).get("/notifications");
+    expect(response.status).toBe(401);
+    expect(response.body.msg).toBe("You are not authorized! Please login...");
+  });
+});
+
 let buy1_id;
 
 describe("POST /buys route -> new buy created success", () => {
