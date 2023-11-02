@@ -412,3 +412,33 @@ describe("POST /reviewBuys route -> create new review buy", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("POST /:id route -> post a favorite", () => {
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return a 201 status code -> favorite created success", async () => {
+    const response = await request(app)
+      .post(`/favorites/${publication3_id}`)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.msg).toBe(
+      `You favorited publication: ${publication3_id}!`
+    );
+  });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
