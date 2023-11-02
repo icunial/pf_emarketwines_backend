@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  validateId,
-  ensureAuthenticated,
-} = require("../utils/validations/index");
+const { ensureAuthenticated } = require("../utils/validations/index");
 
 const Notification = require("../models/Notification");
 
@@ -25,8 +22,6 @@ router.get("/", ensureAuthenticated, async (req, res, next) => {
         msg: "You do not have new notifications!",
       });
     }
-
-    console.log(notifications);
 
     res.status(200).json({
       statusCode: 200,
