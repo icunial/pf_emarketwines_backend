@@ -12,6 +12,7 @@ const reviewsRouter = require("./reviews");
 const questionsRouter = require("./questions");
 const deliveriesRouter = require("./deliveries");
 const conversationsRouter = require("./conversations");
+const notificationsRouter = require("./notifications");
 
 // Specify routers root routes
 router.use("/publications", publicationsRouter);
@@ -25,5 +26,6 @@ router.use("/reviews", reviewsRouter);
 router.use("/questions", questionsRouter);
 router.use("/deliveries", deliveriesRouter);
 router.use("/conversations", conversationsRouter);
+router.use("/notifications", notificationsRouter);
 
 module.exports = router;
