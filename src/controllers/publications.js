@@ -227,6 +227,7 @@ const getPublicationById = async (id) => {
         varietal: dbResult.product.varietal.name,
         username: dbResult.user.username,
         email: dbResult.user.email,
+        userId: dbResult.user.id,
       });
     }
 
