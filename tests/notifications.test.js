@@ -376,3 +376,39 @@ describe("POST /buys route -> new buy created success", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("POST /reviewBuys route -> create new review buy", () => {
+  it("it should return 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 201 status code -> new buy review created", async () => {
+    const reviewBuy = {
+      stars: 3,
+      text: "This is a buy review",
+      buyId: buy1_id,
+    };
+
+    const response = await request(app)
+      .post("/reviewBuys")
+      .send(reviewBuy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.text).toBe("This is a buy review");
+    expect(response.body.data.stars).toBe(3);
+  });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
