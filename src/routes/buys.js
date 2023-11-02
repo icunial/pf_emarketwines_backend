@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Publication = require("../models/Publication");
 const Buy = require("../models/Buy");
+const Notification = require("../models/Notification");
 
 const validations = require("../utils/validations/buys");
 
@@ -244,6 +245,13 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
       publicationId,
       userId: req.user.id,
     });
+
+    if (buyCreated) {
+      await Notification.create({
+        userId: publication[0].userId,
+        text: `${req.user.username} bought your publication: ${publication[0].title}`,
+      });
+    }
 
     res.status(201).json({
       statusCode: 201,
