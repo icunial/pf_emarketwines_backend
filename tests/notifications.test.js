@@ -362,6 +362,13 @@ describe("GET /notifications route -> no notifications", () => {
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("You do not have new notifications!");
   });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
 });
 
 let buy1_id;
