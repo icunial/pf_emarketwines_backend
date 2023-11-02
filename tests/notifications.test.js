@@ -337,3 +337,42 @@ describe("POST /publications route -> create new publication success", () => {
 });
 
 /*************************** */
+
+let buy1_id;
+
+describe("POST /buys route -> new buy created success", () => {
+  it("it should return 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 201 status code -> new buy created success", async () => {
+    const buy = {
+      currency: "ARG",
+      paymentMethod: "CASH",
+      publicationId: publication3_id,
+    };
+
+    const response = await request(app)
+      .post("/buys")
+      .send(buy)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.publicationId).toBe(publication3_id);
+    expect(response.body.data.userId).toBe(user1_id);
+    buy1_id = response.body.data.id;
+  });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
