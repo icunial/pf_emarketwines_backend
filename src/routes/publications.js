@@ -28,6 +28,7 @@ const {
   orderPublicationsMorePriceWithoutId,
   getAllPublications,
   getBannedPublications,
+  getPublicationsWithPagination,
 } = require("../controllers/publications");
 
 // Get all publications
@@ -61,7 +62,7 @@ router.get("/all", ensureAuthenticated, async (req, res, next) => {
   }
 });
 
-// Get all publications
+// Get banned publications
 router.get("/banned", ensureAuthenticated, async (req, res, next) => {
   if (
     req.user.dataValues.email !== "admin@ewines.com" &&
@@ -86,6 +87,50 @@ router.get("/banned", ensureAuthenticated, async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       data: publications,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Get not banned publications -> pagination
+router.get("/pagination", async (req, res, next) => {
+  const { page } = req.query;
+
+  try {
+    const publications = await getPublications();
+
+    if (!publications.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `No publications saved in DB!`,
+      });
+    }
+
+    const totalPages = Math.round(publications.length / 20);
+
+    if (page) {
+      if (page !== "0" && !parseInt(page)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: "Page must be a number",
+        });
+      }
+
+      if (parseInt(page) === 0 || parseInt(page) > totalPages) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Page ${page} not found!`,
+        });
+      }
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      totalResults: publications.length,
+      totalPages,
+      page: parseInt(page) || 1,
+      data: await getPublicationsWithPagination(page || 1),
     });
   } catch (error) {
     return next(error);
