@@ -407,4 +407,9 @@ describe("GET /pagination route -> get not banned publications with pagination",
     expect(response.status).toBe(200);
     expect(response.body.data.length).toBe(20);
   });
+  it("it should return 200 status code -> get publication with pagination", async () => {
+    const response = await request(app).get("/publications/pagination?page=1");
+    expect(response.status).toBe(200);
+    expect(response.body.data.length).toBe(20);
+  });
 });
