@@ -442,3 +442,39 @@ describe("POST /:id route -> post a favorite", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("POST /questions route -> create new question", () => {
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 201 status code -> question created success", async () => {
+    const question = {
+      publicationId: publication3_id,
+      text: "Question 1?",
+    };
+
+    const response = await request(app)
+      .post("/questions")
+      .send(question)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.text).toBe("Question 1?");
+    expect(response.body.data.answer).toBe(null);
+    question1_id = response.body.data.id;
+  });
+  it("it should return 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
