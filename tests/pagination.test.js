@@ -384,10 +384,17 @@ describe("POST /publications route -> create new publication success", () => {
 });
 
 describe("GET /pagination route -> get not banned publications with pagination", () => {
-  it("it should return 200 status code -> get all publications and total pages", async () => {
+  it("it should return 200 status code -> get total publications and total pages", async () => {
     const response = await request(app).get("/publications/pagination");
     expect(response.status).toBe(200);
     expect(response.body.totalResults).toBe(50);
     expect(response.body.totalPages).toBe(3);
+  });
+  it("it should return 400 status code -> page parameter must be a number", async () => {
+    const response = await request(app).get(
+      "/publications/pagination?page=hola"
+    );
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("Page must be a number");
   });
 });
