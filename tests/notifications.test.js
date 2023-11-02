@@ -478,3 +478,39 @@ describe("POST /questions route -> create new question", () => {
     expect(response.body).toBe(true);
   });
 });
+
+describe("POST /conversations/message route -> create new message", () => {
+  it("it should return a 200 status code -> no admin user logged in", async () => {
+    const user = {
+      email: "user1@email.com",
+      password: "Password14!",
+    };
+
+    const response = await request(app).post("/users/login").send(user);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 201 status code -> message created success", async () => {
+    const message = {
+      userId: user2_id,
+      text: "Message 1",
+    };
+
+    const response = await request(app)
+      .post("/conversations/message")
+      .send(message)
+      .set("Cookie", cookie);
+    expect(response.status).toBe(201);
+    expect(response.body.data.userId).toBe(user1_id);
+    expect(response.body.data.text).toBe("Message 1");
+    conversation1_id = response.body.data.conversationId;
+  });
+  it("it should return a 200 status code -> logout process", async () => {
+    const response = await request(app)
+      .get("/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(true);
+  });
+});
