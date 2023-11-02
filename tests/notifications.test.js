@@ -355,6 +355,13 @@ describe("GET /notifications route -> no notifications", () => {
     expect(response.body).toBe(true);
     cookie = response.headers["set-cookie"];
   });
+  it("it should return 404 status code -> no notifications", async () => {
+    const response = await request(app)
+      .get("/notifications")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("You do not have new notifications!");
+  });
 });
 
 let buy1_id;
