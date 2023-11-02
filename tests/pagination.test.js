@@ -353,6 +353,8 @@ describe("POST /publications route -> product validations", () => {
   });
 });
 
+/*************** */
+
 describe("POST /publications route -> create new publication success", () => {
   for (let x = 1; x <= 50; x++) {
     it("it should return 201 status code -> new publication success", async () => {
@@ -378,5 +380,14 @@ describe("POST /publications route -> create new publication success", () => {
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
     expect(response.body).toBe(true);
+  });
+});
+
+describe("GET /pagination route -> get not banned publications with pagination", () => {
+  it("it should return 200 status code -> get all publications and total pages", async () => {
+    const response = await request(app).get("/publications/pagination");
+    expect(response.status).toBe(200);
+    expect(response.body.totalResults).toBe(50);
+    expect(response.body.totalPages).toBe(3);
   });
 });
