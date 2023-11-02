@@ -397,4 +397,9 @@ describe("GET /pagination route -> get not banned publications with pagination",
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("Page must be a number");
   });
+  it("it should return 404 status code -> page not found", async () => {
+    const response = await request(app).get("/publications/pagination?page=5");
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe(`Page 5 not found!`);
+  });
 });
