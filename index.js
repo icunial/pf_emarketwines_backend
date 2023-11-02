@@ -21,6 +21,7 @@ const Question = require("./src/models/Question");
 const Delivery = require("./src/models/Delivery");
 const Conversation = require("./src/models/Conversation");
 const Message = require("./src/models/Message");
+const Notification = require("./src/models/Notification");
 
 // Models Relationships
 Product.hasMany(Publication);
@@ -73,6 +74,9 @@ Message.belongsTo(Conversation);
 
 Conversation.belongsToMany(User, { through: "ConversationUsers" });
 User.belongsToMany(Conversation, { through: "ConversationUsers" });
+
+User.hasMany(Notification);
+Notification.belongsTo(User);
 
 // Body-Parser Middleware
 app.use(express.json());
