@@ -16,6 +16,7 @@ const {
 
 const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
+const Notification = require("../models/Notification");
 
 // Get conversation by id
 router.get("/:id", ensureAuthenticated, async (req, res, next) => {
@@ -127,6 +128,13 @@ router.post("/message", ensureAuthenticated, async (req, res, next) => {
           conversationId: conversation.id,
         });
 
+        if (message) {
+          await Notification.create({
+            text: `${req.user.username} sent you a message!`,
+            userId,
+          });
+        }
+
         return res.status(201).json({
           statusCode: 201,
           data: message,
@@ -139,6 +147,13 @@ router.post("/message", ensureAuthenticated, async (req, res, next) => {
       userId: req.user.id,
       conversationId: conversationFound[0].id,
     });
+
+    if (message) {
+      await Notification.create({
+        text: `${req.user.username} sent you a message!`,
+        userId,
+      });
+    }
 
     res.status(201).json({
       statusCode: 201,
