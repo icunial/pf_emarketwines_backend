@@ -12,6 +12,7 @@ const { getPublicationById } = require("../controllers/publications");
 const { getQuestionById, getQuestions } = require("../controllers/questions");
 
 const Question = require("../models/Question");
+const Notification = require("../models/Notification");
 
 // Get publication questions
 router.get("/publication/:id", async (req, res, next) => {
@@ -164,6 +165,13 @@ router.post("/", ensureAuthenticated, async (req, res, next) => {
       publicationId,
       userId: req.user.id,
     });
+
+    if (question) {
+      await Notification.create({
+        text: `${req.user.username} asked you a question in your publication: ${publication[0].title}!`,
+        userId: publication[0].userId,
+      });
+    }
 
     res.status(201).json({
       statusCode: 201,
