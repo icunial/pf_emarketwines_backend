@@ -4,6 +4,7 @@ const router = express.Router();
 const Publication = require("../models/Publication");
 const Favorite = require("../models/Favorite");
 const User = require("../models/User");
+const Notification = require("../models/Notification");
 
 const { getPublicationById } = require("../controllers/publications");
 
@@ -117,6 +118,11 @@ router.post("/:id", ensureAuthenticated, async (req, res, next) => {
     });
 
     if (favorite) {
+      await Notification.create({
+        text: `${req.user.username} liked your publication: ${publication[0].title}!`,
+        userId: publication[0].userId,
+      });
+
       return res.status(201).json({
         statusCode: 201,
         msg: `You favorited publication: ${id}!`,
